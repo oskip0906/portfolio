@@ -1,0 +1,28 @@
+{
+    "interests": [
+      {
+        "name": "Artificial Intelligence",
+        "description": "Exploring the applications of AI in solving real-world problems, particularly in healthcare, education, and sustainability."
+      },
+      {
+        "name": "Web Development",
+        "description": "Passionate about designing and building modern, user-friendly web applications with a focus on clean design and performance."
+      },
+      {
+        "name": "Gaming",
+        "description": "Enjoy playing and analyzing strategy games like League of Legends and exploring the mechanics behind game development."
+      },
+      {
+        "name": "Photography",
+        "description": "Capturing moments of landscapes, urban architecture, and wildlife during travels."
+      },
+      {
+        "name": "Traveling",
+        "description": "Visiting new places to experience different cultures, cuisines, and natural wonders around the world."
+      },
+      {
+        "name": "Machine Learning Research",
+        "description": "Reading and experimenting with the latest advancements in machine learning models, particularly in natural language processing."
+      }
+    ]
+}
