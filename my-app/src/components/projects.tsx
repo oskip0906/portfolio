@@ -12,6 +12,7 @@ interface Project {
     date: string;
     description: string;
     link: string;
+    image: string;
 }
 
 export default function Projects() {
@@ -36,62 +37,79 @@ export default function Projects() {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="flex flex-col items-center text-center bg-gray-800 shadow-lg rounded-lg p-6 sm:p-10 w-full h-full"
+            className="flex flex-col items-center rounded-lg sm:p-10 w-full h-full"
         >
+
+            <motion.h1
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.2, duration: 0.6, ease: "easeOut" }}
+                className="mx-auto text-3xl sm:text-4xl font-bold text-blue-200 mb-16"
+            >
+                ~ Projects ~
+            </motion.h1>
+            
             <Swiper
                 modules={[Navigation, Pagination]}
                 slidesPerView={1}
                 navigation={true}
-                pagination={{ clickable: true }}
+                pagination={{
+                    clickable: true,
+                    bulletClass: 'pagination-button'
+                }}
                 className="w-full"
             >
                 {projects.map((project, index) => (
-                    <SwiperSlide key={index} className="flex justify-center">
+                    <SwiperSlide key={index}>
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: index * 0.2, duration: 0.6, ease: "easeOut" }}
-                            className="mb-6 p-6 rounded-lg mx-auto"
-                            style={{ margin: '0 40px 40px' }} 
+                            style={{ margin: '0 100px 40px' }} 
                         >
                             <motion.h2
                                 initial={{ opacity: 0, scale: 0.95 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ delay: 0.2, duration: 0.6, ease: "easeOut" }}
-                                className="text-2xl sm:text-3xl font-semibold text-gray-100 mb-2"
+                                className="text-2xl sm:text-3xl font-semibold text-gray-100 mb-2 text-center"
                             >
                                 {project.name}
                             </motion.h2>
 
-                            <motion.p
-                                initial={{ opacity: 0, x: -30 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ delay: 0.4, duration: 0.6, ease: "easeOut" }}
-                                className="text-lg sm:text-xl text-gray-200 font-medium mb-1"
-                            >
-                                {project.date}
-                            </motion.p>
+                            <div className="flex justify-between">
+                                <div>
+                                    <motion.p
+                                        initial={{ opacity: 0, x: -30 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        transition={{ delay: 0.4, duration: 0.6, ease: "easeOut" }}
+                                        className="text-lg sm:text-xl text-gray-200 font-medium mb-1"
+                                    >
+                                        {project.date}
+                                    </motion.p>
+                                    <motion.p
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ delay: 0.6, duration: 0.6, ease: "easeOut" }}
+                                        className="text-sm sm:text-base text-gray-300 leading-relaxed"
+                                    >
+                                        {project.description}
+                                    </motion.p>
+                                    <motion.a
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ delay: 0.8, duration: 0.6, ease: "easeOut" }}
+                                        href={project.link}
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        className="text-sm sm:text-base text-blue-400 hover:underline"
+                                    >
+                                        {project.link}
+                                    </motion.a>
+                                </div>
 
-                            <motion.p
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.6, duration: 0.6, ease: "easeOut" }}
-                                className="text-sm sm:text-base text-gray-300 leading-relaxed"
-                            >
-                                {project.description}
-                            </motion.p>
+                                <img src={project.image} alt={project.name} className="p-10" />
+                            </div>
 
-                            <motion.a
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.8, duration: 0.6, ease: "easeOut" }}
-                                href={project.link}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="text-sm sm:text-base text-blue-400 hover:underline"
-                            >
-                                {project.link}
-                            </motion.a>
                         </motion.div>
                     </SwiperSlide>
                 ))}

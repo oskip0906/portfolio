@@ -31,15 +31,25 @@ export default function Experiences() {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="flex flex-col items-center sm:items-start text-center sm:text-left bg-gray-800 shadow-lg rounded-lg p-6 sm:p-10 w-full h-full"
+            className="flex flex-col items-center sm:items-start text-center sm:text-left p-6 sm:p-10"
         >
+            
+            <motion.h1
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.2, duration: 0.6, ease: "easeOut" }}
+                className="mx-auto text-3xl sm:text-4xl font-bold text-blue-200 mb-10"
+            >
+                ~ Experiences ~
+            </motion.h1>
+
             {experiences.map((experience, index) => (
-                <motion.div
+                <motion.div 
                     key={index}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.2, duration: 0.6, ease: "easeOut" }}
-                    className="mb-6"
+                    className="mt-6 w-full"
                 >
                     <motion.h2
                         initial={{ opacity: 0, scale: 0.95 }}
@@ -67,8 +77,11 @@ export default function Experiences() {
                     >
                         {experience.description}
                     </motion.p>
+                
+                    <hr className="border-b mt-4 border-blue-500 opacity-40" />
                 </motion.div>
             ))}
+
         </motion.section>
     );
 }

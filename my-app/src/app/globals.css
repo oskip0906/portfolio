@@ -19,3 +19,28 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.grid-item {
+  border-radius: 10px;
+  background-image: linear-gradient(to out, #5c36e3, #fff);
+  background-size: 200% 100%;
+  box-shadow: 0 0 10px rgba(88, 104, 224, 0.75);
+  transition: background-size 0.3s;
+}
+
+.grid-item:hover {
+  background-size: 120% 100%;
+}
+
+.pagination-button {
+  font-size: 1px;
+  color: #fff;
+  background-color: #333;
+  margin: 8px;
+  padding: 8px;
+  border-radius: 50%;
+}
+
+.pagination-button:hover {
+  cursor:pointer;
+}

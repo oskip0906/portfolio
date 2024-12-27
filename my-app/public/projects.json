@@ -1,28 +1,60 @@
 {
-    "projects": [
-      {
-        "name": "MealSimple",
-        "date": "May 2024",
-        "description": "1st Place Winner at Engineers Without Borders UofT Moral Code Hackathon. Developed a website using the Google Maps API to locate food banks, a recipes API to filter recipes by ingredients, and the ChatGPT API to generate custom recipes based on user preferences.",
-        "link": "https://github.com/PatZhang0214/mealsimple-Moral-Code-Hackathon"
-      },
-      {
-        "name": "WelcoMate",
-        "date": "Oct 2024",
-        "description": "B2B Category Winner at UofT Web3 Student Group Davinci Competition. Built an all-in-one hotel PMS and CRM website with an AI-powered trip planner for personalized itineraries. Leveraged Python libraries for scraping Toronto attractions, a weather API, Hugging Face API, and Gemini API to generate customized plans.",
-        "link": "https://github.com/teddio496/WelcoMate"
-      },
-      {
-        "name": "League of Legends Statistics Analyzer",
-        "date": "Jun 2024 - Jul 2024",
-        "description": "Created a website that analyzed 100k data entries from the Riot API and other sources. Trained a machine learning model with over 75% accuracy to predict team win rates based on team compositions and other metrics. Built using Selenium for data scraping, Scikit-Learn for model training, SQLite for data storage, and Next.js with React for the website.",
-        "link": "https://github.com/no-ff/winrate-prediction-model"
-      },
-      {
-        "name": "Toronto Asian Art Museum Explorer",
-        "date": "Jul 2024 - Aug 2024",
-        "description": "Developed an Android app to showcase museum artifacts with searching, filtering, and administration features. Included PDF report generation and a user-friendly interface. Built using Java and XML for development and Firebase for database management.",
-        "link": "https://github.com/marc-issism/TAAMproject"
-      }
-    ]
-}  
+  "projects": [
+    {
+      "name": "MealSimple",
+      "date": "May 2024",
+      "description": "1st Place Winner at Engineers Without Borders UofT Moral Code Hackathon. Developed a website using the Google Maps API to locate food banks, a recipes API to filter recipes by ingredients, and the ChatGPT API to generate custom recipes based on user preferences.",
+      "link": "https://github.com/PatZhang0214/mealsimple-Moral-Code-Hackathon",
+      "image": "https://source.unsplash.com/random/200x300"
+    },
+    {
+      "name": "WelcoMate",
+      "date": "Oct 2024",
+      "description": "B2B Category Winner at UofT Web3 Student Group Davinci Competition. Built an all-in-one hotel PMS and CRM website with an AI-powered trip planner for personalized itineraries. Leveraged Python libraries for scraping Toronto attractions, a weather API, Hugging Face API, and Gemini API to generate customized plans.",
+      "link": "https://github.com/teddio496/WelcoMate",
+      "image": "https://source.unsplash.com/random/200x300"
+    },
+    {
+      "name": "League of Legends Statistics Analyzer",
+      "date": "Jun 2024 - Jul 2024",
+      "description": "Created a website that analyzed 100k data entries from the Riot API and other sources. Trained a machine learning model with over 75% accuracy to predict team win rates based on team compositions and other metrics. Built using Selenium for data scraping, Scikit-Learn for model training, SQLite for data storage, and Next.js with React for the website.",
+      "link": "https://github.com/no-ff/winrate-prediction-model",
+      "image": "https://source.unsplash.com/random/200x300"
+    },
+    {
+      "name": "Toronto Asian Art Museum Explorer",
+      "date": "Jul 2024 - Aug 2024",
+      "description": "Developed an Android app to showcase museum artifacts with searching, filtering, and administration features. Included PDF report generation and a user-friendly interface. Built using Java and XML for development and Firebase for database management.",
+      "link": "https://github.com/marc-issism/TAAMproject",
+      "image": "https://source.unsplash.com/random/200x300"
+    },
+    {
+      "name": "MealSimple",
+      "date": "May 2024",
+      "description": "1st Place Winner at Engineers Without Borders UofT Moral Code Hackathon. Developed a website using the Google Maps API to locate food banks, a recipes API to filter recipes by ingredients, and the ChatGPT API to generate custom recipes based on user preferences.",
+      "link": "https://github.com/PatZhang0214/mealsimple-Moral-Code-Hackathon",
+      "image": "https://source.unsplash.com/random/200x300"
+    },
+    {
+      "name": "WelcoMate",
+      "date": "Oct 2024",
+      "description": "B2B Category Winner at UofT Web3 Student Group Davinci Competition. Built an all-in-one hotel PMS and CRM website with an AI-powered trip planner for personalized itineraries. Leveraged Python libraries for scraping Toronto attractions, a weather API, Hugging Face API, and Gemini API to generate customized plans.",
+      "link": "https://github.com/teddio496/WelcoMate",
+      "image": "https://source.unsplash.com/random/200x300"
+    },
+    {
+      "name": "League of Legends Statistics Analyzer",
+      "date": "Jun 2024 - Jul 2024",
+      "description": "Created a website that analyzed 100k data entries from the Riot API and other sources. Trained a machine learning model with over 75% accuracy to predict team win rates based on team compositions and other metrics. Built using Selenium for data scraping, Scikit-Learn for model training, SQLite for data storage, and Next.js with React for the website.",
+      "link": "https://github.com/no-ff/winrate-prediction-model",
+      "image": "https://source.unsplash.com/random/200x300"
+    },
+    {
+      "name": "Toronto Asian Art Museum Explorer",
+      "date": "Jul 2024 - Aug 2024",
+      "description": "Developed an Android app to showcase museum artifacts with searching, filtering, and administration features. Included PDF report generation and a user-friendly interface. Built using Java and XML for development and Firebase for database management.",
+      "link": "https://github.com/marc-issism/TAAMproject",
+      "image": "https://source.unsplash.com/random/200x300"
+    }
+  ]
+}

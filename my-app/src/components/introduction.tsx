@@ -52,7 +52,7 @@ export default function Introduction() {
                 transition={{ delay: 0.4, duration: 0.6, ease: "easeOut" }}
                 className="text-lg sm:text-xl text-gray-200 font-medium mb-3"
             >
-                I’m a <span className="text-blue-400">{intro.title}</span>.
+                <span className="text-blue-400">{intro.title}</span>.
             </motion.p>
 
             <motion.p

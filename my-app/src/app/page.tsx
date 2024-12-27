@@ -9,7 +9,7 @@ export default function Home() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen w-full p-10 bg-gray-900">
       
-      <main className="flex flex-col gap-16 row-start-2 items-center sm:items-start w-full">
+      <main className="flex flex-col gap-10 row-start-2 items-center sm:items-start w-full">
         <Introduction />
         <Experiences />
         <Projects />
@@ -17,7 +17,7 @@ export default function Home() {
         <Contact />
       </main>
 
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center text-xs text-gray-500 mt-20">
+      <footer className="items-center justify-center text-sm text-gray-500 mt-10">
         <p>&copy; {new Date().getFullYear()} Shenglong Pang. All rights reserved.</p>
       </footer>
     </div>

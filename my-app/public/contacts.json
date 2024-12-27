@@ -1,0 +1,34 @@
+{
+  "contacts": [
+    {
+      "type": "email",
+      "image": "https://via.placeholder.com/24x24?text=Email",
+      "value": "mailto:oscar.pang050906@gmail.com"
+    },
+    {
+      "type": "linkedin",
+      "image": "https://via.placeholder.com/24x24?text=LinkedIn",
+      "value": "https://www.linkedin.com/in/oscar-shenglong-pang"
+    },
+    {
+      "type": "github",
+      "image": "https://via.placeholder.com/24x24?text=Github",
+      "value": "https://github.com/oskip0906"
+    },
+    {
+      "type": "github",
+      "image": "https://via.placeholder.com/24x24?text=Github",
+      "value": "https://github.com/oskip0906"
+    },
+    {
+      "type": "github",
+      "image": "https://via.placeholder.com/24x24?text=Github",
+      "value": "https://github.com/oskip0906"
+    },
+    {
+      "type": "github",
+      "image": "https://via.placeholder.com/24x24?text=Github",
+      "value": "https://github.com/oskip0906"
+    }
+  ]
+}

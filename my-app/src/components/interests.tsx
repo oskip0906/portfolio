@@ -29,35 +29,50 @@ export default function Interests() {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-6 sm:p-10 w-full h-full"
+            className="flex flex-col items-center"
         >
-            {interests.map((interest: Interest, index: number) => (
-            <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.2, duration: 0.6, ease: "easeOut" }}
-                className="bg-gray-800 shadow-lg rounded-lg p-6"
-            >
-                <motion.h2
+
+            <motion.h1
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.2, duration: 0.6, ease: "easeOut" }}
-                className="text-2xl sm:text-3xl font-semibold text-gray-100 mb-2"
-                >
-                {interest.name}
-                </motion.h2>
+                className="mx-auto text-3xl sm:text-4xl font-bold text-blue-200 mb-10"
+            >
+                ~ Interests ~
+            </motion.h1>    
 
-                <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6, duration: 0.6, ease: "easeOut" }}
-                className="text-sm sm:text-base text-gray-300 leading-relaxed"
-                >
-                {interest.description}
-                </motion.p>
-            </motion.div>
-            ))}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
+
+                {interests.map((interest: Interest, index: number) => (
+                    <motion.div
+                        key={index}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.2, duration: 0.6, ease: "easeOut" }}
+                        className="bg-gray-700 rounded-lg p-6 grid-item"
+                    >
+                        <motion.h2
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: 0.2, duration: 0.6, ease: "easeOut" }}
+                            className="text-2xl sm:text-3xl font-semibold text-gray-100 mb-2"
+                        >
+                            {interest.name}
+                        </motion.h2>
+
+                        <motion.p
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.6, duration: 0.6, ease: "easeOut" }}
+                            className="text-sm sm:text-base text-gray-300 leading-relaxed"
+                        >
+                            {interest.description}
+                        </motion.p>
+                    </motion.div>
+                ))}
+
+            </div>
+
         </motion.section>
     );
 }
