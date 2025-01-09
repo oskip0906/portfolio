@@ -32,6 +32,7 @@ export default function Experiences() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="flex flex-col items-center sm:items-start text-center sm:text-left p-6 sm:p-10"
+            id="experiences"
         >
             
             <motion.h1

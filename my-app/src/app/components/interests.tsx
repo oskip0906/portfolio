@@ -29,7 +29,8 @@ export default function Interests() {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="flex flex-col items-center"
+            className="flex flex-col items-center mt-6 sm:mt-0 p-6 sm:p-10" 
+            id="interests"
         >
 
             <motion.h1

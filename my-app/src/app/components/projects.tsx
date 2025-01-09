@@ -38,6 +38,7 @@ export default function Projects() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="flex flex-col items-center rounded-lg sm:p-10 w-full h-full"
+            id="projects"
         >
 
             <motion.h1
@@ -106,7 +107,7 @@ export default function Projects() {
                                         {project.link}
                                     </motion.a>
                                 </div>
-
+                                
                                 <img src={project.image} alt={project.name} className="p-10" />
                             </div>
 

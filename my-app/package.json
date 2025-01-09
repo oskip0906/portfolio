@@ -12,6 +12,7 @@
     "next": "15.1.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-draggable": "^4.4.6",
     "swiper": "^11.1.15"
   },
   "devDependencies": {
