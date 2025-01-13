@@ -12,6 +12,16 @@ export default function NavBar() {
     window.scrollTo(0, 0);
   }, []);
 
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (menuOpen) {
+      timer = setTimeout(() => {
+        setMenuOpen(false);
+      }, 1500);
+    }
+    return () => clearTimeout(timer);
+  }, [menuOpen]);
+
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
@@ -35,12 +45,16 @@ export default function NavBar() {
           onClick={() => setMenuOpen(!menuOpen)}
           className="w-16 h-16 rounded-full bg-blue-800 text-white text-2xl flex items-center justify-center shadow-lg focus:outline-none transition-transform hover:scale-110"
           aria-label="Toggle Menu"
+          style={{ boxShadow: "0 0 20px rgba(65, 65, 194, 0.5)" }}
         >
           ☰
         </button>
 
         {menuOpen && (
-          <div className="absolute top-0 left-0 w-64 h-64 rounded-full bg-blue-900 text-white shadow-lg flex flex-col items-center justify-center space-y-6 p-4">
+          <div 
+            className="absolute top-0 left-0 w-64 h-64 rounded-full bg-blue-900 text-white shadow-lg flex flex-col items-center justify-center space-y-6 p-4"
+            style={{ boxShadow: "0 0 20px rgba(108, 108, 196, 0.5)" }}
+          >
             <button
               onClick={() => scrollToSection("introduction")}
               className="hover:text-gray-400 transition"

@@ -2,6 +2,7 @@
     "intro": {
         "name": "Oscar Pang",
         "title": "Computer Science Student @ University of Toronto",
-        "bio": "Passionate about artificial intelligence, full-stack development, and solving real-world problems through innovative technologies."
+        "bio": "Passionate about artificial intelligence, full-stack development, and solving real-world problems through innovative technologies.",
+        "image": "https://upload.wikimedia.org/wikipedia/en/thumb/0/04/Utoronto_coa.svg/360px-Utoronto_coa.svg.png?20140710053832"
     }
 }

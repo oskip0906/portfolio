@@ -6,14 +6,11 @@ interface Intro {
     name: string;
     title: string;
     bio: string;
+    image: string | undefined;
 }
 
 export default function Introduction() {
-    const [intro, setIntro] = useState<Intro>({
-        name: "",
-        title: "",
-        bio: "",
-    });
+    const [intro, setIntro] = useState<Intro>({ name: "", title: "", bio: "", image: undefined });
 
     useEffect(() => {
         const fetchData = async () => {
@@ -34,10 +31,10 @@ export default function Introduction() {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="flex flex-col items-center sm:items-start text-center sm:text-left bg-gray-800 shadow-lg rounded-lg p-6 sm:p-10 w-full h-full"
+            className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left bg-gray-800 shadow-lg rounded-lg p-6 sm:p-10 w-full h-full"
             id="introduction"
-       >
-            
+        >
+            <div className="flex flex-col sm:w-2/3">
             <motion.h1
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -64,7 +61,15 @@ export default function Introduction() {
             >
                 {intro.bio}
             </motion.p>
+            </div>
 
+            <motion.img
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.8, duration: 0.6, ease: "easeOut" }}
+                className="w-32 h-32 sm:w-40 sm:h-40 rounded-full mt-6 sm:mt-0 sm:ml-6 sm:ml-auto"
+                src={intro.image}
+            />
         </motion.section>
     );
 }

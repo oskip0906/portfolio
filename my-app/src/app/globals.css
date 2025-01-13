@@ -44,3 +44,10 @@ body {
 .pagination-button:hover {
   cursor:pointer;
 }
+
+@media (max-width: 640px) {
+  .swiper-button-prev,
+  .swiper-button-next {
+      display: none !important;
+  }
+}

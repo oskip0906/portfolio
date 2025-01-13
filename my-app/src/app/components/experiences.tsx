@@ -50,7 +50,7 @@ export default function Experiences() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.2, duration: 0.6, ease: "easeOut" }}
-                    className="mt-6 w-full"
+                    className="w-full mb-4"
                 >
                     <motion.h2
                         initial={{ opacity: 0, scale: 0.95 }}
