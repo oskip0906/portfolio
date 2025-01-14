@@ -38,7 +38,7 @@ const AudioPlayer: React.FC = () => {
 
     return (
         <motion.div
-            className="text-center text-white mt-4 bg-gray-900 p-2 sm:p-4 rounded-lg"
+            className="text-center text-white mt-4 bg-gray-900 p-4 rounded-lg mb-2"
             style={{ boxShadow: '0 0 20px rgba(0, 64, 255, 0.9)' }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -61,8 +61,8 @@ const AudioPlayer: React.FC = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
                 >
-                    <button onClick={togglePlayPause} className="btn btn-primary rounded mr-5 py-2 px-4 text-sm font-semibold" style={{ boxShadow: '0 0 10px rgba(28, 69, 181, 0.9)' }}>Play/Pause</button>
-                    <input className="w-24 sm:w-64 md:w-96" type="range" id="progressBar" defaultValue="0" max="100" onInput={controlSong} />
+                    <button onClick={togglePlayPause} className="btn btn-primary rounded mr-5 py-2 px-4 text-xs sm:text-sm font-semibold" style={{ boxShadow: '0 0 10px rgba(28, 69, 181, 0.9)' }}>Play/Pause</button>
+                    <input className="w-32 sm:w-64 md:w-96" type="range" id="progressBar" defaultValue="0" max="100" onInput={controlSong} />
                 </motion.div>
             )}
         </motion.div>

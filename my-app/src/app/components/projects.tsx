@@ -66,7 +66,7 @@ export default function Projects() {
                     clickable: true,
                     bulletClass: 'pagination-button'
                 }}
-                speed={1000}
+                speed={500}
                 className="w-full relative" 
             >
 
