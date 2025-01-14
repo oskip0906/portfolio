@@ -51,7 +51,14 @@ export default function Contact() {
                         whileHover={{ scale: 1.1 }}
                         className="text-lg sm:text-xl text-gray-200 font-medium block w-12 h-12 overflow-hidden mx-auto"
                     >
-                        <img src={contact.image} alt={contact.type} />
+                        <motion.img
+                            src={contact.image}
+                            alt={contact.type}
+                            initial={{ opacity: 0, x: -30 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            whileHover={{ scale: 1.1 }}
+                            className="w-full h-full object-cover"
+                        />
                     </motion.a>
                 </motion.div>
             ))}

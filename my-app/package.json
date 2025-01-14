@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev -p 8080",
     "start": "next start -p 8080",
-    "lint": "next lint"
+    "lint": "next lint",
+    "build": "next build"
   },
   "dependencies": {
     "framer-motion": "^11.15.0",

@@ -7,29 +7,10 @@
   --foreground: #171717;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
-}
-
-.grid-item {
-  border-radius: 10px;
-  background-image: linear-gradient(to out, #5c36e3, #fff);
-  background-size: 200% 100%;
-  box-shadow: 0 0 10px rgba(88, 104, 224, 0.75);
-  transition: background-size 0.3s;
-}
-
-.grid-item:hover {
-  background-size: 120% 100%;
 }
 
 .pagination-button {

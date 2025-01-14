@@ -42,7 +42,7 @@ export default function Interests() {
                 Interests
             </motion.h1>    
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
 
                 {interests.map((interest: Interest, index: number) => (
                     <motion.div
@@ -50,7 +50,7 @@ export default function Interests() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: index * 0.2, duration: 0.6, ease: "easeOut" }}
-                        className="bg-gray-700 rounded-lg p-6 grid-item"
+                        className="bg-gray-700 rounded-lg p-6 shadow-lg shadow-blue-800/50"
                     >
                         <motion.h2
                             initial={{ opacity: 0, scale: 0.95 }}
