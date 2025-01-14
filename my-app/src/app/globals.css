@@ -36,8 +36,8 @@ body {
   font-size: 1px;
   color: #fff;
   background-color: #333;
-  margin: 8px;
-  padding: 8px;
+  margin: 11px;
+  padding: 9px;
   border-radius: 50%;
 }
 
@@ -49,5 +49,10 @@ body {
   .swiper-button-prev,
   .swiper-button-next {
       display: none !important;
+  }
+
+  .pagination-button {
+    margin: 8px;
+    padding: 7px;
   }
 }

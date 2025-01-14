@@ -31,7 +31,7 @@ export default function Contact() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
             id="contact"
-            className="w-full mt-10 rounded-lg p-6 sm:p-10 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-y-10"
+            className="w-full mt-10 rounded-lg p-6 sm:p-10 grid grid-cols-3 sm:grid-cols-6 gap-y-10"
         >
             
             {contacts.map((contact, index) => (
@@ -48,8 +48,8 @@ export default function Contact() {
                         rel="noopener noreferrer"
                         initial={{ opacity: 0, x: -30 }}
                         animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.4, duration: 0.6, ease: "easeOut" }}
-                        className="text-lg sm:text-xl text-gray-200 font-medium block w-12 h-12 rounded-full overflow-hidden mx-auto"
+                        whileHover={{ scale: 1.1 }}
+                        className="text-lg sm:text-xl text-gray-200 font-medium block w-12 h-12 overflow-hidden mx-auto"
                     >
                         <img src={contact.image} alt={contact.type} />
                     </motion.a>

@@ -32,10 +32,10 @@ export default function Introduction() {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left bg-gray-800 shadow-lg rounded-lg p-6 sm:p-10 w-full h-full"
+            className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left bg-gray-800 shadow-lg rounded-lg p-4 sm:p-10 w-full h-full"
             id="introduction"
         >
-            <div className="flex flex-col sm:w-2/3">
+            <div className="flex flex-col sm:w-3/4">
                 <motion.h1
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}

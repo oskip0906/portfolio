@@ -2,33 +2,33 @@
   "contacts": [
     {
       "type": "email",
-      "image": "https://via.placeholder.com/24x24?text=Email",
+      "image": "https://pngimg.com/uploads/email/email_PNG11.png",
       "value": "mailto:oscar.pang050906@gmail.com"
     },
     {
       "type": "linkedin",
-      "image": "https://via.placeholder.com/24x24?text=LinkedIn",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png",
       "value": "https://www.linkedin.com/in/oscar-shenglong-pang"
     },
     {
       "type": "github",
-      "image": "https://via.placeholder.com/24x24?text=Github",
+      "image": "https://cdn.worldvectorlogo.com/logos/github-icon-2.svg",
       "value": "https://github.com/oskip0906"
     },
     {
-      "type": "github",
-      "image": "https://via.placeholder.com/24x24?text=Github",
-      "value": "https://github.com/oskip0906"
+      "type": "discord",
+      "image": "https://cdn.prod.website-files.com/6257adef93867e50d84d30e2/636e0a6a49cf127bf92de1e2_icon_clyde_blurple_RGB.png",
+      "value": "https://discordlookup.com/user/767525911695851550"
     },
     {
-      "type": "github",
-      "image": "https://via.placeholder.com/24x24?text=Github",
-      "value": "https://github.com/oskip0906"
+      "type": "instagram",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Instagram_icon.png/768px-Instagram_icon.png",
+      "value": "https://www.instagram.com/oskip123"
     },
     {
-      "type": "github",
-      "image": "https://via.placeholder.com/24x24?text=Github",
-      "value": "https://github.com/oskip0906"
+      "type": "spotify",
+      "image": "https://storage.googleapis.com/pr-newsroom-wp/1/2023/05/Spotify_Primary_Logo_RGB_Green.png",
+      "value": "https://open.spotify.com/user/7gsd1305qmzdn9i0t4yvtgjbt?si=275240ee180248d4"
     }
   ]
 }

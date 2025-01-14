@@ -37,9 +37,9 @@ export default function Interests() {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.2, duration: 0.6, ease: "easeOut" }}
-                className="mx-auto text-3xl sm:text-4xl font-bold text-blue-200 mb-10"
+                className="mx-auto text-3xl sm:text-4xl font-bold text-blue-200 mb-16"
             >
-                ~ Interests ~
+                Interests
             </motion.h1>    
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

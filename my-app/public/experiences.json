@@ -1,22 +1,28 @@
 {
   "experiences": [
     {
-      "title": "Full-stack Developer Intern",
-      "company": "FlashCoding Tech",
-      "date": "Jun 2023 - Aug 2023",
-      "description": "Developed an interactive educational website for students to practice AI-generated math problems, analyze their progress, and customize their learning. Used HTML, CSS, and JavaScript for the frontend and PHP with MySQL for the backend. Acquired over 20 active users within the first three months of deployment."
+      "title": "Research Intern",
+      "company": "Vector Institute for Artificial Intelligence",
+      "date": "Jan 2024 - Present",
+      "description": "Engineering a flexible 3D rendering program for psycholinguistics and using it to compare human and large language model behaviors on spatial reasoning under the Waterloo CompLING Lab."
     },
     {
       "title": "Machine Learning Researcher",
       "company": "Artificial Intelligence & Mathematical Modelling Lab (UofT)",
       "date": "Jun 2024 - Dec 2024",
-      "description": "First-authored a research paper under review for the Journal of Medical Internet Research. Conducted a project analyzing social media content on Reddit related to Bird Flu outbreaks, collecting 2,000+ comments from 160 subreddits. Utilized Python Pandas for data processing, a fine-tuned BERT model with 94.2% accuracy for sentiment analysis, and BERTopic and LDA models for topic modeling."
+      "description": "Researched social media discussions on diseases using data collection tools and machine learning models for sentiment analysis and topic modeling at the Artificial Intelligence and Mathematical Modeling Lab. First-authored a research paper awaiting official publishment on JMIR."
     },
     {
-      "title": "AI Research Intern",
-      "company": "Vector Institute",
-      "date": "Jan 2024 - Present",
-      "description": "Engineered a flexible 3D rendering program for psycholinguistics research, comparing human and large language model behaviors on spatial reasoning tasks."
+      "title": "Freelance AI Trainer",
+      "company": "DataAnnotation",
+      "date": "Apr 2024 - Sep 2024 ",
+      "description": "Worked on paid tasks including prompt engineering and model evaluation to train and improve AI models."
+    },
+    {
+      "title": "Full-stack Developer Intern",
+      "company": "FlashCoding Tech",
+      "date": "Jun 2023 - Aug 2023",
+      "description": "Assisted in the development of an educational website that allows students to practice various math problems and uses machine learning to analyze their progress and improve their learning."
     }
   ]
 }

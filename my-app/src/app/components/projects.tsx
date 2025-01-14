@@ -45,10 +45,17 @@ export default function Projects() {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.2, duration: 0.6, ease: "easeOut" }}
-                className="mx-auto text-3xl sm:text-4xl font-bold text-blue-200 mb-8 sm:mb-16"
+                className="mx-auto text-3xl sm:text-4xl font-bold text-blue-200 mb-16"
             >
-                ~ Projects ~
+                Projects
             </motion.h1>
+
+            <motion.hr
+                initial={{ width: 0 }}
+                animate={{ width: "100%" }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
+                className="border-t-2 border-gray-700 w-full mb-16"
+            />
             
             <Swiper
                 modules={[Navigation, Pagination]}
@@ -59,6 +66,7 @@ export default function Projects() {
                     clickable: true,
                     bulletClass: 'pagination-button'
                 }}
+                speed={1000}
                 className="w-full relative" 
             >
 
@@ -93,24 +101,27 @@ export default function Projects() {
                                         initial={{ opacity: 0, y: 20 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ delay: 0.6, duration: 0.6, ease: "easeOut" }}
-                                        className="text-sm sm:text-base text-gray-300 leading-relaxed mb-2"
+                                        className="text-sm sm:text-base text-gray-300 leading-relaxed mb-2 w-5/6 mx-auto"
                                     >
                                         {project.description}
                                     </motion.p>
-                                    <motion.a
-                                        initial={{ opacity: 0, y: 20 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        transition={{ delay: 0.8, duration: 0.6, ease: "easeOut" }}
-                                        href={project.link}
-                                        target="_blank"
-                                        rel="noreferrer"
-                                        className="text-sm sm:text-base text-blue-400 hover:underline"
-                                    >
-                                        {project.link}
-                                    </motion.a>
                                 </div>
                                 
-                                <img src={project.image} alt={project.name} className="w-full mb-4 mt-8 rounded-lg" />
+                                <motion.a 
+                                    href={project.link} 
+                                    className="w-3/4 sm:w-2/3 md:w-1/2 lg:w-1/3 mb-4 sm:mb-8 mt-4 rounded-lg mx-auto" 
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    whileHover={{ scale: 1.02 }}
+                                >
+                                    <motion.img 
+                                        src={project.image} 
+                                        alt={project.name} 
+                                        className="rounded-lg max-w-full max-h-48 object-cover mx-auto" 
+                                        style={{ filter: "grayscale(30%)" }}
+                                        whileHover={{ filter: "grayscale(0%)" }}
+                                    />
+                                </motion.a>
                             </div>
 
                         </motion.div>

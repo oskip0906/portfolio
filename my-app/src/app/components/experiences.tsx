@@ -41,7 +41,7 @@ export default function Experiences() {
                 transition={{ delay: 0.2, duration: 0.6, ease: "easeOut" }}
                 className="mx-auto text-3xl sm:text-4xl font-bold text-blue-200 mb-10"
             >
-                ~ Experiences ~
+                Experiences 
             </motion.h1>
 
             {experiences.map((experience, index) => (

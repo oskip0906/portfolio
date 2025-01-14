@@ -25,7 +25,7 @@ export default function NavBar() {
 
       <motion.div
         ref={dragRef}
-        className="fixed top-8 right-1/4 z-[9999]"
+        className="fixed top-4 right-1/4 z-[9999]"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 2 }}

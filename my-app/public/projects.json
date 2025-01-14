@@ -1,60 +1,67 @@
 {
   "projects": [
     {
-      "name": "MealSimple",
-      "date": "May 2024",
-      "description": "1st Place Winner at Engineers Without Borders UofT Moral Code Hackathon. Developed a website using the Google Maps API to locate food banks, a recipes API to filter recipes by ingredients, and the ChatGPT API to generate custom recipes based on user preferences.",
-      "link": "https://github.com/PatZhang0214/mealsimple-Moral-Code-Hackathon",
-      "image": "https://source.unsplash.com/random/200x300"
+      "name": "H5N1 Social Media Analysis",
+      "date": "Jun 2024 - Dec 2024",
+      "description": "A comprehensive analysis of social media posts related to H5N1 outbreaks using posts and comments from Reddit communities for various states in the US from early 2022 to mid 2024 (with a Github repository and research paper).",
+      "link": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5078277",
+      "image": "https://i.ibb.co/NynJ0xW/Screenshot-2025-01-14-at-12-00-13-AM.png"
     },
     {
-      "name": "WelcoMate",
+      "name": "Basic Neural Network",
+      "date": "Jun 2024 - Dec 2024",
+      "description": "A minimalistic and customizable neural network built from scratch using Python and NumPy that achieved 95% accuracy on the MNIST dataset with custom hyperparameters.",
+      "link": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5078277",
+      "image": "https://i.ibb.co/WfSjZ7L/Screenshot-2025-01-14-at-12-56-40-AM.png"
+    },
+    {
+      "name": "Scriptorium",
+      "date": "Oct 2024 - Dec 2024",
+      "description": "An interactive web app that allows users to write, execute, and save code in various programming languages and create and comment on blog posts based on these code templates.",
+      "link": "https://github.com/oskip0906/Scriptorium",
+      "image": "https://i.ibb.co/25rJtwD/Screenshot-2025-01-14-at-12-22-15-AM.png"
+    },
+    {
+      "name": "WelcoMate (UofT W3B Davinci Competition Project)",
       "date": "Oct 2024",
-      "description": "B2B Category Winner at UofT Web3 Student Group Davinci Competition. Built an all-in-one hotel PMS and CRM website with an AI-powered trip planner for personalized itineraries. Leveraged Python libraries for scraping Toronto attractions, a weather API, Hugging Face API, and Gemini API to generate customized plans.",
+      "description": "A website offering an all-in-one hotel PMS and CRM system with an AI-powered trip planner, where each guest can check-in, book services, and get personalized trip plans.",
       "link": "https://github.com/teddio496/WelcoMate",
-      "image": "https://source.unsplash.com/random/200x300"
+      "image": "https://i.ibb.co/JyLvnWx/Screenshot-2025-01-14-at-12-31-25-AM.png"
     },
     {
-      "name": "League of Legends Statistics Analyzer",
-      "date": "Jun 2024 - Jul 2024",
-      "description": "Created a website that analyzed 100k data entries from the Riot API and other sources. Trained a machine learning model with over 75% accuracy to predict team win rates based on team compositions and other metrics. Built using Selenium for data scraping, Scikit-Learn for model training, SQLite for data storage, and Next.js with React for the website.",
-      "link": "https://github.com/no-ff/winrate-prediction-model",
-      "image": "https://source.unsplash.com/random/200x300"
+      "name": "Little Learners",
+      "date": "Oct 2024",
+      "description": "An educational web app designed for youth with learning disabilities, combining a structured English learning roadmap, engaging multi-sensory mini-games, rewards, and personalized AI-generated books.",
+      "link": "https://github.com/Phalanyx/LittleLearners",
+      "image": "https://i.ibb.co/G08Dxd4/Screenshot-2025-01-14-at-12-40-17-AM.png"
     },
     {
       "name": "Toronto Asian Art Museum Explorer",
       "date": "Jul 2024 - Aug 2024",
-      "description": "Developed an Android app to showcase museum artifacts with searching, filtering, and administration features. Included PDF report generation and a user-friendly interface. Built using Java and XML for development and Firebase for database management.",
+      "description": "An Android app that showcases museum artifacts from a database, with searching and filtering features, administration tools (addition and removal of items), and PDF report generation.",
       "link": "https://github.com/marc-issism/TAAMproject",
-      "image": "https://source.unsplash.com/random/200x300"
-    },
-    {
-      "name": "MealSimple",
-      "date": "May 2024",
-      "description": "1st Place Winner at Engineers Without Borders UofT Moral Code Hackathon. Developed a website using the Google Maps API to locate food banks, a recipes API to filter recipes by ingredients, and the ChatGPT API to generate custom recipes based on user preferences.",
-      "link": "https://github.com/PatZhang0214/mealsimple-Moral-Code-Hackathon",
-      "image": "https://source.unsplash.com/random/200x300"
-    },
-    {
-      "name": "WelcoMate",
-      "date": "Oct 2024",
-      "description": "B2B Category Winner at UofT Web3 Student Group Davinci Competition. Built an all-in-one hotel PMS and CRM website with an AI-powered trip planner for personalized itineraries. Leveraged Python libraries for scraping Toronto attractions, a weather API, Hugging Face API, and Gemini API to generate customized plans.",
-      "link": "https://github.com/teddio496/WelcoMate",
-      "image": "https://source.unsplash.com/random/200x300"
+      "image": "https://private-user-images.githubusercontent.com/41635384/361239991-b3015574-80d9-46c0-ae10-8d13753ceb0d.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MzY4MzMwNjQsIm5iZiI6MTczNjgzMjc2NCwicGF0aCI6Ii80MTYzNTM4NC8zNjEyMzk5OTEtYjMwMTU1NzQtODBkOS00NmMwLWFlMTAtOGQxMzc1M2NlYjBkLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTAxMTQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwMTE0VDA1MzI0NFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWU3ODI0NjQ4ODBmNjMzOGNhYWVkZDFlYTNhNzI2MzY3ZjAwNDUzY2RjOWY3OTg2OTM5YzYyZjVmZjNiOWRhNmEmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.nfgfAtbZxG-72jpB-t6GQBx0EbPChcKo_ZePJPY86-4"
     },
     {
       "name": "League of Legends Statistics Analyzer",
       "date": "Jun 2024 - Jul 2024",
-      "description": "Created a website that analyzed 100k data entries from the Riot API and other sources. Trained a machine learning model with over 75% accuracy to predict team win rates based on team compositions and other metrics. Built using Selenium for data scraping, Scikit-Learn for model training, SQLite for data storage, and Next.js with React for the website.",
-      "link": "https://github.com/no-ff/winrate-prediction-model",
-      "image": "https://source.unsplash.com/random/200x300"
+      "description": "Collected 100k data entries from relevant websites and the Riot API on team compositions and other statistics, built a machine-learning model with over 75% accuracy, and developed a website for the model and display of player statistics.",
+      "link": "https://github.com/orgs/no-ff/repositories",
+      "image": "https://i.ibb.co/YX74wcr/Screenshot-2025-01-14-at-12-49-07-AM.png"
     },
     {
-      "name": "Toronto Asian Art Museum Explorer",
-      "date": "Jul 2024 - Aug 2024",
-      "description": "Developed an Android app to showcase museum artifacts with searching, filtering, and administration features. Included PDF report generation and a user-friendly interface. Built using Java and XML for development and Firebase for database management.",
-      "link": "https://github.com/marc-issism/TAAMproject",
-      "image": "https://source.unsplash.com/random/200x300"
+      "name": "MealSimple (Uoft EWB Hackathon Project)",
+      "date": "May 2024",
+      "description": "A website that uses the Google Maps API to locate food banks, a recipes API to filter recipes by ingredients, and the ChatGPT API to generate custom recipes based on user preferences.",
+      "link": "https://patzhang0214.github.io/mealsimple-Moral-Code-Hackathon/",
+      "image": "https://i.ibb.co/64s1tLp/Screenshot-2025-01-14-at-12-51-21-AM.png"
+    },
+    {
+      "name": "Daily World Diary",
+      "date": "Sep 2023 - Sep 2023",
+      "description": "Based on popular news stories of the day, using the ChatGPT API, generates a 'world diary' written in first person with captivating text and cited sources.",
+      "link": "https://github.com/oskip0906/Daily-World-Diary",
+      "image": "https://i.ibb.co/1sgJfgx/Screenshot-2025-01-14-at-12-47-14-AM.png"
     }
   ]
 }
