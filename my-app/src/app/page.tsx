@@ -21,7 +21,7 @@ export default function Home() {
       </main>
 
       <footer className="items-center justify-center text-sm text-gray-500 mt-10">
-        <p>&copy; {new Date().getFullYear()} Shenglong Pang. All rights reserved.</p>
+        <p>&copy; {new Date().getFullYear()} Oscar Pang. All rights reserved.</p>
       </footer>
     </div>
   );

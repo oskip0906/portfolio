@@ -12,16 +12,6 @@ export default function NavBar() {
     window.scrollTo(0, 0);
   }, []);
 
-  useEffect(() => {
-    let timer: NodeJS.Timeout;
-    if (menuOpen) {
-      timer = setTimeout(() => {
-        setMenuOpen(false);
-      }, 1500);
-    }
-    return () => clearTimeout(timer);
-  }, [menuOpen]);
-
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
@@ -43,6 +33,7 @@ export default function NavBar() {
 
         <button
           onClick={() => setMenuOpen(!menuOpen)}
+          onTouchStart={() => setMenuOpen(!menuOpen)}
           className="w-16 h-16 rounded-full bg-blue-800 text-white text-2xl flex items-center justify-center shadow-lg focus:outline-none transition-transform hover:scale-110"
           aria-label="Toggle Menu"
           style={{ boxShadow: "0 0 20px rgba(65, 65, 194, 0.5)" }}
@@ -57,30 +48,35 @@ export default function NavBar() {
           >
             <button
               onClick={() => scrollToSection("introduction")}
+              onTouchStart={() => scrollToSection("introduction")}
               className="hover:text-gray-400 transition"
             >
               Introduction
             </button>
             <button
               onClick={() => scrollToSection("experiences")}
+              onTouchStart={() => scrollToSection("experiences")}
               className="hover:text-gray-400 transition"
             >
               Experiences
             </button>
             <button
               onClick={() => scrollToSection("projects")}
+              onTouchStart={() => scrollToSection("projects")}
               className="hover:text-gray-400 transition"
             >
               Projects
             </button>
             <button
               onClick={() => scrollToSection("interests")}
+              onTouchStart={() => scrollToSection("interests")}
               className="hover:text-gray-400 transition"
             >
               Interests
             </button>
             <button
               onClick={() => scrollToSection("contact")}
+              onTouchStart={() => scrollToSection("contact")}
               className="hover:text-gray-400 transition"
             >
               Contact
