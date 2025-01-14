@@ -63,7 +63,7 @@ export default function Introduction() {
                     {intro.bio}
                 </motion.p>
 
-                <div className="z-[9999] flex opacity-80 mt-4 justify-center sm:justify-start">
+                <div className="z-[999] flex opacity-80 mt-4 justify-center sm:justify-start">
                     <MusicPlayer />
                 </div>
             </div>

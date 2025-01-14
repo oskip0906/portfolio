@@ -11,7 +11,7 @@
       "name": "Basic Neural Network",
       "date": "Dec 2024",
       "description": "A minimalistic and customizable neural network built from scratch using Python and NumPy that achieved 95% accuracy on the MNIST dataset with custom hyperparameters.",
-      "link": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5078277",
+      "link": "https://github.com/oskip0906/Basic_Neural_Network",
       "image": "https://i.ibb.co/WfSjZ7L/Screenshot-2025-01-14-at-12-56-40-AM.png"
     },
     {
