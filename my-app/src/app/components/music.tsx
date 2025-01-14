@@ -38,7 +38,7 @@ const AudioPlayer: React.FC = () => {
 
     return (
         <motion.div
-            className="text-center mt-4 bg-gray-900 p-2 sm:p-4 rounded-lg"
+            className="text-center text-white mt-4 bg-gray-900 p-2 sm:p-4 rounded-lg"
             style={{ boxShadow: '0 0 20px rgba(0, 64, 255, 0.9)' }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
