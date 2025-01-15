@@ -32,7 +32,7 @@ export default function Introduction() {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left bg-gray-800 shadow-lg rounded-lg p-4 sm:p-10 w-full h-full"
+            className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left bg-gray-800 shadow-lg rounded-lg p-4 sm:p-8 w-full h-full mb-10"
             id="introduction"
         >
             <div className="flex flex-col sm:w-3/4">

@@ -8,7 +8,7 @@ import NavBar from "./components/navbar";
 export default function Home() {
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen w-full p-4 bg-gray-900">
+    <div className="flex flex-col items-center justify-center min-h-screen w-screen p-4 bg-gray-900">
 
       <NavBar />
       
@@ -20,7 +20,7 @@ export default function Home() {
         <Contact />
       </main>
 
-      <footer className="items-center justify-center text-sm text-gray-500 mt-10 mb-10">
+      <footer className="items-center justify-center text-sm text-gray-500 mt-16 mb-16">
         <p>&copy; {new Date().getFullYear()} Oscar Pang. All rights reserved.</p>
       </footer>
     </div>
