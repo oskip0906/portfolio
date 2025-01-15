@@ -29,8 +29,8 @@ export default function Interests() {
     return (
         <motion.section
             ref={ref}
-            initial={{ opacity: 0, x: 50 }}
-            animate={inView ? { opacity: 1, x: 0 } : {}}
+            initial={{ opacity: 0 }}
+            animate={inView ? { opacity: 1 } : {}}
             transition={{ duration: 0.8, ease: "easeOut" }} 
             className="flex flex-col items-center sm:mt-0 px-6 sm:px-10 mb-16" 
             id="interests"

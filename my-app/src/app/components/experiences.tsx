@@ -31,8 +31,8 @@ export default function Experiences() {
     return (
         <motion.section
             ref={ref}
-            initial={{ opacity: 0, x: 50 }}
-            animate={inView ? { opacity: 1, x: 0 } : {}}
+            initial={{ opacity: 0 }}
+            animate={inView ? { opacity: 1 } : {}}
             transition={{ duration: 1, ease: "easeOut" }}
             className="flex flex-col items-center sm:items-start text-center sm:text-left px-4 sm:px-10 mb-10"
             id="experiences"

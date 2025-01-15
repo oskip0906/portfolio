@@ -37,8 +37,8 @@ export default function Projects() {
     return (
         <motion.section
             ref={ref}
-            initial={{ opacity: 0, x: -50 }}
-            animate={inView ? { opacity: 1, x: 0 } : {}}
+            initial={{ opacity: 0 }}
+            animate={inView ? { opacity: 1 } : {}}
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="flex flex-col items-center rounded-lg w-full h-full mb-10"
             id="projects"
