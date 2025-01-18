@@ -70,7 +70,7 @@ export default function Projects() {
                     bulletClass: 'pagination-button'
                 }}
                 speed={500}
-                className="w-full relative" 
+                className="w-3/4 relative mx-auto" 
             >
 
                 {projects.map((project, index) => (

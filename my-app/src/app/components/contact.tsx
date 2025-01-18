@@ -43,7 +43,7 @@ export default function Contact() {
                     initial={{ opacity: 0, x: -30 }}
                     animate={inView ? { opacity: 1, x: 0 } : {}}
                     transition={{ delay: index * 0.2, duration: 0.4, ease: "easeOut" }}
-                    className="flex justify-center mx-auto mt-10"
+                    className="flex justify-center mx-auto"
                 >
                     <motion.a
                         href={contact.value}

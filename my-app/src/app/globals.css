@@ -26,6 +26,10 @@ body {
   cursor:pointer;
 }
 
+body {
+  overflow-x: hidden;
+}
+
 @media (max-width: 640px) {
   .swiper-button-prev,
   .swiper-button-next {
