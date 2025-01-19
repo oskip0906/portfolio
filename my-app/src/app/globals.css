@@ -2,32 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
 }
 
 .pagination-button {
   font-size: 1px;
   color: #fff;
   background-color: #333;
-  margin: 11px;
-  padding: 9px;
+  margin: 12px;
+  padding: 10px;
   border-radius: 50%;
 }
 
 .pagination-button:hover {
   cursor:pointer;
-}
-
-body {
-  overflow-x: hidden;
 }
 
 @media (max-width: 640px) {
@@ -38,6 +30,6 @@ body {
 
   .pagination-button {
     margin: 8px;
-    padding: 7px;
+    padding: 6px;
   }
 }

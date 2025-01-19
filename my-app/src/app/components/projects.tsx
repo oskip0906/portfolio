@@ -70,14 +70,14 @@ export default function Projects() {
                     bulletClass: 'pagination-button'
                 }}
                 speed={500}
-                className="w-3/4 relative mx-auto" 
+                className="w-full relative mx-auto" 
             >
 
                 {projects.map((project, index) => (
                     <SwiperSlide key={index}>
                         <motion.div
                             transition={{ delay: index * 0.2, duration: 0.6, ease: "easeOut" }}
-                            className="mx-4 sm:mx-20 mb-10 text-center"
+                            className="mb-10 text-center"
                         >
                             <motion.h2
                                 initial={{ opacity: 0, scale: 0.95 }}
@@ -113,15 +113,14 @@ export default function Projects() {
                                     className="w-3/4 sm:w-2/3 md:w-1/2 lg:w-1/3 mb-4 sm:mb-8 mt-4 rounded-lg mx-auto" 
                                     target="_blank" 
                                     rel="noopener noreferrer"
-                                    whileHover={{ scale: 1.02 }}
                                 >
                                     <motion.img 
                                         src={project.image} 
                                         alt={project.name} 
                                         animate={inView ? { opacity: 1, y: 0 } : {}}
                                         className="rounded-lg max-w-full max-h-48 object-cover mx-auto" 
-                                        style={{ filter: "grayscale(30%)" }}
-                                        whileHover={{ filter: "grayscale(0%)" }}
+                                        style={{ filter: "grayscale(25%)" }}
+                                        whileHover={{ filter: "grayscale(0%)", boxShadow: "0 0 20px blue" }}
                                     />
                                 </motion.a>
                             </div>
