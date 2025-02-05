@@ -3,10 +3,12 @@
 @tailwind utilities;
 
 body {
-  color: var(--foreground);
-  background: var(--background);
+  background: oklch(0.21 0.034 264.665);
   font-family: Arial, Helvetica, sans-serif;
   overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 .pagination-button {

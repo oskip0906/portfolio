@@ -40,7 +40,7 @@ export default function Projects() {
             initial={{ opacity: 0 }}
             animate={inView ? { opacity: 1 } : {}}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="flex flex-col items-center rounded-lg w-full h-full mb-10"
+            className="flex flex-col items-center rounded-lg w-full h-full"
             id="projects"
         >
 
@@ -119,8 +119,8 @@ export default function Projects() {
                                         alt={project.name} 
                                         animate={inView ? { opacity: 1, y: 0 } : {}}
                                         className="rounded-lg max-w-full max-h-48 object-cover mx-auto" 
-                                        style={{ filter: "grayscale(25%)" }}
-                                        whileHover={{ filter: "grayscale(0%)", boxShadow: "0 0 20px blue" }}
+                                        style={{ filter: "grayscale(75%)" }}
+                                        whileHover={{ filter: "grayscale(0%)"}}
                                     />
                                 </motion.a>
                             </div>

@@ -32,7 +32,7 @@ export default function Interests() {
             initial={{ opacity: 0 }}
             animate={inView ? { opacity: 1 } : {}}
             transition={{ duration: 0.8, ease: "easeOut" }} 
-            className="flex flex-col items-center sm:mt-0 px-6 sm:px-10 mb-16" 
+            className="flex flex-col items-center sm:mt-0 px-6 sm:px-10" 
             id="interests"
         >
 

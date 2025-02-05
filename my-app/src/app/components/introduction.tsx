@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import MusicPlayer from "./music";
+import { Typewriter } from 'react-simple-typewriter'
 
 interface Intro {
     name: string;
@@ -29,12 +30,12 @@ export default function Introduction() {
 
     return (
         <motion.section
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left bg-gray-800 shadow-lg rounded-lg p-4 sm:p-8 w-full h-full mb-10"
+            initial={{ opacity: 0, y: 50, borderColor: 'rgba(0, 64, 255, 0.5)' }}
+            animate={{ opacity: 1, y: 0, borderColor: ['rgba(0, 64, 255, 0.5)', 'rgba(255, 0, 0, 0.5)', 'rgba(0, 64, 255, 0.5)'] }}
+            transition={{ duration: 0.8, ease: "easeOut", borderColor: { duration: 2, repeat: Infinity } }}
+            className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left bg-gray-800 shadow-lg rounded-lg p-4 sm:p-8 w-full h-full border-dashed border-2"
             id="introduction"
-        >
+        >   
             <div className="flex flex-col sm:w-3/4">
                 <motion.h1
                     initial={{ opacity: 0, scale: 0.95 }}
@@ -58,23 +59,41 @@ export default function Introduction() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.6, duration: 0.6, ease: "easeOut" }}
-                    className="text-sm sm:text-base text-gray-300 leading-relaxed"
+                    className="text-md sm:text-lg text-gray-300 leading-relaxed mt-2"
+                    style={{ minHeight: '5rem' }}
                 >
-                    {intro.bio}
+                <Typewriter
+                    words={intro.bio.split(';')}
+                    loop={false}
+                    cursor
+                    cursorStyle='|'
+                    typeSpeed={70}
+                    deleteSpeed={50}
+                    delaySpeed={1000}
+                />
                 </motion.p>
 
-                <div className="z-[999] flex opacity-80 mt-4 justify-center sm:justify-start">
+                <div className="z-[999] flex opacity-80 mt-2 justify-center sm:justify-start">
                     <MusicPlayer />
                 </div>
             </div>
 
-            <motion.img
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2, duration: 0.6, ease: "easeOut" }}
+            <motion.a
+                href="https://www.utoronto.ca/"
+                target="_blank"
+                rel="noopener noreferrer"
+                animate={{ rotate: [360, 0] }}
+                transition={{ duration: 100, repeat: Infinity }}
                 className="w-32 h-32 sm:w-40 sm:h-40 rounded-full mt-6 sm:mt-0 sm:ml-6 sm:ml-auto"
-                src={intro.image}
-            />
+            >
+                <motion.img
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2, duration: 0.6, ease: "easeOut" }}
+                    src={intro.image}
+                />
+            </motion.a>
+
         </motion.section>
     );
 }

@@ -34,7 +34,7 @@ export default function Contact() {
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, ease: "easeOut" }}
             id="contact"
-            className="w-full rounded-lg p-4 sm:p-10 grid grid-cols-3 sm:grid-cols-6 gap-y-10"
+            className="w-full rounded-lg p-4 sm:p-10 grid grid-cols-3 sm:grid-cols-6 gap-y-10 mt-10"
         >
             
             {contacts.map((contact, index) => (

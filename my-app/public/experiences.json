@@ -2,27 +2,39 @@
   "experiences": [
     {
       "title": "Research Intern",
-      "company": "Vector Institute for Artificial Intelligence",
+      "company": "Vector Institute",
       "date": "Jan 2024 - Present",
       "description": "Engineering a flexible 3D rendering program for psycholinguistics and using it to compare human and large language model behaviors on spatial reasoning under the CompLING Lab at the University of Waterloo."
     },
     {
       "title": "Machine Learning Researcher",
-      "company": "Artificial Intelligence & Mathematical Modelling Lab (UofT)",
+      "company": "AIMM Lab (UofT)",
       "date": "Jun 2024 - Dec 2024",
       "description": "Researched social media discussions on diseases using data collection tools and machine learning models for sentiment analysis and topic modeling at the Artificial Intelligence and Mathematical Modeling Lab. First-authored a research paper awaiting official publishment on JMIR."
     },
     {
       "title": "Freelance AI Trainer",
-      "company": "DataAnnotation",
+      "company": "Data Annotation",
       "date": "Apr 2024 - Sep 2024 ",
       "description": "Worked on paid tasks including prompt engineering and model evaluation to train and improve AI models."
     },
     {
+      "title": "Baker & Barista",
+      "company": "Hazukido",
+      "date": "Aug 2023 - Oct 2023",
+      "description": "Worked at the Don Mills Hazukido Store; responsible for baking pastries, preparing drinks, handling cash, and providing customer service."
+    },
+    {
       "title": "Full-stack Developer Intern",
-      "company": "FlashCoding Tech",
+      "company": "Flash Coding",
       "date": "Jun 2023 - Aug 2023",
       "description": "Assisted in the development of an educational website that allows students to practice various math problems and uses machine learning to analyze their progress and improve their learning."
+    },
+    {
+      "title": "Founder & President",
+      "company": "Maple Peers",
+      "date": "Jun 2022 - Jun 2023",
+      "description": "Founded an organization dedicated to guiding new immigrant youths in STEM fields; developed the official website and created social media accounts to promote the organization."
     }
   ]
 }
