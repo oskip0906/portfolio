@@ -36,7 +36,7 @@ export default function Introduction() {
             className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left bg-gray-800 shadow-lg rounded-lg p-4 sm:p-8 w-full h-full border-dashed border-2"
             id="introduction"
         >   
-            <div className="flex flex-col sm:w-3/4">
+            <div className="flex flex-col sm:w-2/3 sm:pl-8">
                 <motion.h1
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
@@ -73,26 +73,28 @@ export default function Introduction() {
                 />
                 </motion.p>
 
-                <div className="z-[999] flex opacity-80 mt-2 justify-center sm:justify-start">
+                <div className="z-[999] flex opacity-80 justify-center sm:justify-start">
                     <MusicPlayer />
                 </div>
             </div>
 
-            <motion.a
-                href="https://www.utoronto.ca/"
-                target="_blank"
-                rel="noopener noreferrer"
-                animate={{ rotate: [360, 0] }}
-                transition={{ duration: 100, repeat: Infinity }}
-                className="w-32 h-32 sm:w-40 sm:h-40 rounded-full mt-6 sm:mt-0 sm:ml-6 sm:ml-auto"
-            >
-                <motion.img
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2, duration: 0.6, ease: "easeOut" }}
-                    src={intro.image}
-                />
-            </motion.a>
+            <div className="w-full sm:w-1/3 flex justify-center items-center sm:pr-8">
+                <motion.a
+                    href="https://www.utoronto.ca/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    animate={{ rotate: [360, 0] }}
+                    transition={{ duration: 100, repeat: Infinity }}
+                    className="w-32 h-32 sm:w-40 sm:h-40 rounded-full mt-6 sm:mt-0 sm:ml-6 sm:ml-auto"
+                >
+                    <motion.img
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.2, duration: 0.6, ease: "easeOut" }}
+                        src={intro.image}
+                    />
+                </motion.a>
+            </div>
 
         </motion.section>
     );
