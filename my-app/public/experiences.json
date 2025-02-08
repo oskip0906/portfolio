@@ -1,10 +1,10 @@
 {
   "experiences": [
     {
-      "title": "Research Scientist",
+      "title": "Research Intern",
       "company": "Vector Institute",
-      "date": "Jan 2024 - Present",
-      "description": "Engineering a flexible 3D rendering program for psycholinguistics and using it to compare human and large language model behaviors on spatial reasoning under the CompLING Lab at the University of Waterloo."
+      "date": "Jan 2025 - Present",
+      "description": "Engineering a flexible 3D rendering program to generate datasets for training and evaluating vision language models on spatial reasoning."
     },
     {
       "title": "Machine Learning Researcher",
