@@ -3,8 +3,8 @@
     {
       "name": "FORG3D Toolkit",
       "date": "Jan 2025 - Apr 2025",
-      "description": "A web app that allows users to create and share 3D models using a simple drag-and-drop interface, with features like model manipulation, export options, and a community gallery for sharing creations.",
-      "link": "A customizable 3D rendering tool that generates spatial reasoning data by rendering object pairs with configurable positions, orientations, and camera settings, optionally enhanced with AI-generated backgrounds (with a Github repository and research paper).",
+      "description": "A customizable 3D rendering tool that generates spatial reasoning data by rendering object pairs with configurable positions, orientations, and camera settings, optionally enhanced with AI-generated backgrounds (with a Github repository and research paper).",
+      "link": "https://github.com/compling-wat/FORG3D",
       "image": "https://i.ibb.co/TMR1pNJm/Screenshot-2025-04-12-145810.png"
     },
     {
