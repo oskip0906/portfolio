@@ -7,6 +7,8 @@ interface Experience {
   company: string;
   date: string;
   description: string;
+  image: string;
+  link: string;
 }
 
 interface ExperienceCardProps {
@@ -24,7 +26,7 @@ const FlippableExperienceCard: React.FC<ExperienceCardProps> = ({ experience }) 
             onClick={handleFlip}
         >
             <motion.div
-              className="absolute inset-0 rounded-lg shadow-md p-4 border border-blue-300 border-opacity-50"
+              className="absolute inset-0 rounded-lg shadow-md p-4 border border-blue-300 border-opacity-50 flex items-center"
               style={{
                 transformStyle: "preserve-3d",
                 backfaceVisibility: "hidden",
@@ -35,19 +37,37 @@ const FlippableExperienceCard: React.FC<ExperienceCardProps> = ({ experience }) 
               initial={{ rotateY: 180 }}
               transition={{ duration: 0.6, ease: "easeOut" }}
             >
-              <h2 className="text-2xl sm:text-3xl font-semibold text-gray-100 mb-2">
+              <div className="flex-1">
+                <h2 className="text-2xl sm:text-3xl font-semibold text-gray-100 mb-2">
                   {experience.company}
-              </h2>
+                </h2>
 
-              <p className="text-lg sm:text-xl text-gray-200 font-medium mb-2">
+                <p className="text-lg sm:text-xl text-gray-200 font-medium mb-2">
                   {experience.title}
-              </p>
+                </p>
 
-              <p className="italic text-sm sm:text-base text-gray-200 font-bold mb-2">
+                <p className="italic text-sm sm:text-base text-gray-200 font-bold mb-2">
                   {experience.date}
-              </p>
+                </p>
 
-              <span className="text-xs text-blue-200">Click to flip!</span>
+                <span className="text-xs text-blue-200">Click to flip!</span>
+              </div>
+
+                <div className="flex-shrink-0 mr-2">
+                  <a href={experience.link} target="_blank" rel="noopener noreferrer">
+                    <motion.img
+                      src={experience.image}
+                      alt={experience.title}
+                      className="h-24 w-24 object-cover rounded-full"
+                      style={{ 
+                        filter: "brightness(0.9)",
+                        boxShadow: "0 0 10px rgba(216, 18, 206, 0.8)" 
+                      }}
+                      whileHover={{ filter: "brightness(1.1)" }}
+                      onClick={(e) => e.stopPropagation()}
+                    />
+                  </a>
+                </div>
             </motion.div>
 
             <motion.div
@@ -118,7 +138,7 @@ export default function Experiences() {
               className="border-t-2 border-gray-700 w-full mb-10"
           />
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
             {experiences.map((experience, index) => (
               <FlippableExperienceCard key={index} experience={experience} />
             ))}

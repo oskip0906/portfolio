@@ -119,8 +119,11 @@ export default function Projects() {
                                         alt={project.name} 
                                         animate={inView ? { opacity: 1, y: 0 } : {}}
                                         className="rounded-lg max-w-full max-h-48 object-cover mx-auto" 
-                                        style={{ filter: "grayscale(75%)" }}
-                                        whileHover={{ filter: "grayscale(0%)"}}
+                                        style={{ 
+                                            filter: "grayscale(50%)",
+                                            boxShadow: "0 0 10px rgba(214, 190, 213, 0.8)" 
+                                        }}
+                                        whileHover={{ filter: "grayscale(0%)", scale: 1.01 }}
                                     />
                                 </motion.a>
                             </div>

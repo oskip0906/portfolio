@@ -35,3 +35,27 @@ body {
     padding: 6px;
   }
 }
+
+.snow {
+  position: absolute;
+  width: 2px;
+  height: 10px;
+  border-radius: 50%;
+  background: linear-gradient(30deg, #2345a3, #2563eb, #60a5fa, #93c5fd, #dde6ec);
+  box-shadow: 0 0 5px rgba(206, 196, 196, 0.8);
+  animation: falling linear infinite;
+}
+
+@keyframes falling {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(500px);
+    opacity: 0;
+  }
+}

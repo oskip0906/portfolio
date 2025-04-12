@@ -1,16 +1,25 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
 import Draggable from "react-draggable";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function NavBar() {
-
   const [menuOpen, setMenuOpen] = useState(false);
   const dragRef = useRef<HTMLDivElement>(null as any);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (menuOpen) {
+      timer = setTimeout(() => {
+        setMenuOpen(false);
+      }, 1500);
+    }
+    return () => clearTimeout(timer);
+  }, [menuOpen]);
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
@@ -32,7 +41,6 @@ export default function NavBar() {
         animate={{ opacity: 1 }}
         transition={{ duration: 2 }}
       >
-
         <button
           onClick={() => setMenuOpen(!menuOpen)}
           onTouchStart={() => setMenuOpen(!menuOpen)}
@@ -43,48 +51,58 @@ export default function NavBar() {
           ☰
         </button>
 
-        {menuOpen && (
-          <div 
-            className="absolute top-0 left-0 w-64 h-64 rounded-full bg-blue-900 text-white shadow-lg flex flex-col items-center justify-center space-y-6 p-4"
-            style={{ boxShadow: "0 0 20px rgba(108, 108, 196, 0.5)" }}
-          >
-            <button
-              onClick={() => scrollToSection("introduction")}
-              onTouchStart={() => scrollToSection("introduction")}
-              className="hover:text-gray-400 transition"
+        <AnimatePresence>
+          {menuOpen && (
+            <motion.div
+              className="absolute top-0 left-0 w-64 h-64 rounded-full bg-blue-900 text-white shadow-lg flex flex-col items-center justify-center space-y-6 p-4"
+              style={{ boxShadow: "0 0 20px rgba(108, 108, 196, 0.5)" }}
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0, opacity: 0 }}
+              transition={{ duration: 0.3 }}
             >
-              Introduction
-            </button>
-            <button
-              onClick={() => scrollToSection("experiences")}
-              onTouchStart={() => scrollToSection("experiences")}
-              className="hover:text-gray-400 transition"
-            >
-              Experiences
-            </button>
-            <button
-              onClick={() => scrollToSection("projects")}
-              onTouchStart={() => scrollToSection("projects")}
-              className="hover:text-gray-400 transition"
-            >
-              Projects
-            </button>
-            <button
-              onClick={() => scrollToSection("interests")}
-              onTouchStart={() => scrollToSection("interests")}
-              className="hover:text-gray-400 transition"
-            >
-              Interests
-            </button>
-            <button
-              onClick={() => scrollToSection("contact")}
-              onTouchStart={() => scrollToSection("contact")}
-              className="hover:text-gray-400 transition"
-            >
-              Contact
-            </button>
-          </div>
-        )}
+              <button
+                onClick={() => scrollToSection("introduction")}
+                onTouchStart={() => scrollToSection("introduction")}
+                className="hover:text-gray-400 transition"
+              >
+                Introduction
+              </button>
+
+              <button
+                onClick={() => scrollToSection("experiences")}
+                onTouchStart={() => scrollToSection("experiences")}
+                className="hover:text-gray-400 transition"
+              >
+                Experiences
+              </button>
+
+              <button
+                onClick={() => scrollToSection("projects")}
+                onTouchStart={() => scrollToSection("projects")}
+                className="hover:text-gray-400 transition"
+              >
+                Projects
+              </button>
+
+              <button
+                onClick={() => scrollToSection("interests")}
+                onTouchStart={() => scrollToSection("interests")}
+                className="hover:text-gray-400 transition"
+              >
+                Interests
+              </button>
+
+              <button
+                onClick={() => scrollToSection("contact")}
+                onTouchStart={() => scrollToSection("contact")}
+                className="hover:text-gray-400 transition"
+              >
+                Contact
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.div>
 
     </Draggable>
