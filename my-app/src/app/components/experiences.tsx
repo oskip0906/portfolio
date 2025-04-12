@@ -58,7 +58,7 @@ const FlippableExperienceCard: React.FC<ExperienceCardProps> = ({ experience }) 
                     <motion.img
                       src={experience.image}
                       alt={experience.title}
-                      className="h-24 w-24 object-cover rounded-full"
+                      className="h-16 w-16 object-cover rounded-full"
                       style={{ 
                         filter: "brightness(0.9)",
                         boxShadow: "0 0 10px rgba(216, 18, 206, 0.8)" 

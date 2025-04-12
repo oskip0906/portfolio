@@ -11,16 +11,15 @@ export default function Home() {
     <div className="flex flex-col items-center justify-center min-h-screen w-full p-4">
 
       <div className="fixed top-0 left-0 w-full h-[200vh] overflow-hidden z-0 pointer-events-none">
-        {Array.from({ length: 25 }).map((_, i) => (
+        {Array.from({ length: 20 }).map((_, i) => (
           <div
-            key={i}
-            className="snow"
-            style={{
-              top: `${Math.random() * 25}vh`,
-              left: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 5}s`,
-              animationDuration: `${Math.random() * 10 + 5}s`,
-            }}            
+        key={i}
+        className="snow"
+        style={{
+          top: `${Math.random() * 25}vh`,
+          left: `${Math.random() * 100}%`,
+          animationDuration: `${Math.random() * 10 + 5}s`,
+        }}            
           />
         ))}
       </div>

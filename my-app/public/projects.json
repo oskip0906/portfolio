@@ -1,6 +1,20 @@
 {
   "projects": [
     {
+      "name": "FORG3D Toolkit",
+      "date": "Jan 2025 - Apr 2025",
+      "description": "A web app that allows users to create and share 3D models using a simple drag-and-drop interface, with features like model manipulation, export options, and a community gallery for sharing creations.",
+      "link": "A customizable 3D rendering tool that generates spatial reasoning data by rendering object pairs with configurable positions, orientations, and camera settings, optionally enhanced with AI-generated backgrounds (with a Github repository and research paper).",
+      "image": "https://i.ibb.co/TMR1pNJm/Screenshot-2025-04-12-145810.png"
+    },
+    {
+      "name": "PseudoGrader",
+      "date": "Mar 2025 - Mar 2025",
+      "description": "A website that validates and tests pseudocode from text, images, or PDFs, using AI-generated logic checks, code translation, and test case evaluation, streamlining feedback for students and educators.",
+      "link":"https://devpost.com/software/pseudograder",
+      "image": "https://i.ibb.co/NnZjGXP2/Screenshot-2025-04-12-145001.png"
+    },
+    {
       "name": "H5N1 Social Media Analysis",
       "date": "Jun 2024 - Dec 2024",
       "description": "A comprehensive analysis of social media posts related to H5N1 outbreaks using posts and comments from Reddit communities for various states in the US from early 2022 to mid 2024 (with a Github repository and research paper).",
@@ -25,7 +39,7 @@
       "name": "WelcoMate (UofT W3B Davinci Competition Project)",
       "date": "Oct 2024",
       "description": "A website offering an all-in-one hotel PMS and CRM system with an AI-powered trip planner, where each guest can check-in, book services, and get personalized trip plans.",
-      "link": "https://github.com/teddio496/WelcoMate",
+      "link": "https://github.com/oskip0906/WelcoMate",
       "image": "https://i.ibb.co/JyLvnWx/Screenshot-2025-01-14-at-12-31-25-AM.png"
     },
     {

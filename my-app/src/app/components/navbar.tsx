@@ -36,7 +36,7 @@ export default function NavBar() {
 
       <motion.div
         ref={dragRef}
-        className="fixed top-2 right-1/4 z-[9999]"
+        className="fixed top-4 right-1/4 z-[9999]"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 2 }}
@@ -58,8 +58,8 @@ export default function NavBar() {
               style={{ boxShadow: "0 0 20px rgba(108, 108, 196, 0.5)" }}
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0, opacity: 0 }}
-              transition={{ duration: 0.3 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
             >
               <button
                 onClick={() => scrollToSection("introduction")}
