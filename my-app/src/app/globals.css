@@ -36,6 +36,21 @@ body {
   }
 }
 
+.swiper-pagination {
+  margin-top: 1rem !important;
+  position: relative !important;
+}
+
+.swiper-pagination-bullet {
+  width: 15px !important;
+  height: 15px !important;
+  background-color: #6b7280 !important;
+}
+
+.swiper-pagination-bullet-active {
+  background-color: #ffffff !important;
+}
+
 .snow {
   position: absolute;
   width: 3px;

@@ -76,7 +76,7 @@ export default function MusicPlayer() {
 
         {/* Player Section */}
         <motion.div
-          className="bg-white/10 backdrop-blur-lg rounded-xl p-3 border border-white/20"
+          className="bg-white/10 backdrop-blur-lg rounded-xl p-1 border border-white/20"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.5 }}

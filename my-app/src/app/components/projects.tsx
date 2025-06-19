@@ -72,6 +72,13 @@ export default function Projects() {
             clickable: true,
             dynamicBullets: false,
           }}
+          coverflowEffect={{
+            rotate: 30,
+            stretch: 0,
+            depth: 100,
+            modifier: 2,
+            slideShadows: false,
+          }}
           className="w-full py-12"
         >
           {projects.map((project, index) => (

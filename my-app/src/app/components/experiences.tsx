@@ -25,7 +25,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, index }) =>
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.1, duration: 0.6 }}
-      className="group relative h-96 cursor-pointer"
+      className="group relative h-80 cursor-pointer"
       style={{ perspective: "1000px" }}
       onClick={() => setIsFlipped(!isFlipped)}
     >
@@ -40,6 +40,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, index }) =>
           className="absolute inset-0 w-full h-full"
           style={{
             backfaceVisibility: "hidden",
+            transform: "translateZ(0)",
           }}
         >
           <div className="relative w-full h-full backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-2xl p-6 shadow-2xl overflow-hidden">
@@ -95,13 +96,13 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, index }) =>
           className="absolute inset-0 w-full h-full"
           style={{
             backfaceVisibility: "hidden",
-            transform: "rotateY(180deg)",
+            transform: "rotateY(180deg) translateZ(0)",
           }}
         >
           <div className="relative w-full h-full backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-2xl p-6 shadow-2xl">
             <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-pink-500/10 to-cyan-500/10 rounded-2xl"></div>
-            <div className="relative z-10 h-full">
-              <p className="text-gray-200 leading-relaxed text-center h-full overflow-y-auto">
+            <div className="relative z-10 h-full flex items-center">
+              <p className="text-gray-200 leading-relaxed text-center max-h-full overflow-y-auto">
                 {experience.description}
               </p>
             </div>

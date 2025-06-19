@@ -53,7 +53,7 @@ export default function Introduction() {
                 transition={{ delay: 0.3, duration: 0.8 }}
                 className="mb-6"
               >
-                <h1 className="text-5xl font-bold bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-4 leading-tight pb-2">
+                <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-4 leading-tight pb-2">
                   Hello, I'm {intro.name}!
                 </h1>
                 <div className="h-1 w-24 bg-gradient-to-r from-cyan-400 to-purple-400 rounded-full mx-auto lg:mx-0"></div>
