@@ -83,7 +83,7 @@ export default function Contact() {
         </h2>
         <div className="w-24 h-1 bg-gradient-to-r from-cyan-400 to-purple-400 rounded-full mx-auto mb-8"></div>
         <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-          Find me on these platforms and let's start a conversation
+          Find me on these platforms and let's connect
         </p>
       </motion.div>
 

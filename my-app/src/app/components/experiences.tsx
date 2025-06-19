@@ -25,83 +25,86 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, index }) =>
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.1, duration: 0.6 }}
-      className="group relative h-80 cursor-pointer"
+      className="group relative h-96 cursor-pointer"
       style={{ perspective: "1000px" }}
       onClick={() => setIsFlipped(!isFlipped)}
     >
-      {/* Front of card */}
       <motion.div
-        className="absolute inset-0 w-full h-full rounded-2xl"
-        style={{
-          transformStyle: "preserve-3d",
-          backfaceVisibility: "hidden",
-        }}
+        className="relative w-full h-full"
+        style={{ transformStyle: "preserve-3d" }}
         animate={{ rotateY: isFlipped ? 180 : 0 }}
         transition={{ duration: 0.8, ease: "easeInOut" }}
       >
-        <div className="relative w-full h-full backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-2xl p-6 shadow-2xl overflow-hidden">
-          {/* Background gradient */}
-          <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-purple-500/10 to-pink-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+        {/* Front of card */}
+        <div
+          className="absolute inset-0 w-full h-full"
+          style={{
+            backfaceVisibility: "hidden",
+          }}
+        >
+          <div className="relative w-full h-full backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-2xl p-6 shadow-2xl overflow-hidden">
 
-          {/* Content */}
-          <div className="relative z-10 flex flex-col h-full">
-            <div className="flex items-start justify-between mb-4">
-              <div className="flex-1">
-                <h3 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent mb-2">
-                  {experience.company}
-                </h3>
-                <p className="text-lg text-gray-200 font-medium mb-2">{experience.title}</p>
-                <p className="text-sm text-gray-400 font-medium">{experience.date}</p>
+            <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-purple-500/10 to-pink-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+            {/* Content */}
+            <div className="relative z-10 flex flex-col h-full">
+              <div className="flex items-start justify-between mb-4">
+                <div className="flex-1">
+                  <h3 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent mb-2">
+                    {experience.company}
+                  </h3>
+                  <p className="text-base md:text-lg text-gray-200 font-medium mb-2">{experience.title}</p>
+                  <p className="text-sm text-gray-400 font-medium">{experience.date}</p>
+                </div>
+
+                <a
+                  href={experience.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  className="flex-shrink-0 ml-4"
+                >
+                  <motion.div
+                    whileHover={{ scale: 1.1, rotate: 5 }}
+                    className="w-16 h-16 rounded-full overflow-hidden border-2 border-white/20 shadow-lg"
+                  >
+                    <img
+                      src={experience.image || "/placeholder.svg"}
+                      alt={experience.company}
+                      className="w-full h-full object-cover"
+                    />
+                  </motion.div>
+                </a>
               </div>
 
-              <a
-                href={experience.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={(e) => e.stopPropagation()}
-                className="flex-shrink-0 ml-4"
-              >
+              <div className="flex-1 flex items-end">
                 <motion.div
-                  whileHover={{ scale: 1.1, rotate: 5 }}
-                  className="w-16 h-16 rounded-full overflow-hidden border-2 border-white/20 shadow-lg"
+                  whileHover={{ scale: 1.05 }}
+                  className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 rounded-full border border-white/20 text-sm text-gray-300"
                 >
-                  <img
-                    src={experience.image || "/placeholder.svg"}
-                    alt={experience.company}
-                    className="w-full h-full object-cover"
-                  />
+                  <span className="mr-2">✨</span>
+                  Click to flip!
                 </motion.div>
-              </a>
-            </div>
-
-            <div className="flex-1 flex items-end">
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 rounded-full border border-white/20 text-sm text-gray-300"
-              >
-                <span className="mr-2">✨</span>
-                Click to flip!
-              </motion.div>
+              </div>
             </div>
           </div>
         </div>
-      </motion.div>
 
-      {/* Back of card */}
-      <motion.div
-        className="absolute inset-0 w-full h-full rounded-2xl"
-        style={{
-          transformStyle: "preserve-3d",
-          backfaceVisibility: "hidden",
-          transform: "rotateY(180deg)",
-        }}
-        animate={{ rotateY: isFlipped ? 0 : -180 }}
-        transition={{ duration: 0.8, ease: "easeInOut" }}
-      >
-        <div className="relative w-full h-full backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-2xl p-6 shadow-2xl">
-          <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-pink-500/10 to-cyan-500/10 rounded-2xl"></div>
-          <div className="relative z-10 h-full flex items-center">
-            <p className="text-gray-200 leading-relaxed text-center overflow-y-auto">{experience.description}</p>
+        {/* Back of card */}
+        <div
+          className="absolute inset-0 w-full h-full"
+          style={{
+            backfaceVisibility: "hidden",
+            transform: "rotateY(180deg)",
+          }}
+        >
+          <div className="relative w-full h-full backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-2xl p-6 shadow-2xl">
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-pink-500/10 to-cyan-500/10 rounded-2xl"></div>
+            <div className="relative z-10 h-full">
+              <p className="text-gray-200 leading-relaxed text-center h-full overflow-y-auto">
+                {experience.description}
+              </p>
+            </div>
           </div>
         </div>
       </motion.div>

@@ -276,7 +276,7 @@ export default function Globe() {
           </p>
         </motion.div>
 
-        <div className={`w-[98%] md:w-[75%] h-[90vh] md:h-[80vh] rounded-2xl overflow-hidden bg-gradient-to-r from-red-500/50 via-yellow-500/50 via-green-500/50 via-blue-500/50 via-indigo-500/50 to-purple-500/50 p-1 relative transition-all duration-1000 ${isGlobeActive ? 'opacity-100 animate-rainbow-glow' : 'opacity-50 pointer-events-none'}`}>
+        <div className={`w-[98%] md:w-[75%] h-[80vh] rounded-2xl overflow-hidden bg-gradient-to-r from-red-500/50 via-yellow-500/50 via-green-500/50 via-blue-500/50 via-indigo-500/50 to-purple-500/50 p-1 relative transition-all duration-1000 ${isGlobeActive ? 'opacity-100 animate-rainbow-glow' : 'opacity-50 pointer-events-none'}`}>
           <div ref={mapContainer} className="w-full h-full rounded-2xl bg-black" />
 
           {/* Map Style Selector */}
