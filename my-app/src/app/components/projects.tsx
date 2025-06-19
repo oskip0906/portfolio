@@ -1,137 +1,148 @@
-"use client";
-import React, { useEffect, useState, useRef } from "react";
-import { motion, useInView } from "framer-motion";
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
+"use client"
+import { useEffect, useState, useRef } from "react"
+import { motion, useInView } from "framer-motion"
+import { Swiper, SwiperSlide } from "swiper/react"
+import { Navigation, Pagination, EffectCoverflow } from "swiper/modules"
+import { ExternalLink, Calendar } from "lucide-react"
+import "swiper/css"
+import "swiper/css/navigation"
+import "swiper/css/pagination"
+import "swiper/css/effect-coverflow"
 
 interface Project {
-    name: string;
-    date: string;
-    description: string;
-    link: string;
-    image: string;
+  name: string
+  date: string
+  description: string
+  link: string
+  image: string
 }
 
 export default function Projects() {
-    const [projects, setProjects] = useState<Project[]>([]);
-    const ref = useRef(null);
-    const inView = useInView(ref);
+  const [projects, setProjects] = useState<Project[]>([])
+  const ref = useRef(null)
+  const inView = useInView(ref, { once: true })
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch("/projects.json");
-                const data = await response.json();
-                setProjects(data.projects);
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            }
-        };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("/projects.json")
+        const data = await response.json()
+        setProjects(data.projects)
+      } catch (error) {
+        console.error("Error fetching data:", error)
+      }
+    }
 
-        fetchData();
-    }, []);
+    fetchData()
+  }, [])
 
-    return (
-        <motion.section
-            ref={ref}
-            initial={{ opacity: 0 }}
-            animate={inView ? { opacity: 1 } : {}}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="flex flex-col items-center rounded-lg w-full h-full"
-            id="projects"
+  return (
+    <section ref={ref} id="projects" className="w-full max-w-screen-xl mx-auto px-4 mb-12">
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        animate={inView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.8 }}
+        className="text-center mb-16"
+      >
+        <h2 className="text-5xl font-bold bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-4 mt-6">
+          Projects
+        </h2>
+        <div className="w-24 h-1 bg-gradient-to-r from-cyan-400 to-purple-400 rounded-full mx-auto mb-8"></div>
+        <p className="text-xl text-gray-300 max-w-2xl mx-auto">Showcasing my creative work and technical expertise</p>
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={inView ? { opacity: 1, scale: 1 } : {}}
+        transition={{ delay: 0.3, duration: 0.8 }}
+      >
+        <Swiper
+          modules={[Navigation, Pagination, EffectCoverflow]}
+          effect="coverflow"
+          grabCursor={true}
+          centeredSlides={true}
+          slidesPerView="auto"
+          slideToClickedSlide={true}
+          initialSlide={1}
+          coverflowEffect={{
+            rotate: 50,
+            stretch: 0,
+            depth: 100,
+            modifier: 1,
+            slideShadows: true,
+          }}
+          navigation={{
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+          }}
+          pagination={{
+            clickable: true,
+            dynamicBullets: true,
+          }}
+          className="w-full py-12"
         >
+          {projects.map((project, index) => (
+            <SwiperSlide key={index} className="max-w-md">
+              <motion.div
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1, duration: 0.6 }}
+                className="group relative backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-3xl overflow-hidden shadow-2xl hover:shadow-cyan-500/25 transition-all duration-500"
+              >
+                {/* Project Image */}
+                <div className="relative h-64 overflow-hidden">
+                  <motion.img
+                    src={project.image}
+                    alt={project.name}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                    whileHover={{ scale: 1.05 }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
 
-            <motion.h1
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={inView ? { opacity: 1, scale: 1 } : {}}
-                transition={{ delay: 0.2, duration: 0.6, ease: "easeOut" }}
-                className="mx-auto text-3xl sm:text-4xl font-bold text-blue-200 mb-10 mt-10"
-            >
-                Projects
-            </motion.h1>
+                  {/* Overlay content */}
+                  <div className="absolute top-4 right-4">
+                    <motion.a
+                      href={project.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      whileHover={{ scale: 1.1, rotate: 5 }}
+                      className="flex items-center justify-center w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full border border-white/30 text-white hover:bg-white/30 transition-all duration-300"
+                    >
+                      <ExternalLink size={16} />
+                    </motion.a>
+                  </div>
+                </div>
 
-            <motion.hr
-                initial={{ width: 0 }}
-                animate={inView ? { width: "100%" } : {}}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-                className="border-t-2 border-gray-700 w-full mb-10"
-            />
-            
-            <Swiper
-                modules={[Navigation, Pagination]}
-                slidesPerView={1}
-                spaceBetween={100} 
-                navigation={{ enabled: true }}
-                pagination={{
-                    clickable: true,
-                    bulletClass: 'pagination-button'
-                }}
-                speed={500}
-                className="w-full relative mx-auto" 
-            >
+                {/* Project Info */}
+                <div className="p-6">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Calendar size={16} className="text-gray-400" />
+                    <span className="text-sm text-gray-400 font-medium">{project.date}</span>
+                  </div>
 
-                {projects.map((project, index) => (
-                    <SwiperSlide key={index}>
-                        <motion.div
-                            transition={{ delay: index * 0.2, duration: 0.6, ease: "easeOut" }}
-                            className="mb-10 text-center"
-                        >
-                            <motion.h2
-                                initial={{ opacity: 0, scale: 0.95 }}
-                                animate={inView ? { opacity: 1, scale: 1 } : {}}
-                                transition={{ delay: 0.2, duration: 0.6, ease: "easeOut" }}
-                                className="text-xl sm:text-3xl font-semibold text-gray-100 mb-4"
-                            >
-                                {project.name}
-                            </motion.h2>
+                  <h3 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent mb-4">
+                    {project.name}
+                  </h3>
 
-                            <div className="flex flex-col justify-between items-center">
-                                <div className="flex-1">
-                                    <motion.p
-                                        initial={{ opacity: 0, x: -30 }}
-                                        animate={inView ? { opacity: 1, x: 0 } : {}}
-                                        transition={{ delay: 0.4, duration: 0.6, ease: "easeOut" }}
-                                        className="text-lg sm:text-xl text-gray-200 font-medium mb-4"
-                                    >
-                                        {project.date}
-                                    </motion.p>
-                                    <motion.p
-                                        initial={{ opacity: 0, y: 20 }}
-                                        animate={inView ? { opacity: 1, y: 0 } : {}}
-                                        transition={{ delay: 0.6, duration: 0.6, ease: "easeOut" }}
-                                        className="text-sm sm:text-base text-gray-300 leading-relaxed mb-4 w-5/6 mx-auto"
-                                    >
-                                        {project.description}
-                                    </motion.p>
-                                </div>
-                                
-                                <motion.a 
-                                    href={project.link} 
-                                    className="w-3/4 sm:w-2/3 md:w-1/2 lg:w-1/3 mb-4 sm:mb-8 mt-4 rounded-lg mx-auto" 
-                                    target="_blank" 
-                                    rel="noopener noreferrer"
-                                >
-                                    <motion.img 
-                                        src={project.image} 
-                                        alt={project.name} 
-                                        animate={inView ? { opacity: 1, y: 0 } : {}}
-                                        className="rounded-lg max-w-full max-h-48 object-cover mx-auto" 
-                                        style={{ 
-                                            filter: "grayscale(50%)",
-                                            boxShadow: "0 0 10px rgba(214, 190, 213, 0.8)" 
-                                        }}
-                                        whileHover={{ filter: "grayscale(0%)", scale: 1.01 }}
-                                    />
-                                </motion.a>
-                            </div>
+                  <p className="text-gray-300 leading-relaxed mb-6">{project.description}</p>
 
-                        </motion.div>
-                    </SwiperSlide>
-                ))}
-            </Swiper>
-        </motion.section>
-    );
+                  <motion.a
+                    href={project.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-full text-white font-medium shadow-lg hover:shadow-cyan-500/50 transition-all duration-300"
+                  >
+                    <span>View Project</span>
+                    <ExternalLink size={16} />
+                  </motion.a>
+                </div>
+              </motion.div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </motion.div>
+    </section>
+  )
 }

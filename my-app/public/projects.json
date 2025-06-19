@@ -1,6 +1,13 @@
 {
   "projects": [
     {
+      "name": "Equicourt",
+      "date": "June 2025 - June 2025",
+      "description": "An AI-powered micro-litigation platform that resolves petty disputes by analyzing evidence from text, PDFs, images, and live speech via speech recognition, then applies Canadian law through a RAG-enabled multi-LLM system to deliver grounded verdicts.",
+      "link": "https://github.com/oskip0906/Equicourt",
+      "image": "https://camo.githubusercontent.com/15594d117ed70c8e6d630dcb6a1c1c4bde45139c2b16f8924bd70f2a85dbd151/68747470733a2f2f643131327936393861646975327a2e636c6f756466726f6e742e6e65742f70686f746f732f70726f64756374696f6e2f736f6674776172655f70686f746f732f3030332f3437362f3139352f64617461732f6f726967696e616c2e706e67"
+    },
+    {
       "name": "FORG3D Toolkit",
       "date": "Jan 2025 - Apr 2025",
       "description": "A customizable 3D rendering tool that generates spatial reasoning data by rendering object pairs with configurable positions, orientations, and camera settings, optionally enhanced with AI-generated backgrounds (with a Github repository and research paper).",
@@ -36,7 +43,7 @@
       "image": "https://i.ibb.co/25rJtwD/Screenshot-2025-01-14-at-12-22-15-AM.png"
     },
     {
-      "name": "WelcoMate (UofT W3B Davinci Competition Project)",
+      "name": "WelcoMate (UofT W3B Davinci Competition B2B 1st Place Winner)",
       "date": "Oct 2024",
       "description": "A website offering an all-in-one hotel PMS and CRM system with an AI-powered trip planner, where each guest can check-in, book services, and get personalized trip plans.",
       "link": "https://github.com/oskip0906/WelcoMate",
@@ -64,7 +71,7 @@
       "image": "https://i.ibb.co/YX74wcr/Screenshot-2025-01-14-at-12-49-07-AM.png"
     },
     {
-      "name": "MealSimple (Uoft EWB Hackathon Project)",
+      "name": "MealSimple (Uoft EWB Hackathon 1st Place Winner)",
       "date": "May 2024",
       "description": "A website that uses the Google Maps API to locate food banks, a recipes API to filter recipes by ingredients, and the ChatGPT API to generate custom recipes based on user preferences.",
       "link": "https://patzhang0214.github.io/mealsimple-Moral-Code-Hackathon/",

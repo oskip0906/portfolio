@@ -16,7 +16,7 @@ export default function NavBar() {
     if (menuOpen) {
       timer = setTimeout(() => {
         setMenuOpen(false);
-      }, 1500);
+      }, 2000);
     }
     return () => clearTimeout(timer);
   }, [menuOpen]);
@@ -33,7 +33,6 @@ export default function NavBar() {
 
   return (
     <Draggable nodeRef={dragRef}>
-
       <motion.div
         ref={dragRef}
         className="fixed top-4 right-1/4 z-[9999]"
@@ -44,67 +43,77 @@ export default function NavBar() {
         <button
           onClick={() => setMenuOpen(!menuOpen)}
           onTouchStart={() => setMenuOpen(!menuOpen)}
-          className="w-16 h-16 rounded-full bg-blue-800 text-white text-2xl flex items-center justify-center shadow-lg focus:outline-none transition-transform hover:scale-110"
+          className="w-20 h-20 rounded-full bg-gradient-to-br from-purple-600/50 to-blue-500/50 text-white text-3xl flex items-center justify-center shadow-lg focus:outline-none transition-all duration-300 ease-in-out hover:scale-110 hover:shadow-xl"
           aria-label="Toggle Menu"
-          style={{ boxShadow: "0 0 20px rgba(65, 65, 194, 0.5)" }}
+          style={{ boxShadow: "0 4px 15px rgba(0, 0, 0, 0.2)" }}
         >
-          ☰
+          {menuOpen ? "✕" : "☰"}
         </button>
 
         <AnimatePresence>
           {menuOpen && (
             <motion.div
-              className="absolute top-0 left-0 w-64 h-64 rounded-full bg-blue-900 text-white shadow-lg flex flex-col items-center justify-center space-y-6 p-4"
-              style={{ boxShadow: "0 0 20px rgba(108, 108, 196, 0.5)" }}
-              initial={{ scale: 0, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.5 }}
+              className="absolute top-24 left-1/2 transform -translate-x-1/2 mt-2 w-60 rounded-lg bg-sky-100/20 dark:bg-sky-800/20 text-gray-800 dark:text-white shadow-xl flex flex-col items-start justify-center space-y-1 p-3 backdrop-blur-sm"
+              style={{
+                boxShadow:
+                  "0 10px 25px rgba(0, 0, 0, 0.1), 0 5px 10px rgba(0, 0, 0, 0.05)",
+              }}
+              initial={{ scale: 0.9, opacity: 0, y: -10 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: -10 }}
+              transition={{ duration: 0.1, ease: "easeOut" }}
             >
               <button
-                onClick={() => scrollToSection("introduction")}
-                onTouchStart={() => scrollToSection("introduction")}
-                className="hover:text-gray-400 transition"
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                onTouchStart={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                className="w-full text-left px-4 py-2.5 rounded-md hover:scale-110 transition-transform flex items-center"
               >
-                Introduction
+                <span className="mr-2">🏠</span> Introduction
               </button>
 
               <button
                 onClick={() => scrollToSection("experiences")}
                 onTouchStart={() => scrollToSection("experiences")}
-                className="hover:text-gray-400 transition"
+                className="w-full text-left px-4 py-2.5 rounded-md hover:scale-110 transition-transform flex items-center"
               >
-                Experiences
+                <span className="mr-2">💼</span> Experiences
               </button>
 
               <button
                 onClick={() => scrollToSection("projects")}
                 onTouchStart={() => scrollToSection("projects")}
-                className="hover:text-gray-400 transition"
+                className="w-full text-left px-4 py-2.5 rounded-md hover:scale-110 transition-transform flex items-center"
               >
-                Projects
+                <span className="mr-2">💡</span> Projects
               </button>
 
               <button
                 onClick={() => scrollToSection("interests")}
                 onTouchStart={() => scrollToSection("interests")}
-                className="hover:text-gray-400 transition"
+                className="w-full text-left px-4 py-2.5 rounded-md hover:scale-110 transition-transform flex items-center"
               >
-                Interests
+                <span className="mr-2">🎨</span> Interests
+              </button>
+
+              <button
+                onClick={() => scrollToSection("globe")}
+                onTouchStart={() => scrollToSection("globe")}
+                className="w-full text-left px-4 py-2.5 rounded-md hover:scale-110 transition-transform flex items-center"
+              >
+                <span className="mr-2">🌍</span> Globe
               </button>
 
               <button
                 onClick={() => scrollToSection("contact")}
                 onTouchStart={() => scrollToSection("contact")}
-                className="hover:text-gray-400 transition"
+                className="w-full text-left px-4 py-2.5 rounded-md hover:scale-110 transition-transform flex items-center"
               >
-                Contact
+                <span className="mr-2">✉️</span> Contact
               </button>
             </motion.div>
           )}
         </AnimatePresence>
       </motion.div>
-
     </Draggable>
   );
 }

@@ -1,0 +1,129 @@
+[
+  {
+    "id": 1,
+    "name": "Toronto",
+    "coordinates": [-79.3832, 43.6532],
+    "photos": [
+      "/toronto/IMG_0582.jpg",
+      "/toronto/IMG_1974.jpg",
+      "/toronto/IMG_2324.jpg",
+      "/toronto/IMG_2365.jpg",
+      "/toronto/IMG_2573.jpg",
+      "/toronto/IMG_2601.jpg",
+      "/toronto/IMG_2699.JPG",
+      "/toronto/IMG_2772.jpg",
+      "/toronto/IMG_3143.jpg",
+      "/toronto/IMG_4078.jpg",
+      "/toronto/IMG_4589.jpg",
+      "/toronto/IMG_4632.jpg"
+    ]
+  },
+  {
+    "id": 2,
+    "name": "New York",
+    "coordinates": [-74.0060, 40.7128],
+    "photos": [
+      "/new-york/IMG_2124.jpg",
+      "/new-york/IMG_4209.jpg",
+      "/new-york/IMG_4230.jpg",
+      "/new-york/IMG_4266.jpg",
+      "/new-york/IMG_4271.jpg",
+      "/new-york/IMG_4278.jpg",
+      "/new-york/IMG_4319.jpg",
+      "/new-york/IMG_4494.jpg",
+      "/new-york/IMG_4544.jpg"
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Changsha",
+    "coordinates": [112.9709, 28.1987],
+    "photos": [
+      "/changsha/IMG_2836.jpg",
+      "/changsha/IMG_2908.jpg",
+      "/changsha/IMG_2942.jpg",
+      "/changsha/IMG_2988.jpg",
+      "/changsha/IMG_6090.jpg"
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Kyoto",
+    "coordinates": [135.7681, 35.0116],
+    "photos": [
+      "/kyoto/IMG_4931.jpg",
+      "/kyoto/IMG_4970.jpg",
+      "/kyoto/IMG_4979.jpg",
+      "/kyoto/IMG_4998.jpg",
+      "/kyoto/IMG_5024.jpg",
+      "/kyoto/IMG_5089.jpg",
+      "/kyoto/IMG_5110.jpg"
+    ]
+  },
+  {
+    "id": 5,
+    "name": "Seoul",
+    "coordinates": [126.9780, 37.5665],
+    "photos": [
+      "/seoul/IMG_3462.jpg",
+      "/seoul/IMG_3513.jpg",
+      "/seoul/IMG_3547.jpg",
+      "/seoul/IMG_3573.jpg",
+      "/seoul/IMG_3645.jpg",
+      "/seoul/IMG_3713.jpg",
+      "/seoul/IMG_6996.jpg"
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Tokyo",
+    "coordinates": [139.6917, 35.6895],
+    "photos": [
+      "/tokyo/IMG_3385.jpg",
+      "/tokyo/IMG_3398.jpg",
+      "/tokyo/IMG_3437.jpg",
+      "/tokyo/IMG_3444.jpg",
+      "/tokyo/IMG_7788.jpg",
+      "/tokyo/IMG_9969.jpg"
+    ]
+  },
+  {
+    "id": 7,
+    "name": "Vancouver",
+    "coordinates": [-123.1207, 49.2827],
+    "photos": [
+      "/vancouver/IMG_1845.jpg",
+      "/vancouver/IMG_1891.jpg",
+      "/vancouver/IMG_1922.jpg",
+      "/vancouver/IMG_1936.jpg",
+      "/vancouver/IMG_1967.jpg",
+      "/vancouver/IMG_2023.jpg",
+      "/vancouver/IMG_3337.jpg"
+    ]
+  },
+  {
+    "id": 8,
+    "name": "Washington DC",
+    "coordinates": [-77.0369, 38.9072],
+    "photos": [
+      "/washington-dc/IMG_4360.jpg",
+      "/washington-dc/IMG_4380.jpg",
+      "/washington-dc/IMG_4415.jpg",
+      "/washington-dc/IMG_4449.jpg",
+      "/washington-dc/IMG_4483.jpg"
+    ]
+  },
+  {
+    "id": 9,
+    "name": "Yunnan",
+    "coordinates": [102.7123, 25.0402],
+    "photos": [
+      "/yunnan/IMG_5831.jpg",
+      "/yunnan/IMG_5847.jpg",
+      "/yunnan/IMG_5904.jpg",
+      "/yunnan/IMG_5968.jpg",
+      "/yunnan/IMG_6006.jpg",
+      "/yunnan/IMG_7878.jpg"
+    ]
+  }
+]
