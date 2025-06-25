@@ -30,35 +30,6 @@ export default function Contact() {
     fetchData()
   }, [])
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.3,
-      },
-    },
-  }
-
-  const itemVariants = {
-    hidden: {
-      opacity: 0,
-      y: 30,
-      scale: 0.8,
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-        damping: 10,
-      },
-    },
-  }
-
   const LoadingSkeleton = () => (
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
       {[...Array(6)].map((_, index) => (
@@ -91,14 +62,15 @@ export default function Contact() {
       {loading ? (
         <LoadingSkeleton />
       ) : (
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate={inView ? "visible" : "hidden"}
-          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-8 mb-16"
-        >
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-8 mb-16">
           {contacts.map((contact, index) => (
-            <motion.div key={index} variants={itemVariants} className="flex flex-col items-center group">
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.2, delay: index * 0.1 }}
+              className="flex flex-col items-center group"
+            >
               <motion.a
                 href={contact.value}
                 target="_blank"
@@ -147,7 +119,7 @@ export default function Contact() {
               </motion.span>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
       )}
 
       {/* Bottom Decoration */}

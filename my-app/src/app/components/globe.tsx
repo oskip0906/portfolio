@@ -228,8 +228,14 @@ export default function Globe() {
     // Add navigation controls
     map.current.addControl(new mapboxgl.NavigationControl(), "top-right")
 
+    const resizeObserver = new ResizeObserver(() => {
+      map.current?.resize()
+    })
+    resizeObserver.observe(mapContainer.current)
+
     // Cleanup function
     return () => {
+      resizeObserver.disconnect()
       if (map.current) {
         markers.current.forEach((marker) => marker.remove())
         markers.current = []
