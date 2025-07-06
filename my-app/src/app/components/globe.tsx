@@ -60,15 +60,16 @@ function PhotoGallery({ location, onClose }: { location: Location; onClose: () =
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.9, opacity: 0 }}
         transition={{ duration: 0.5, ease: "easeInOut" }}
-        className="relative max-w-3xl w-full bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl shadow-xl overflow-hidden"
+        className="relative max-w-3xl w-full backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-xl shadow-xl overflow-hidden"
+        style={{ boxShadow: '0 0 30px rgba(59, 130, 246, 0.3)' }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-4 bg-gradient-to-r from-blue-200 to-purple-200 border-b border-blue-200">
-          <h3 className="text-xl font-semibold text-gray-900">{location.name}</h3>
+        <div className="flex items-center justify-between p-4 backdrop-blur-sm border-b border-white/10">
+          <h3 className="text-xl font-semibold text-white">{location.name}</h3>
           <button
             onClick={onClose}
-            className="p-2 rounded-lg hover:bg-blue-300 text-gray-600 hover:text-gray-800 transition-colors"
+            className="p-2 rounded-lg hover:bg-white/20 text-white hover:text-gray-200 transition-colors"
           >
             <X size={20} />
           </button>
@@ -80,7 +81,7 @@ function PhotoGallery({ location, onClose }: { location: Location; onClose: () =
             {location.photos.length > 1 && (
               <button
                 onClick={prevPhoto}
-                className="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-full shadow-md transition-all"
+                className="bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-400 hover:to-purple-400 text-white p-2 rounded-full shadow-md transition-all"
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
@@ -93,14 +94,14 @@ function PhotoGallery({ location, onClose }: { location: Location; onClose: () =
                 className="w-full aspect-square object-cover rounded-lg"
               />
               {/* Photo counter */}
-              <div className="absolute bottom-3 right-3 bg-white/90 text-gray-700 px-3 py-1 rounded-full text-sm">
+              <div className="absolute bottom-3 right-3 backdrop-blur-sm bg-black/60 text-white px-3 py-1 rounded-full text-sm">
                 {currentPhoto + 1} / {location.photos.length}
               </div>
             </div>
             {location.photos.length > 1 && (
               <button
                 onClick={nextPhoto}
-                className="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-full shadow-md transition-all"
+                className="bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-400 hover:to-purple-400 text-white p-2 rounded-full shadow-md transition-all"
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z" />
@@ -117,8 +118,8 @@ function PhotoGallery({ location, onClose }: { location: Location; onClose: () =
                   key={index}
                   onClick={() => setCurrentPhoto(index)}
                   className={`flex-shrink-0 w-16 h-16 rounded-md overflow-hidden border-2 transition-all ${currentPhoto === index
-                    ? "border-blue-400"
-                    : "border-gray-200 hover:border-gray-300"
+                    ? "border-cyan-400 shadow-lg shadow-cyan-400/50"
+                    : "border-white/30 hover:border-white/50"
                     }`}
                 >
                   <img

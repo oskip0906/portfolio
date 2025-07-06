@@ -34,7 +34,7 @@ export default function Contact() {
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
       {[...Array(6)].map((_, index) => (
         <div key={index} className="flex flex-col items-center space-y-3">
-          <div className="w-20 h-20 bg-gradient-to-br from-white/10 to-white/5 rounded-2xl animate-pulse border border-white/20" />
+          <div className="w-20 h-20 bg-white/10 rounded-2xl animate-pulse border border-white/20" />
         </div>
       ))}
     </div>
@@ -46,7 +46,7 @@ export default function Contact() {
         ref={ref}
         initial={{ opacity: 0, y: 50 }}
         animate={inView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.8 }}
+        transition={{ duration: 1 }}
         className="text-center mb-16"
       >
         <h2 className="text-5xl font-bold bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-4">
@@ -75,36 +75,19 @@ export default function Contact() {
                 href={contact.value}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="relative block"
-                whileHover={{ y: -8, scale: 1.05 }}
+                className="block"
+                whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
               >
-                {/* Glow Effect */}
-                <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-2xl blur-lg opacity-0 group-hover:opacity-40 transition-opacity duration-300 scale-110" />
-
-                {/* Card */}
-                <div className="relative w-20 h-20 backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-2xl shadow-2xl group-hover:shadow-cyan-500/25 transition-all duration-300 overflow-hidden">
-                  {/* Background gradient */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-purple-500/10 to-pink-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-                  {/* Icon */}
-                  <div className="relative w-full h-full p-4 flex items-center justify-center">
-                    <motion.img
+                <div className="relative">
+                  <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-2xl blur-lg opacity-0 group-hover:opacity-40 transition-opacity duration-300 scale-110" />
+                  <div className="relative w-20 h-20 bg-black/5 backdrop-blur-sm border border-white/10 rounded-2xl p-2 flex items-center justify-center transition-all duration-300 hover:bg-black/20 hover:border-white/20">
+                    <img
                       src={contact.image}
                       alt={contact.type}
-                      className="w-full h-full object-contain filter brightness-90 group-hover:brightness-110 transition-all duration-300"
-                      whileHover={{ scale: 1.1, rotate: 5 }}
-                      transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                      className="w-full h-full object-contain"
                     />
                   </div>
-
-                  {/* Shine Effect */}
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100"
-                    initial={{ x: "-100%" }}
-                    whileHover={{ x: "100%" }}
-                    transition={{ duration: 0.6 }}
-                  />
                 </div>
               </motion.a>
 
@@ -124,8 +107,8 @@ export default function Contact() {
 
       {/* Bottom Decoration */}
       <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={inView ? { opacity: 1, scale: 1 } : {}}
+        initial={{ opacity: 0 }}
+        animate={inView ? { opacity: 1 } : {}}
         transition={{ duration: 1, delay: 1 }}
         className="flex justify-center"
       >

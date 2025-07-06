@@ -14,7 +14,7 @@ interface SpotifyTrack {
   releaseDate: string
 }
 
-export default function MusicPlayer() {
+export default function SpotifyPlayer() {
   const [currentPlayingTrack, setCurrentPlayingTrack] = useState<SpotifyTrack | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [message, setMessage] = useState<string | null>("Click to get a random song recommendation from my playlist!")

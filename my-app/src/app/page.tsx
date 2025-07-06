@@ -29,7 +29,7 @@ export default function Home() {
 
       {/* Snow Effect */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        {Array.from({ length: 30 }).map((_, i) => (
+        {Array.from({ length: 50 }).map((_, i) => (
           <div
             key={`snow-${i}`}
             className="snow"
