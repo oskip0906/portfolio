@@ -265,9 +265,8 @@ export default function Globe() {
   }, [locations])
 
   return (
-    <div id="globe" className="w-full relative mb-12" onClick={() => setIsGlobeActive(true)}>
-      <div className="absolute inset-0" />
-      <div className="relative flex flex-col items-center justify-center py-12">
+    <section id="globe" className="w-full max-w-7xl mx-auto px-4 mb-12">
+      <div className="relative flex flex-col items-center justify-center py-12" onClick={() => setIsGlobeActive(true)}>
         <motion.div
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -283,7 +282,7 @@ export default function Globe() {
           </p>
         </motion.div>
 
-        <div className={`w-[98%] md:w-[75%] h-[80vh] rounded-2xl overflow-hidden bg-gradient-to-r from-red-500/50 via-yellow-500/50 via-green-500/50 via-blue-500/50 via-indigo-500/50 to-purple-500/50 p-1 relative transition-all duration-1000 ${isGlobeActive ? 'opacity-100 animate-rainbow-glow' : 'opacity-50 pointer-events-none'}`}>
+        <div className={`w-full h-[60vh] md:h-[70vh] lg:h-[75vh] rounded-2xl overflow-hidden bg-gradient-to-r from-red-500/50 via-yellow-500/50 via-green-500/50 via-blue-500/50 via-indigo-500/50 to-purple-500/50 p-1 relative transition-all duration-1000 ${isGlobeActive ? 'opacity-100 animate-rainbow-glow' : 'opacity-50 pointer-events-none'}`}>
           <div ref={mapContainer} className="w-full h-full rounded-2xl bg-black" />
 
           {/* Map Style Selector */}
@@ -328,6 +327,6 @@ export default function Globe() {
       <AnimatePresence>
         {selectedLocation && <PhotoGallery location={selectedLocation} onClose={() => setSelectedLocation(null)} />}
       </AnimatePresence>
-    </div>
+    </section>
   )
 }

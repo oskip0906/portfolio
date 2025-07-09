@@ -39,7 +39,7 @@ export default function Introduction() {
         transition={{ duration: 1, ease: "easeOut" }}
         className="relative overflow-visible z-0"
       >
-        <div className="relative backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-3xl p-6 md:p-8 lg:p-12 shadow-2xl overflow-visible shadow-[0_0_20px_rgba(34,211,238,0.5)]">
+        <div className="relative backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-3xl p-4 md:p-6 lg:p-8 shadow-2xl overflow-visible shadow-[0_0_20px_rgba(34,211,238,0.5)]">
 
           <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
             <div className="absolute top-4 left-4 w-20 h-20 bg-gradient-to-br from-cyan-400/20 to-blue-600/20 rounded-full blur-xl"></div>
@@ -56,7 +56,7 @@ export default function Introduction() {
                 className="mb-6"
               >
                 <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-4 leading-tight pb-2">
-                  Hello, I'm {intro.name}!
+                  Hi, I'm {intro.name}!
                 </h1>
                 <div className="h-1 w-24 bg-gradient-to-r from-cyan-400 to-purple-400 rounded-full mx-auto lg:mx-0"></div>
               </motion.div>
@@ -81,7 +81,7 @@ export default function Introduction() {
                 className="mb-8"
               >
                 <div className="text-base sm:text-md md:text-lg text-gray-300 leading-relaxed backdrop-blur-sm bg-white/5 rounded-2xl p-4 md:p-6 border border-white/10 overflow-visible">
-                  <div className="flex items-start min-h-[90px]">
+                  <div className="flex items-start min-h-[75px]">
                     <Typewriter
                       words={intro.bio.split(";")}
                       loop={false}
