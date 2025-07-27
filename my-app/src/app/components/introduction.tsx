@@ -1,5 +1,5 @@
 "use client"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback, memo } from "react"
 import { motion } from "framer-motion"
 import MusicPlayer from "./music-player"
 import SpotifyPlayer from "./spotify"
@@ -13,23 +13,63 @@ interface Intro {
   image: string | undefined
 }
 
-export default function Introduction() {
+const Introduction = memo(() => {
   const [intro, setIntro] = useState<Intro>({ name: "", title: "", bio: "", image: undefined })
   const [showSpotify, setShowSpotify] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  const fetchData = useCallback(async () => {
+    try {
+      setIsLoading(true)
+      setError(null)
+      const response = await fetch("/intro.json")
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+      const data = await response.json()
+      setIntro(data.intro)
+    } catch (error) {
+      console.error("Error fetching data:", error)
+      setError(error instanceof Error ? error.message : "Failed to load data")
+    } finally {
+      setIsLoading(false)
+    }
+  }, [])
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("/intro.json")
-        const data = await response.json()
-        setIntro(data.intro)
-      } catch (error) {
-        console.error("Error fetching data:", error)
-      }
-    }
-
     fetchData()
+  }, [fetchData])
+
+  const handlePlayerToggle = useCallback((showSpotifyPlayer: boolean) => {
+    setShowSpotify(showSpotifyPlayer)
   }, [])
+
+  if (isLoading) {
+    return (
+      <div id="introduction" className="w-full max-w-7xl mx-auto px-4 mb-12">
+        <div className="flex items-center justify-center h-64">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-400"></div>
+        </div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div id="introduction" className="w-full max-w-7xl mx-auto px-4 mb-12">
+        <div className="text-center text-red-400">
+          <p>Error loading content: {error}</p>
+          <button 
+            onClick={fetchData}
+            className="mt-4 px-4 py-2 bg-cyan-500 text-white rounded-lg hover:bg-cyan-600 transition-colors"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div id="introduction" className="w-full max-w-7xl mx-auto px-4 mb-12">
@@ -106,7 +146,7 @@ export default function Introduction() {
                   <div className="bg-black/20 backdrop-blur-sm rounded-2xl p-2 border border-white/10">
                     <div className="flex gap-2">
                       <motion.button
-                        onClick={() => setShowSpotify(false)}
+                        onClick={() => handlePlayerToggle(false)}
                         className={`flex items-center gap-2 px-4 py-2 rounded-xl font-medium transition-all duration-300 ${
                           !showSpotify
                             ? "bg-gradient-to-r from-cyan-500 to-purple-500 text-white shadow-lg"
@@ -114,12 +154,13 @@ export default function Introduction() {
                         }`}
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
+                        aria-label="Switch to chill music player"
                       >
                         <Music className="w-4 h-4" />
                         Chill Music
                       </motion.button>
                       <motion.button
-                        onClick={() => setShowSpotify(true)}
+                        onClick={() => handlePlayerToggle(true)}
                         className={`flex items-center gap-2 px-4 py-2 rounded-xl font-medium transition-all duration-300 ${
                           showSpotify
                             ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg"
@@ -127,6 +168,7 @@ export default function Introduction() {
                         }`}
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
+                        aria-label="Switch to Spotify player"
                       >
                         <Headphones className="w-4 h-4" />
                         Spotify
@@ -175,12 +217,14 @@ export default function Introduction() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="block w-full h-full"
+                    aria-label="Visit University of Toronto website"
                   >
                     <motion.img
                       src={intro.image}
                       alt="Profile"
                       className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
                       whileHover={{ scale: 1.05 }}
+                      loading="eager"
                     />
                   </a>
                 </div>
@@ -203,4 +247,8 @@ export default function Introduction() {
       </motion.section>
     </div>
   )
-}
+})
+
+Introduction.displayName = 'Introduction'
+
+export default Introduction

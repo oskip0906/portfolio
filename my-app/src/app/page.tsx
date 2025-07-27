@@ -1,3 +1,4 @@
+import { useMemo } from "react"
 import Introduction from "./components/introduction"
 import Experiences from "./components/experiences"
 import Interests from "./components/interests"
@@ -6,7 +7,37 @@ import Contact from "./components/contact"
 import NavBar from "./components/navbar"
 import Globe from "./components/globe"
 
+// Memoized snow effect component
+const SnowEffect = () => {
+  const snowflakes = useMemo(() => 
+    Array.from({ length: 50 }).map((_, i) => ({
+      id: i,
+      left: `${Math.random() * 100}%`,
+      animationDelay: `${Math.random() * 10}s`,
+      animationDuration: `${8 + Math.random() * 4}s`,
+    })), []
+  );
+
+  return (
+    <div className="fixed inset-0 overflow-hidden pointer-events-none">
+      {snowflakes.map((snowflake) => (
+        <div
+          key={`snow-${snowflake.id}`}
+          className="snow"
+          style={{
+            left: snowflake.left,
+            animationDelay: snowflake.animationDelay,
+            animationDuration: snowflake.animationDuration,
+          }}
+        />
+      ))}
+    </div>
+  );
+};
+
 export default function Home() {
+  const currentYear = useMemo(() => new Date().getFullYear(), []);
+
   return (
     <div className="relative min-h-screen w-full overflow-x-hidden">
       {/* Enhanced Animated Background */}
@@ -28,19 +59,7 @@ export default function Home() {
       </div>
 
       {/* Snow Effect */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        {Array.from({ length: 50 }).map((_, i) => (
-          <div
-            key={`snow-${i}`}
-            className="snow"
-            style={{
-              left: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 10}s`,
-              animationDuration: `${8 + Math.random() * 4}s`,
-            }}
-          />
-        ))}
-      </div>
+      <SnowEffect />
 
       <NavBar />
 
@@ -55,7 +74,7 @@ export default function Home() {
 
       <footer className="relative flex items-center justify-center text-sm text-gray-400 mt-20 mb-10">
         <div className="backdrop-blur-sm bg-white/5 px-6 py-3 rounded-full border border-white/10 hover:bg-white/10 transition-all duration-300">
-          <p>&copy; {new Date().getFullYear()} Oscar Pang. All rights reserved.</p>
+          <p>&copy; {currentYear} Oscar Pang. All rights reserved.</p>
         </div>
       </footer>
     </div>

@@ -1,39 +1,74 @@
 "use client"
 import type React from "react"
-import { useState, useRef } from "react"
+import { useState, useRef, useCallback, memo, useEffect } from "react"
 import { motion } from "framer-motion"
 import { Play, Pause, Music } from "lucide-react"
 
-const MusicPlayer: React.FC = () => {
+const MusicPlayer: React.FC = memo(() => {
   const [isPlaying, setIsPlaying] = useState(false)
+  const [currentTime, setCurrentTime] = useState(0)
+  const [duration, setDuration] = useState(0)
   const audioRef = useRef<HTMLAudioElement>(null)
+  const progressRef = useRef<HTMLInputElement>(null)
 
-  function controlSong() {
-    const audio = document.getElementById("audio") as HTMLAudioElement | null
-    const progressBar = document.getElementById("progressBar") as HTMLInputElement | null
-    if (audio && progressBar) {
-      audio.currentTime = Number.parseFloat(progressBar.value)
+  const updateProgress = useCallback(() => {
+    if (audioRef.current && !isNaN(audioRef.current.duration)) {
+      setCurrentTime(audioRef.current.currentTime)
+      setDuration(audioRef.current.duration)
     }
-  }
+  }, [])
 
-  function updateProgress() {
-    const audio = document.getElementById("audio") as HTMLAudioElement | null
-    const progressBar = document.getElementById("progressBar") as HTMLInputElement | null
-    if (audio && progressBar && !isNaN(audio.duration)) {
-      progressBar.max = audio.duration.toString()
-      progressBar.value = audio.currentTime.toString()
+  const controlSong = useCallback(() => {
+    if (audioRef.current && progressRef.current) {
+      const newTime = parseFloat(progressRef.current.value)
+      audioRef.current.currentTime = newTime
+      setCurrentTime(newTime)
     }
-  }
+  }, [])
 
-  const togglePlayPause = () => {
+  const togglePlayPause = useCallback(() => {
     if (audioRef.current) {
       if (isPlaying) {
         audioRef.current.pause()
       } else {
-        audioRef.current.play()
+        audioRef.current.play().catch(error => {
+          console.error('Error playing audio:', error)
+        })
       }
       setIsPlaying(!isPlaying)
     }
+  }, [isPlaying])
+
+  const handleLoadedMetadata = useCallback(() => {
+    if (audioRef.current) {
+      setDuration(audioRef.current.duration)
+    }
+  }, [])
+
+  const handleEnded = useCallback(() => {
+    setIsPlaying(false)
+    setCurrentTime(0)
+  }, [])
+
+  useEffect(() => {
+    const audio = audioRef.current
+    if (audio) {
+      audio.addEventListener('loadedmetadata', handleLoadedMetadata)
+      audio.addEventListener('ended', handleEnded)
+      audio.addEventListener('timeupdate', updateProgress)
+      
+      return () => {
+        audio.removeEventListener('loadedmetadata', handleLoadedMetadata)
+        audio.removeEventListener('ended', handleEnded)
+        audio.removeEventListener('timeupdate', updateProgress)
+      }
+    }
+  }, [handleLoadedMetadata, handleEnded, updateProgress])
+
+  const formatTime = (time: number) => {
+    const minutes = Math.floor(time / 60)
+    const seconds = Math.floor(time % 60)
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`
   }
 
   return (
@@ -43,7 +78,12 @@ const MusicPlayer: React.FC = () => {
         <Music className="w-6 h-6 text-purple-300" />
       </div>
 
-      <audio id="audio" src="music.mp3" ref={audioRef} onTimeUpdate={updateProgress} className="hidden" />
+      <audio 
+        ref={audioRef}
+        src="music.mp3" 
+        preload="metadata"
+        className="hidden" 
+      />
 
       <div className="space-y-4">
         {/* Player controls container */}
@@ -54,6 +94,7 @@ const MusicPlayer: React.FC = () => {
               className="group relative bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-400 hover:to-pink-400 text-white rounded-full p-4 font-semibold transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-purple-500/30"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+              aria-label={isPlaying ? "Pause music" : "Play music"}
             >
               <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <span className="relative z-10 flex items-center justify-center">
@@ -69,51 +110,32 @@ const MusicPlayer: React.FC = () => {
                 <input
                   className="w-full h-2 bg-gray-800/50 rounded-full appearance-none cursor-pointer slider relative z-10"
                   type="range"
-                  id="progressBar"
-                  defaultValue="0"
-                  max="100"
-                  onInput={controlSong}
+                  ref={progressRef}
+                  value={currentTime}
+                  max={duration || 100}
+                  onChange={controlSong}
                   style={{
                     background: "linear-gradient(to right, #06b6d4 0%, #8b5cf6 50%, #ec4899 100%)",
                     outline: "none",
                   }}
+                  aria-label="Music progress"
                 />
 
                 <div className="absolute inset-0 rounded-full bg-gradient-to-r from-cyan-500/20 via-purple-500/20 to-pink-500/20 blur-sm pointer-events-none" />
               </div>
+              
+              {/* Time display */}
+              <div className="text-xs text-gray-400 min-w-[60px] text-right">
+                {formatTime(currentTime)} / {formatTime(duration)}
+              </div>
             </div>
           </div>
         </div>
-
-        {/* Now playing indicator */}
-        <motion.div
-          className="flex items-center justify-center gap-2 text-sm text-gray-300 bg-black/40 backdrop-blur-sm rounded-xl px-3 py-2 border border-white/10"
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.3 }}
-        >
-          <div className="flex gap-1">
-            {[...Array(3)].map((_, i) => (
-              <motion.div
-                key={i}
-                className="w-1 bg-gradient-to-t from-cyan-500 to-purple-500 rounded-full"
-                animate={{
-                  height: isPlaying ? [4, 12, 4] : 4,
-                }}
-                transition={{
-                  duration: 0.8,
-                  repeat: isPlaying ? Number.POSITIVE_INFINITY : 0,
-                  delay: i * 0.1,
-                  ease: "easeInOut",
-                }}
-              />
-            ))}
-          </div>
-          <span className="font-medium text-xs">{isPlaying ? "Now Playing" : "Ready to Play"}</span>
-        </motion.div>
       </div>
     </div>
   )
-}
+})
+
+MusicPlayer.displayName = 'MusicPlayer'
 
 export default MusicPlayer;

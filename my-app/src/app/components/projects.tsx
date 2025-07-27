@@ -86,7 +86,7 @@ export default function Projects() {
               <motion.div
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="group relative backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-3xl overflow-hidden shadow-2xl"
+                className="group relative backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-3xl overflow-hidden shadow-2xl h-[600px] flex flex-col"
               >
                 {/* Project Image */}
                 <div className="relative h-64 overflow-hidden">
@@ -112,7 +112,7 @@ export default function Projects() {
                 </div>
 
                 {/* Project Info */}
-                <div className="p-6">
+                <div className="p-6 flex-1 flex flex-col">
                   <div className="flex items-center gap-2 mb-3">
                     <Calendar size={16} className="text-gray-400" />
                     <span className="text-sm text-gray-400 font-medium">{project.date}</span>
@@ -122,7 +122,7 @@ export default function Projects() {
                     {project.name}
                   </h3>
 
-                  <p className="text-gray-300 leading-relaxed mb-6">{project.description}</p>
+                  <p className="text-gray-300 leading-relaxed mb-6 flex-1 overflow-hidden">{project.description}</p>
 
                   <motion.a
                     href={project.link}
@@ -130,7 +130,7 @@ export default function Projects() {
                     rel="noopener noreferrer"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-full text-white font-medium shadow-lg"
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-full text-white font-medium shadow-lg mt-auto"
                   >
                     <span>View Project</span>
                     <ExternalLink size={16} />
