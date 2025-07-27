@@ -79,7 +79,7 @@ export default function Projects() {
             modifier: 2,
             slideShadows: false,
           }}
-          className="w-full py-12"
+          className="w-full py-4 md:py-12"
         >
           {projects.map((project, index) => (
             <SwiperSlide key={index} className="max-w-md">
