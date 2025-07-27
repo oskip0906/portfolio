@@ -12,6 +12,7 @@
     "@react-three/drei": "^10.3.0",
     "@react-three/fiber": "^9.1.2",
     "@t3-oss/env-nextjs": "^0.13.8",
+    "critters": "^0.0.23",
     "framer-motion": "^11.18.2",
     "lucide-react": "^0.516.0",
     "mapbox-gl": "^3.13.0",
