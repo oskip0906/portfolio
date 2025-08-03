@@ -12,7 +12,11 @@ interface Interest {
 export default function Interests() {
   const [interests, setInterests] = useState<Interest[]>([])
   const ref = useRef(null)
-  const inView = useInView(ref, { once: true })
+  const inView = useInView(ref, { 
+    once: false,
+    amount: 0.3,
+    margin: "-100px 0px -100px 0px"
+  })
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,10 +35,10 @@ export default function Interests() {
   return (
     <section ref={ref} id="interests" className="w-full max-w-7xl mx-auto px-4 mb-12">
       <motion.div
-        initial={{ opacity: 0, y: 50 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
+        initial={{ opacity: 0, y: 50 } as any}
+        animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 } as any}
         transition={{ duration: 0.8 }}
-        className="text-center mb-16"
+        className="text-center mb-10"
       >
         <h2 className="text-5xl font-bold bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-4 mt-6">
           Interests
@@ -49,9 +53,20 @@ export default function Interests() {
         {interests.map((interest, index) => (
             <motion.div
             key={index}
-            initial={{ opacity: 0, x: -50 }}
-            animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.5, delay: index * 0.1 }}
+            initial={{ opacity: 0, y: 100, scale: 0.8 } as any}
+            animate={
+              inView
+                ? ({ opacity: 1, y: 0, scale: 1 } as any)
+                : ({ opacity: 0, y: 100, scale: 0.8 } as any)
+            }
+            transition={{
+              delay: index * 0.15,
+              duration: 0.8,
+              ease: "easeOut",
+              opacity: { duration: 0.6 },
+              y: { duration: 0.8 },
+              scale: { duration: 0.8 }
+            }}
             className="group relative"
             >
             <div className="relative h-full backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-cyan-400/60 rounded-2xl p-6 shadow-2xl overflow-hidden transition-all duration-500 shadow-[0_0_0_1px_rgba(34,211,238,0.3),0_0_0_2px_rgba(168,85,247,0.2)]">
@@ -85,7 +100,7 @@ export default function Interests() {
                 mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
                 maskComposite: "exclude",
                 padding: "1px",
-              }}
+              } as any}
               ></div>
             </div>
 

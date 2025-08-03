@@ -58,8 +58,8 @@ const NavBar = memo(() => {
       <motion.div
         ref={dragRef}
         className="fixed top-4 right-1/4 z-[9999]"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
+        initial={false}
+        animate={menuOpen ? ({ opacity: 1 } as any) : ({ opacity: 0.8 } as any)}
         transition={{ duration: 2 }}
       >
         <button
@@ -68,7 +68,7 @@ const NavBar = memo(() => {
           className="w-20 h-20 rounded-full bg-gradient-to-br from-purple-600/50 to-blue-500/50 text-white text-3xl flex items-center justify-center shadow-lg focus:outline-none transition-all duration-300 ease-in-out hover:scale-110 hover:shadow-xl"
           aria-label="Toggle Menu"
           aria-expanded={menuOpen}
-          style={{ boxShadow: "0 4px 15px rgba(0, 0, 0, 0.2)" }}
+          style={{ boxShadow: "0 4px 15px rgba(0, 0, 0, 0.2)" } as any}
         >
           {menuOpen ? "✕" : "☰"}
         </button>
@@ -80,10 +80,10 @@ const NavBar = memo(() => {
               style={{
                 boxShadow:
                   "0 10px 25px rgba(0, 0, 0, 0.1), 0 5px 10px rgba(0, 0, 0, 0.05)",
-              }}
-              initial={{ scale: 0.9, opacity: 0, y: -10 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.9, opacity: 0, y: -10 }}
+              } as any}
+              initial={{ scale: 0.9, opacity: 0, y: -10 } as any}
+              animate={{ scale: 1, opacity: 1, y: 0 } as any}
+              exit={{ scale: 0.9, opacity: 0, y: -10 } as any}
               transition={{ duration: 0.1, ease: "easeOut" }}
               role="menu"
             >

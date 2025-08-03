@@ -1,6 +1,6 @@
 "use client"
 import { useRef, useState, useEffect, useCallback } from "react"
-import { motion, AnimatePresence } from "framer-motion"
+import { motion, AnimatePresence, useInView, type TargetAndTransition } from "framer-motion"
 import { X, PowerOff } from "lucide-react"
 import mapboxgl from "mapbox-gl"
 import "mapbox-gl/dist/mapbox-gl.css"
@@ -48,20 +48,20 @@ function PhotoGallery({ location, onClose }: { location: Location; onClose: () =
 
   return (
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
+      initial={{ opacity: 0 } as any}
+      animate={{ opacity: 1 } as any}
+      exit={{ opacity: 0 } as any}
       transition={{ duration: 1, ease: "easeInOut" }}
       className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
       onClick={onClose}
     >
       <motion.div
-        initial={{ scale: 0.9, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.9, opacity: 0 }}
+        initial={{ scale: 0.9, opacity: 0 } as any}
+        animate={{ scale: 1, opacity: 1 } as any}
+        exit={{ scale: 0.9, opacity: 0 } as any}
         transition={{ duration: 0.5, ease: "easeInOut" }}
         className="relative max-w-3xl w-full backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-xl shadow-xl overflow-hidden"
-        style={{ boxShadow: '0 0 30px rgba(59, 130, 246, 0.3)' }}
+        style={{ boxShadow: '0 0 30px rgba(59, 130, 246, 0.3)' } as any}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
@@ -110,7 +110,7 @@ function PhotoGallery({ location, onClose }: { location: Location; onClose: () =
             )}
           </div>
 
-          {/* Photo thumbnails */}
+          {/* Thumbnail Navigation */}
           {location.photos.length > 1 && (
             <div className="flex gap-2 justify-center overflow-x-auto">
               {location.photos.map((photo, index) => (
@@ -118,12 +118,13 @@ function PhotoGallery({ location, onClose }: { location: Location; onClose: () =
                   key={index}
                   onClick={() => setCurrentPhoto(index)}
                   className={`flex-shrink-0 w-16 h-16 rounded-md overflow-hidden border-2 transition-all ${currentPhoto === index
-                    ? "border-cyan-400 shadow-lg shadow-cyan-400/50"
-                    : "border-white/30 hover:border-white/50"
+                    ? 'border-blue-400 scale-110'
+                    : 'border-white/20 hover:border-white/40'
                     }`}
                 >
                   <img
-                    src={photo || "/placeholder.svg"}
+                    src={photo}
+                    alt={`${location.name} photo ${index + 1}`}
                     className="w-full h-full object-cover"
                   />
                 </button>
@@ -144,6 +145,12 @@ export default function Globe() {
   const mapContainer = useRef<HTMLDivElement | null>(null)
   const map = useRef<mapboxgl.Map | null>(null)
   const markers = useRef<mapboxgl.Marker[]>([])
+  const ref = useRef(null)
+  const inView = useInView(ref, { 
+    once: false,
+    amount: 0.3,
+    margin: "-100px 0px -100px 0px"
+  })
 
   useEffect(() => {
     fetch('/locations.json')
@@ -227,8 +234,9 @@ export default function Globe() {
     })
 
     // Add navigation controls
-    map.current.addControl(new mapboxgl.NavigationControl(), "top-right")
+    map.current.addControl(new mapboxgl.NavigationControl(), 'top-right')
 
+    // Handle map resize
     const resizeObserver = new ResizeObserver(() => {
       map.current?.resize()
     })
@@ -265,11 +273,11 @@ export default function Globe() {
   }, [locations])
 
   return (
-    <section id="globe" className="w-full max-w-7xl mx-auto px-4 mb-12">
+    <section ref={ref} id="globe" className="w-full max-w-7xl mx-auto px-4 mb-12">
       <div className="relative flex flex-col items-center justify-center py-12" onClick={() => setIsGlobeActive(true)}>
         <motion.div
-          initial={{ opacity: 0, y: -30 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 50 } as any}
+          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 } as any}
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="text-center mb-8"
         >
@@ -282,7 +290,12 @@ export default function Globe() {
           </p>
         </motion.div>
 
-        <div className={`w-full h-[60vh] md:h-[70vh] lg:h-[75vh] rounded-2xl overflow-hidden bg-gradient-to-r from-red-500/50 via-yellow-500/50 via-green-500/50 via-blue-500/50 via-indigo-500/50 to-purple-500/50 p-1 relative transition-all duration-1000 ${isGlobeActive ? 'opacity-100 animate-rainbow-glow' : 'opacity-50 pointer-events-none'}`}>
+        <motion.div
+          initial={{ opacity: 0, y: 20 } as any}
+          animate={inView ? { opacity: isGlobeActive ? 1 : 0.5, y: 0 } : { opacity: 0, y: 20 } as any}
+          transition={{ delay: 0.1, duration: 0.3, ease: "easeOut" }}
+          className={`w-full h-[60vh] md:h-[70vh] lg:h-[75vh] rounded-2xl overflow-hidden bg-gradient-to-r from-red-500/50 via-yellow-500/50 via-green-500/50 via-blue-500/50 via-indigo-500/50 to-purple-500/50 p-1 relative transition-all duration-1000 ${isGlobeActive ? 'animate-rainbow-glow' : 'pointer-events-none'}`}
+        >
           <div ref={mapContainer} className="w-full h-full rounded-2xl bg-black" />
 
           {/* Map Style Selector */}
@@ -321,7 +334,7 @@ export default function Globe() {
               </button>
             </div>
           )}
-        </div>
+        </motion.div>
       </div>
 
       <AnimatePresence>

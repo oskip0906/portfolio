@@ -125,5 +125,19 @@
       "/yunnan/IMG_6006.jpg",
       "/yunnan/IMG_7878.jpg"
     ]
+  },
+  {
+    "id": 10,
+    "name": "Vienna",
+    "coordinates": [16.3634, 48.2082],
+    "photos": [
+      "/vienna/IMG_4950.jpg",
+      "/vienna/IMG_4968.jpg",
+      "/vienna/IMG_4990.jpg",
+      "/vienna/IMG_4992.jpg",
+      "/vienna/IMG_5008.jpg",
+      "/vienna/IMG_5064.jpg",
+      "/vienna/IMG_5097.jpg"
+    ]
   }
 ]

@@ -15,24 +15,32 @@ interface Experience {
 interface ExperienceCardProps {
   experience: Experience
   index: number
+  isInView: boolean
 }
 
-const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, index }) => {
+const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, index, isInView }) => {
   const [isFlipped, setIsFlipped] = useState(false)
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 50 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.1, duration: 0.6 }}
+      initial={{ opacity: 0, y: 100, scale: 0.8 } as any}
+      animate={isInView ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 100, scale: 0.8 } as any}
+      transition={{ 
+        delay: index * 0.15, 
+        duration: 0.8, 
+        ease: "easeOut",
+        opacity: { duration: 0.6 },
+        y: { duration: 0.8 },
+        scale: { duration: 0.8 }
+      }}
       className="group relative h-80 cursor-pointer"
-      style={{ perspective: "1000px" }}
+      style={{ perspective: "1000px" } as any}
       onClick={() => setIsFlipped(!isFlipped)}
     >
       <motion.div
         className="relative w-full h-full"
-        style={{ transformStyle: "preserve-3d" }}
-        animate={{ rotateY: isFlipped ? 180 : 0 }}
+        style={{ transformStyle: "preserve-3d" } as any}
+        animate={{ rotateY: isFlipped ? 180 : 0 } as any}
         transition={{ duration: 0.8, ease: "easeInOut" }}
       >
         {/* Front of card */}
@@ -41,7 +49,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, index }) =>
           style={{
             backfaceVisibility: "hidden",
             transform: "translateZ(0)",
-          }}
+          } as any}
         >
           <div className="relative w-full h-full backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-2xl p-6 shadow-2xl overflow-hidden">
 
@@ -66,7 +74,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, index }) =>
                   className="flex-shrink-0 ml-4"
                 >
                   <motion.div
-                    whileHover={{ scale: 1.1, rotate: 5 }}
+                    whileHover={{ scale: 1.1, rotate: 5 } as any}
                     className="w-16 h-16 rounded-full overflow-hidden border-2 border-white/20 shadow-lg"
                   >
                     <img
@@ -80,7 +88,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, index }) =>
 
               <div className="flex-1 flex items-end">
                 <motion.div
-                  whileHover={{ scale: 1.05 }}
+                  whileHover={{ scale: 1.05 } as any}
                   className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 rounded-full border border-white/20 text-sm text-gray-300"
                 >
                   <span className="mr-2">✨</span>
@@ -97,7 +105,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, index }) =>
           style={{
             backfaceVisibility: "hidden",
             transform: "rotateY(180deg) translateZ(0)",
-          }}
+          } as any}
         >
           <div className="relative w-full h-full backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-2xl p-6 shadow-2xl">
             <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-pink-500/10 to-cyan-500/10 rounded-2xl"></div>
@@ -116,7 +124,11 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, index }) =>
 export default function Experiences() {
   const [experiences, setExperiences] = useState<Experience[]>([])
   const ref = useRef(null)
-  const inView = useInView(ref, { once: true })
+  const inView = useInView(ref, { 
+    once: false,
+    amount: 0.3,
+    margin: "-100px 0px -100px 0px"
+  })
 
   useEffect(() => {
     const fetchData = async () => {
@@ -135,10 +147,10 @@ export default function Experiences() {
   return (
     <section ref={ref} id="experiences" className="w-full max-w-7xl mx-auto px-4 mb-12">
       <motion.div
-        initial={{ opacity: 0, y: 50 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
+        initial={{ opacity: 0, y: 50 } as any}
+        animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 } as any}
         transition={{ duration: 0.8 }}
-        className="text-center mb-16"
+        className="text-center mb-10"
       >
         <h2 className="text-5xl font-bold bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-4 mt-6">
           Experiences
@@ -151,7 +163,7 @@ export default function Experiences() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
         {experiences.map((experience, index) => (
-          <ExperienceCard key={index} experience={experience} index={index} />
+          <ExperienceCard key={index} experience={experience} index={index} isInView={inView} />
         ))}
       </div>
     </section>

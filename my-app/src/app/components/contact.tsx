@@ -12,7 +12,11 @@ export default function Contact() {
   const [contacts, setContacts] = useState<Contact[]>([])
   const [loading, setLoading] = useState(true)
   const ref = useRef(null)
-  const inView = useInView(ref, { once: true, margin: "-100px" })
+  const inView = useInView(ref, { 
+    once: false,
+    amount: 0.3,
+    margin: "-100px 0px -100px 0px"
+  })
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,13 +45,12 @@ export default function Contact() {
   )
 
   return (
-    <section id="contact" className="w-full max-w-7xl mx-auto px-4">
+    <section ref={ref} id="contact" className="w-full max-w-7xl mx-auto px-4 mb-12">
       <motion.div
-        ref={ref}
-        initial={{ opacity: 0, y: 50 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 1 }}
-        className="text-center mb-16"
+        initial={{ opacity: 0, y: 50 } as any}
+        animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 } as any}
+        transition={{ duration: 0.8 }}
+        className="text-center mb-10"
       >
         <h2 className="text-5xl font-bold bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-4">
           Let's Connect
@@ -66,9 +69,16 @@ export default function Contact() {
           {contacts.map((contact, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 20 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.2, delay: index * 0.1 }}
+              initial={{ opacity: 0, y: 100, scale: 0.8 } as any}
+              animate={inView ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 100, scale: 0.8 } as any}
+              transition={{ 
+                delay: index * 0.1, 
+                duration: 0.6, 
+                ease: "easeOut",
+                opacity: { duration: 0.4 },
+                y: { duration: 0.6 },
+                scale: { duration: 0.6 }
+              }}
               className="flex flex-col items-center group"
             >
               <motion.a
@@ -76,8 +86,8 @@ export default function Contact() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: 1.1 } as any}
+                whileTap={{ scale: 0.95 } as any}
               >
                 <div className="relative">
                   <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-2xl blur-lg opacity-0 group-hover:opacity-40 transition-opacity duration-300 scale-110" />
@@ -93,9 +103,9 @@ export default function Contact() {
 
               {/* Label */}
               <motion.span
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5 + index * 0.1 }}
+                initial={{ opacity: 0 } as any}
+                animate={inView ? { opacity: 1 } : { opacity: 0 } as any}
+                transition={{ delay: 0.3 + index * 0.1, duration: 0.4 }}
                 className="mt-4 text-sm font-medium text-gray-300 group-hover:text-white transition-colors duration-200 capitalize"
               >
                 {contact.type}
@@ -107,9 +117,9 @@ export default function Contact() {
 
       {/* Bottom Decoration */}
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={inView ? { opacity: 1 } : {}}
-        transition={{ duration: 1, delay: 1 }}
+        initial={{ opacity: 0, y: 20 } as any}
+        animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 } as any}
+        transition={{ duration: 0.8, delay: 0.5 }}
         className="flex justify-center"
       >
         <div className="flex space-x-3">
@@ -117,10 +127,13 @@ export default function Contact() {
             <motion.div
               key={i}
               className="w-2 h-2 bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 rounded-full"
-              animate={{
+              animate={inView ? {
                 scale: [1, 1.5, 1],
                 opacity: [0.5, 1, 0.5],
-              }}
+              } : {
+                scale: 1,
+                opacity: 0.5,
+              } as any}
               transition={{
                 duration: 2,
                 repeat: Number.POSITIVE_INFINITY,

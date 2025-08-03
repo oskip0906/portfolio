@@ -43,23 +43,23 @@ export default function SpotifyPlayer() {
   return (
     <motion.div
       className="w-full max-w-3xl backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-3xl p-4"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0, y: 20 } as any}
+      animate={{ opacity: 1, y: 0 } as any}
       transition={{ duration: 0.6 }}
     >
 
       {/* Player Section */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0, y: 20 } as any}
+        animate={{ opacity: 1, y: 0 } as any}
         transition={{ delay: 0.3, duration: 0.5 }}
       >
           <div className="flex flex-col items-center justify-center">
             {currentPlayingTrack ? (
               <motion.div
                 className="w-full"
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
+                initial={{ opacity: 0, scale: 0.95 } as any}
+                animate={{ opacity: 1, scale: 1 } as any}
                 transition={{ duration: 0.3 }}
               >
                 <div className="rounded-2xl overflow-hidden shadow-2xl">

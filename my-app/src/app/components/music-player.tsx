@@ -92,8 +92,6 @@ const MusicPlayer: React.FC = memo(() => {
             <motion.button
               onClick={togglePlayPause}
               className="group relative bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-400 hover:to-pink-400 text-white rounded-full p-4 font-semibold transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-purple-500/30"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
               aria-label={isPlaying ? "Pause music" : "Play music"}
             >
               <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -117,7 +115,7 @@ const MusicPlayer: React.FC = memo(() => {
                   style={{
                     background: "linear-gradient(to right, #06b6d4 0%, #8b5cf6 50%, #ec4899 100%)",
                     outline: "none",
-                  }}
+                  } as React.CSSProperties}
                   aria-label="Music progress"
                 />
 

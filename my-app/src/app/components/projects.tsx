@@ -20,7 +20,11 @@ interface Project {
 export default function Projects() {
   const [projects, setProjects] = useState<Project[]>([])
   const ref = useRef(null)
-  const inView = useInView(ref, { once: true })
+  const inView = useInView(ref, { 
+    once: false,
+    amount: 0.3,
+    margin: "-100px 0px -100px 0px"
+  })
 
   useEffect(() => {
     const fetchData = async () => {
@@ -39,8 +43,8 @@ export default function Projects() {
   return (
     <section ref={ref} id="projects" className="w-full max-w-screen-xl mx-auto px-4 mb-12">
       <motion.div
-        initial={{ opacity: 0, y: 50 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
+        initial={{ opacity: 0, y: 50 } as any}
+        animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 } as any}
         transition={{ duration: 0.8 }}
         className="text-center mb-16"
       >
@@ -52,8 +56,8 @@ export default function Projects() {
       </motion.div>
 
       <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={inView ? { opacity: 1, scale: 1 } : {}}
+        initial={{ opacity: 0, scale: 0.9, y: 50 } as any}
+        animate={inView ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.9, y: 50 } as any}
         transition={{ delay: 0.3, duration: 0.8 }}
       >
         <Swiper
@@ -79,13 +83,21 @@ export default function Projects() {
             modifier: 2,
             slideShadows: false,
           }}
-          className="w-full py-4 md:py-12"
+          className="w-full"
         >
           {projects.map((project, index) => (
             <SwiperSlide key={index} className="max-w-md">
               <motion.div
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, y: 100, scale: 0.8 } as any}
+                animate={inView ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 100, scale: 0.8 } as any}
+                transition={{ 
+                  delay: index * 0.1 + 0.5, 
+                  duration: 0.8, 
+                  ease: "easeOut",
+                  opacity: { duration: 0.6 },
+                  y: { duration: 0.8 },
+                  scale: { duration: 0.8 }
+                }}
                 className="group relative backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-3xl overflow-hidden shadow-2xl h-[600px] flex flex-col"
               >
                 {/* Project Image */}
@@ -103,7 +115,7 @@ export default function Projects() {
                       href={project.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      whileHover={{ scale: 1.1, rotate: 5 }}
+                      whileHover={{ scale: 1.1, rotate: 5 } as any}
                       className="flex items-center justify-center w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full border border-white/30 text-white"
                     >
                       <ExternalLink size={16} />
@@ -128,8 +140,8 @@ export default function Projects() {
                     href={project.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                    whileHover={{ scale: 1.05 } as any}
+                    whileTap={{ scale: 0.95 } as any}
                     className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-full text-white font-medium shadow-lg mt-auto"
                   >
                     <span>View Project</span>

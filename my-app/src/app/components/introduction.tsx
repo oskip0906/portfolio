@@ -74,8 +74,8 @@ const Introduction = memo(() => {
   return (
     <div id="introduction" className="w-full max-w-7xl mx-auto px-4 mb-12">
       <motion.section
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0, y: 50 } as any}
+        animate={{ opacity: 1, y: 0 } as any}
         transition={{ duration: 1, ease: "easeOut" }}
         className="relative overflow-visible z-0"
       >
@@ -90,8 +90,8 @@ const Introduction = memo(() => {
             {/* Content */}
             <div className="flex-1 text-center lg:text-left w-full">
               <motion.div
-                initial={{ opacity: 0, x: -50 }}
-                animate={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, x: -50 } as any}
+                animate={{ opacity: 1, x: 0 } as any}
                 transition={{ delay: 0.3, duration: 0.8 }}
                 className="mb-6"
               >
@@ -102,8 +102,8 @@ const Introduction = memo(() => {
               </motion.div>
 
               <motion.div
-                initial={{ opacity: 0, x: -30 }}
-                animate={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, x: -30 } as any}
+                animate={{ opacity: 1, x: 0 } as any}
                 transition={{ delay: 0.5, duration: 0.8 }}
                 className="mb-8"
               >
@@ -115,8 +115,8 @@ const Introduction = memo(() => {
               </motion.div>
 
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, y: 20 } as any}
+                animate={{ opacity: 1, y: 0 } as any}
                 transition={{ delay: 0.7, duration: 0.8 }}
                 className="mb-8"
               >
@@ -136,8 +136,8 @@ const Introduction = memo(() => {
               </motion.div>
 
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, y: 20 } as any}
+                animate={{ opacity: 1, y: 0 } as any}
                 transition={{ delay: 0.9, duration: 0.8 }}
                 className="w-full relative z-30 space-y-6"
               >
@@ -152,8 +152,8 @@ const Introduction = memo(() => {
                             ? "bg-gradient-to-r from-cyan-500 to-purple-500 text-white shadow-lg"
                             : "text-gray-300 hover:text-white hover:bg-white/10"
                         }`}
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
+                        whileHover={{ scale: 1.02 } as any}
+                        whileTap={{ scale: 0.98 } as any}
                         aria-label="Switch to chill music player"
                       >
                         <Music className="w-4 h-4" />
@@ -166,8 +166,8 @@ const Introduction = memo(() => {
                             ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg"
                             : "text-gray-300 hover:text-white hover:bg-white/10"
                         }`}
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
+                        whileHover={{ scale: 1.02 } as any}
+                        whileTap={{ scale: 0.98 } as any}
                         aria-label="Switch to Spotify player"
                       >
                         <Headphones className="w-4 h-4" />
@@ -180,9 +180,9 @@ const Introduction = memo(() => {
                 {/* Player Display */}
                 <motion.div
                   key={showSpotify ? "spotify" : "music"}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
+                  initial={{ opacity: 0, y: 20 } as any}
+                  animate={{ opacity: 1, y: 0 } as any}
+                  exit={{ opacity: 0, y: -20 } as any}
                   transition={{ duration: 0.5, ease: "easeOut" }}
                 >
                   {showSpotify ? <SpotifyPlayer /> : <MusicPlayer />}
@@ -192,20 +192,20 @@ const Introduction = memo(() => {
 
             {/* Profile Image */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
+              initial={{ scale: 0.8, opacity: 0, y: -20 } as any}
+              animate={{ scale: 1, opacity: 1, y: 0 } as any}
               transition={{ delay: 0.4, duration: 1 }}
               className="relative flex-shrink-0"
             >
               <div className="relative w-64 h-64 sm:w-60 sm:h-60 lg:w-80 lg:h-80">
                 {/* Animated rings */}
                 <motion.div
-                  animate={{ rotate: 360 }}
+                  animate={{ rotate: 360 } as any}
                   transition={{ duration: 20, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
                   className="absolute inset-0 rounded-full border-2 border-dashed border-cyan-400/30"
                 ></motion.div>
                 <motion.div
-                  animate={{ rotate: -360 }}
+                  animate={{ rotate: -360 } as any}
                   transition={{ duration: 30, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
                   className="absolute inset-4 rounded-full border border-purple-400/20"
                 ></motion.div>
@@ -223,7 +223,7 @@ const Introduction = memo(() => {
                       src={intro.image}
                       alt="Profile"
                       className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
-                      whileHover={{ scale: 1.05 }}
+                      whileHover={{ scale: 1.05 } as any}
                       loading="eager"
                     />
                   </a>
@@ -231,12 +231,12 @@ const Introduction = memo(() => {
 
                 {/* Floating elements */}
                 <motion.div
-                  animate={{ y: [-10, 10, -10] }}
+                  animate={{ y: [-10, 10, -10] } as any}
                   transition={{ duration: 4, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
                   className="absolute -top-4 -right-4 w-8 h-8 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-full shadow-lg"
                 ></motion.div>
                 <motion.div
-                  animate={{ y: [10, -10, 10] }}
+                  animate={{ y: [10, -10, 10] } as any}
                   transition={{ duration: 3, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
                   className="absolute -bottom-4 -left-4 w-6 h-6 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full shadow-lg"
                 ></motion.div>

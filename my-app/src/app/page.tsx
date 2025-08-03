@@ -28,7 +28,7 @@ const SnowEffect = () => {
             left: snowflake.left,
             animationDelay: snowflake.animationDelay,
             animationDuration: snowflake.animationDuration,
-          }}
+          } as React.CSSProperties}
         />
       ))}
     </div>
