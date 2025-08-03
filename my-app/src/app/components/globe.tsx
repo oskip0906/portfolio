@@ -1,6 +1,7 @@
 "use client"
 import { useRef, useState, useEffect, useCallback } from "react"
-import { motion, AnimatePresence, useInView, type TargetAndTransition } from "framer-motion"
+import { motion, AnimatePresence, type TargetAndTransition } from "framer-motion"
+import { useInViewMobile } from "../hooks/useInViewMobile"
 import { X, PowerOff } from "lucide-react"
 import mapboxgl from "mapbox-gl"
 import "mapbox-gl/dist/mapbox-gl.css"
@@ -146,11 +147,7 @@ export default function Globe() {
   const map = useRef<mapboxgl.Map | null>(null)
   const markers = useRef<mapboxgl.Marker[]>([])
   const ref = useRef(null)
-  const inView = useInView(ref, { 
-    once: false,
-    amount: 0.3,
-    margin: "-100px 0px -100px 0px"
-  })
+  const inView = useInViewMobile(ref)
 
   useEffect(() => {
     fetch('/locations.json')

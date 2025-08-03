@@ -34,6 +34,38 @@ body {
     margin: 8px;
     padding: 6px;
   }
+
+  /* Improve mobile scroll behavior */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Ensure sections have proper spacing on mobile */
+  section {
+    scroll-margin-top: 20px;
+    margin-bottom: 3rem !important;
+    /* Ensure sections are visible on mobile */
+    min-height: auto;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  /* Reduce aggressive animations on mobile for better performance */
+  .snow {
+    display: none;
+  }
+
+  /* Fix viewport issues on mobile browsers */
+  body {
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+  }
+  
+  /* Ensure content is visible on mobile with dynamic viewport */
+  main {
+    min-height: calc(100vh - 64px);
+    min-height: calc(-webkit-fill-available - 64px);
+  }
 }
 
 .swiper-pagination {

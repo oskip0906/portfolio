@@ -1,7 +1,8 @@
 "use client"
 import type React from "react"
 import { useEffect, useState, useRef } from "react"
-import { motion, useInView } from "framer-motion"
+import { motion } from "framer-motion"
+import { useInViewMobile } from "../hooks/useInViewMobile"
 
 interface Experience {
   title: string
@@ -124,11 +125,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, index, isIn
 export default function Experiences() {
   const [experiences, setExperiences] = useState<Experience[]>([])
   const ref = useRef(null)
-  const inView = useInView(ref, { 
-    once: false,
-    amount: 0.3,
-    margin: "-100px 0px -100px 0px"
-  })
+  const inView = useInViewMobile(ref)
 
   useEffect(() => {
     const fetchData = async () => {
