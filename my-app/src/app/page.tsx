@@ -5,7 +5,8 @@ import Interests from "./components/interests"
 import Projects from "./components/projects"
 import Contact from "./components/contact"
 import NavBar from "./components/navbar"
-import Globe from "./components/globe"
+import ScrollSeparator from "./components/scroll-separator"
+import GlobeContainer from "./components/globe-container"
 
 // Memoized snow effect component
 const SnowEffect = () => {
@@ -65,10 +66,11 @@ export default function Home() {
 
       <main className="relative z-10 flex flex-col items-center w-full px-4 mt-16">
         <Introduction />
+        <ScrollSeparator />
         <Experiences />
         <Projects />
         <Interests />
-        <Globe/>
+        <GlobeContainer/>
         <Contact />
       </main>
 

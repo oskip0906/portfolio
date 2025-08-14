@@ -1,6 +1,6 @@
 "use client"
 import { useEffect, useState, useRef } from "react"
-import { motion, useInView } from "framer-motion"
+import { motion } from "framer-motion"
 
 interface Contact {
   type: string
@@ -12,11 +12,7 @@ export default function Contact() {
   const [contacts, setContacts] = useState<Contact[]>([])
   const [loading, setLoading] = useState(true)
   const ref = useRef(null)
-  const inView = useInView(ref, { 
-    once: false,
-    amount: 0.3,
-    margin: "-100px 0px -100px 0px"
-  })
+  const inView = true
 
   useEffect(() => {
     const fetchData = async () => {

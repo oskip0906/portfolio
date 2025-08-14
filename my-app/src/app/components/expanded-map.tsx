@@ -1,8 +1,7 @@
 "use client"
 import { useRef, useState, useEffect, useCallback } from "react"
-import { motion, AnimatePresence, type TargetAndTransition } from "framer-motion"
-import { useInViewMobile } from "../hooks/useInViewMobile"
-import { X, PowerOff } from "lucide-react"
+import { motion, AnimatePresence } from "framer-motion"
+import { X, PowerOff, Map } from "lucide-react"
 import mapboxgl from "mapbox-gl"
 import "mapbox-gl/dist/mapbox-gl.css"
 
@@ -46,6 +45,15 @@ function PhotoGallery({ location, onClose }: { location: Location; onClose: () =
       window.removeEventListener("keydown", handleKeyDown)
     }
   }, [onClose, prevPhoto, nextPhoto])
+
+  // Lock body scroll while gallery is open
+  useEffect(() => {
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = previousOverflow
+    }
+  }, [])
 
   return (
     <motion.div
@@ -113,7 +121,7 @@ function PhotoGallery({ location, onClose }: { location: Location; onClose: () =
 
           {/* Thumbnail Navigation */}
           {location.photos.length > 1 && (
-            <div className="flex gap-2 justify-center overflow-x-auto">
+            <div className="flex gap-2 justify-center overflow-x-auto overflow-y-hidden">
               {location.photos.map((photo, index) => (
                 <button
                   key={index}
@@ -138,21 +146,19 @@ function PhotoGallery({ location, onClose }: { location: Location; onClose: () =
   )
 }
 
-export default function Globe() {
+export default function ExpandedMap({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   const [locations, setLocations] = useState<Location[]>([])
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null)
   const [currentStyleIndex, setCurrentStyleIndex] = useState(0)
-  const [isGlobeActive, setIsGlobeActive] = useState(false)
   const mapContainer = useRef<HTMLDivElement | null>(null)
   const map = useRef<mapboxgl.Map | null>(null)
   const markers = useRef<mapboxgl.Marker[]>([])
-  const ref = useRef(null)
-  const inView = useInViewMobile(ref)
 
   useEffect(() => {
     fetch('/locations.json')
       .then(res => res.json())
-      .then(data => setLocations(data));
+      .then(data => setLocations(data))
+      .catch(err => console.error('Failed to load locations:', err))
   }, [])
 
   const createMarkerElement = (location: Location) => {
@@ -218,20 +224,23 @@ export default function Globe() {
   }
 
   useEffect(() => {
-    if (map.current || !mapContainer.current) return
+    if (!isOpen || !mapContainer.current || map.current) return
 
-    mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN
+    mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN || ''
 
     // Initialize map
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: mapStyles[currentStyleIndex].style,
       center: [-79.9, 43.5],
-      zoom: 0.5,
+      zoom: 1,
     })
 
     // Add navigation controls
     map.current.addControl(new mapboxgl.NavigationControl(), 'top-right')
+
+    // Disable keyboard interactions
+    map.current.keyboard.disable()
 
     // Handle map resize
     const resizeObserver = new ResizeObserver(() => {
@@ -249,7 +258,7 @@ export default function Globe() {
         map.current = null
       }
     }
-  }, [])
+  }, [isOpen])
 
   useEffect(() => {
     if (!map.current || locations.length === 0) return
@@ -269,31 +278,51 @@ export default function Globe() {
     }
   }, [locations])
 
-  return (
-    <section ref={ref} id="globe" className="w-full max-w-7xl mx-auto px-4 mb-12">
-      <div className="relative flex flex-col items-center justify-center py-12" onClick={() => setIsGlobeActive(true)}>
-        <motion.div
-          initial={{ opacity: 0, y: 50 } as any}
-          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 } as any}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="text-center mb-8"
-        >
-          <h2 className="text-4xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-4">
-            My Journey Around the World
-          </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-cyan-400 to-purple-400 rounded-full mx-auto mb-6"></div>
-          <p className="text-gray-300 text-base lg:text-lg backdrop-blur-sm bg-black/20 rounded-lg p-3 max-w-2xl mx-auto mx-2">
-            Explore the places I've been and the photos I took on my phone
-          </p>
-        </motion.div>
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    if (isOpen) {
+      const previousOverflow = document.body.style.overflow
+      document.body.style.overflow = 'hidden'
+      return () => {
+        document.body.style.overflow = previousOverflow
+      }
+    }
+  }, [isOpen])
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 } as any}
-          animate={inView ? { opacity: isGlobeActive ? 1 : 0.5, y: 0 } : { opacity: 0, y: 20 } as any}
-          transition={{ delay: 0.1, duration: 0.3, ease: "easeOut" }}
-          className={`w-full h-[60vh] md:h-[70vh] lg:h-[75vh] rounded-2xl overflow-hidden bg-gradient-to-r from-red-500/50 via-yellow-500/50 via-green-500/50 via-blue-500/50 via-indigo-500/50 to-purple-500/50 p-1 relative transition-all duration-1000 ${isGlobeActive ? 'animate-rainbow-glow' : 'pointer-events-none'}`}
-        >
-          <div ref={mapContainer} className="w-full h-full rounded-2xl bg-black" />
+  if (!isOpen) return null
+
+  return (
+          <motion.div
+        initial={{ opacity: 0 } as any}
+        animate={{ opacity: 1 } as any}
+        exit={{ opacity: 0 } as any}
+        transition={{ duration: 0.3 }}
+        className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[10000] flex items-center justify-center p-0"
+      >
+      <motion.div
+        initial={{ scale: 0.9, opacity: 0 } as any}
+        animate={{ scale: 1, opacity: 1 } as any}
+        exit={{ scale: 0.9, opacity: 0 } as any}
+        transition={{ duration: 0.3 }}
+        className="relative w-full h-full overflow-hidden"
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between p-4 backdrop-blur-sm border-b border-white/10">
+          <div className="flex items-center gap-3">
+            <Map className="text-blue-400" size={24} />
+            <h2 className="text-xl font-semibold text-white">Explore My Journey through Photos</h2>
+          </div>
+          <button
+            onClick={onClose}
+            className="p-2 rounded-lg hover:bg-white/20 text-white hover:text-gray-200 transition-colors"
+          >
+            <X size={24} />
+          </button>
+        </div>
+
+        {/* Map Container */}
+        <div className="relative w-full h-full">
+          <div ref={mapContainer} className="w-full h-full" />
 
           {/* Map Style Selector */}
           <div className="absolute top-4 left-4 z-10">
@@ -301,10 +330,7 @@ export default function Globe() {
               {mapStyles.map((style, index) => (
                 <button
                   key={style.id}
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    changeMapStyle(index)
-                  }}
+                  onClick={() => changeMapStyle(index)}
                   className={`px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 ${currentStyleIndex === index
                     ? 'bg-blue-500 text-white shadow-lg'
                     : 'bg-white/20 text-white hover:bg-white/30'
@@ -315,28 +341,17 @@ export default function Globe() {
               ))}
             </div>
           </div>
-
-          {/* Deactivate Button */}
-          {isGlobeActive && (
-            <div className="absolute top-4 right-16 z-10">
-              <button
-                onClick={(e) => {
-                  e.stopPropagation()
-                  setIsGlobeActive(false)
-                }}
-                className="bg-black/80 backdrop-blur-sm rounded-lg p-2 text-white hover:bg-white/30 transition-all duration-200"
-                title="Deactivate Globe"
-              >
-                <PowerOff size={20} />
-              </button>
-            </div>
-          )}
-        </motion.div>
-      </div>
+        </div>
+      </motion.div>
 
       <AnimatePresence>
-        {selectedLocation && <PhotoGallery location={selectedLocation} onClose={() => setSelectedLocation(null)} />}
+        {selectedLocation && (
+          <PhotoGallery 
+            location={selectedLocation} 
+            onClose={() => setSelectedLocation(null)} 
+          />
+        )}
       </AnimatePresence>
-    </section>
+    </motion.div>
   )
 }

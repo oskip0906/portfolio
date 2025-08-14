@@ -121,7 +121,7 @@ const Introduction = memo(() => {
                 className="mb-8"
               >
                 <div className="text-base sm:text-md md:text-lg text-gray-300 leading-relaxed backdrop-blur-sm bg-white/5 rounded-2xl p-4 md:p-6 border border-white/10 overflow-visible">
-                  <div className="flex items-start min-h-[75px]">
+                  <div className="flex items-start min-h-[120px]">
                     <Typewriter
                       words={intro.bio.split(";")}
                       loop={false}

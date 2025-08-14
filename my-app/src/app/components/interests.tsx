@@ -1,7 +1,6 @@
 "use client"
 import { useEffect, useState, useRef } from "react"
 import { motion } from "framer-motion"
-import { useInViewMobile } from "../hooks/useInViewMobile"
 import { Sparkles } from "lucide-react"
 
 interface Interest {
@@ -13,7 +12,7 @@ interface Interest {
 export default function Interests() {
   const [interests, setInterests] = useState<Interest[]>([])
   const ref = useRef(null)
-  const inView = useInViewMobile(ref)
+  const inView = true
 
   useEffect(() => {
     const fetchData = async () => {
@@ -57,7 +56,7 @@ export default function Interests() {
                 : ({ opacity: 0, y: 100, scale: 0.8 } as any)
             }
             transition={{
-              delay: index * 0.15,
+              delay: index * 0.2,
               duration: 0.8,
               ease: "easeOut",
               opacity: { duration: 0.6 },

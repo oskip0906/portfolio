@@ -2,7 +2,6 @@
 import type React from "react"
 import { useEffect, useState, useRef } from "react"
 import { motion } from "framer-motion"
-import { useInViewMobile } from "../hooks/useInViewMobile"
 
 interface Experience {
   title: string
@@ -125,7 +124,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, index, isIn
 export default function Experiences() {
   const [experiences, setExperiences] = useState<Experience[]>([])
   const ref = useRef(null)
-  const inView = useInViewMobile(ref)
+  const inView = true
 
   useEffect(() => {
     const fetchData = async () => {

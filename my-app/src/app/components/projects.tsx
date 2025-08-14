@@ -1,7 +1,6 @@
 "use client"
 import { useEffect, useState, useRef } from "react"
 import { motion } from "framer-motion"
-import { useInViewMobile } from "../hooks/useInViewMobile"
 import { Swiper, SwiperSlide } from "swiper/react"
 import { Navigation, Pagination, EffectCoverflow } from "swiper/modules"
 import { ExternalLink, Calendar } from "lucide-react"
@@ -21,7 +20,7 @@ interface Project {
 export default function Projects() {
   const [projects, setProjects] = useState<Project[]>([])
   const ref = useRef(null)
-  const inView = useInViewMobile(ref)
+  const inView = true
 
   useEffect(() => {
     const fetchData = async () => {

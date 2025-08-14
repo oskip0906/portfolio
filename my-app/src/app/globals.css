@@ -134,3 +134,12 @@ body {
 .animate-rainbow-glow {
   animation: rainbow-glow 5s linear infinite;
 }
+
+/* Hide vertical scrollbars globally while preserving scroll */
+html, body {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and old Edge */
+}
+body::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, newer Edge */
+}
