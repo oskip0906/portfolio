@@ -7,7 +7,7 @@ export default function ScrollSeparator() {
 	const inView = true
 
 	return (
-		<section ref={ref} className="w-full max-w-7xl mx-auto px-4 my-12 h-[40vh] md:h-[25vh] flex items-center justify-center">
+		<section ref={ref} className="w-full max-w-7xl mx-auto px-4 h-[40vh] md:h-[25vh] flex items-center justify-center">
 			<motion.div
 				initial={{ opacity: 0, y: 20, scale: 0.96 } as any}
 				animate={inView ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 20, scale: 0.96 } as any}

@@ -25,10 +25,10 @@ export default function GlobePreview({ onGlobeClick }: { onGlobeClick: () => voi
 	}, [])
 
 	return (
-		<section id="globe" className="w-full max-w-7xl mx-auto px-4 py-16 md:py-24 mb-10">
+		<section id="globe" className="w-full max-w-7xl mx-auto px-4 mb-12">
 			<div className="text-center mb-8">
         <h2 className="text-5xl font-bold bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-4 mt-6">
-          My Journey Around the World
+          Explore My Journey
         </h2>
         <div className="w-24 h-1 bg-gradient-to-r from-cyan-400 to-purple-400 rounded-full mx-auto mb-8"></div>
         <p className="text-xl text-gray-300 max-w-2xl mx-auto">

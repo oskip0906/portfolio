@@ -1,8 +1,8 @@
 "use client"
 import { useEffect, useState, useCallback, memo } from "react"
 import { motion } from "framer-motion"
-import MusicPlayer from "./music-player"
-import SpotifyPlayer from "./spotify"
+import MusicPlayer from "../music-player"
+import SpotifyPlayer from "../spotify"
 import { Typewriter } from "react-simple-typewriter"
 import { Music, Headphones } from "lucide-react"
 
@@ -90,9 +90,9 @@ const Introduction = memo(() => {
             {/* Content */}
             <div className="flex-1 text-center lg:text-left w-full">
               <motion.div
-                initial={{ opacity: 0, x: -50 } as any}
-                animate={{ opacity: 1, x: 0 } as any}
-                transition={{ delay: 0.3, duration: 0.8 }}
+                initial={{ opacity: 0 } as any}
+                animate={{ opacity: 1 } as any}
+                transition={{ delay: 0.3, duration: 0.6 }}
                 className="mb-6"
               >
                 <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-4 leading-tight pb-2">
@@ -102,9 +102,9 @@ const Introduction = memo(() => {
               </motion.div>
 
               <motion.div
-                initial={{ opacity: 0, x: -30 } as any}
-                animate={{ opacity: 1, x: 0 } as any}
-                transition={{ delay: 0.5, duration: 0.8 }}
+                initial={{ opacity: 0 } as any}
+                animate={{ opacity: 1 } as any}
+                transition={{ delay: 0.5, duration: 0.6 }}
                 className="mb-8"
               >
                 <p className="text-2xl text-gray-200 font-light leading-relaxed">

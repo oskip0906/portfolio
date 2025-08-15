@@ -1,34 +1,25 @@
-import { useMemo } from "react"
-import Introduction from "./components/introduction"
-import Experiences from "./components/experiences"
-import Interests from "./components/interests"
-import Projects from "./components/projects"
-import Contact from "./components/contact"
+import Introduction from "./components/sections/introduction"
+import Experiences from "./components/sections/experiences"
+import Interests from "./components/sections/interests"
+import Projects from "./components/sections/projects"
+import Contact from "./components/sections/contact"
 import NavBar from "./components/navbar"
-import ScrollSeparator from "./components/scroll-separator"
-import GlobeContainer from "./components/globe-container"
+import ScrollSeparator from "./components/add-ons/scroll-separator"
+import GlobeContainer from "./components/sections/globe-container"
+import FadeInSection from "./components/add-ons/fade-in-section"
 
-// Memoized snow effect component
+// Snow effect component
 const SnowEffect = () => {
-  const snowflakes = useMemo(() => 
-    Array.from({ length: 50 }).map((_, i) => ({
-      id: i,
-      left: `${Math.random() * 100}%`,
-      animationDelay: `${Math.random() * 10}s`,
-      animationDuration: `${8 + Math.random() * 4}s`,
-    })), []
-  );
-
   return (
     <div className="fixed inset-0 overflow-hidden pointer-events-none">
-      {snowflakes.map((snowflake) => (
+      {Array.from({ length: 50 }).map((_, i) => (
         <div
-          key={`snow-${snowflake.id}`}
+          key={`snow-${i}`}
           className="snow"
           style={{
-            left: snowflake.left,
-            animationDelay: snowflake.animationDelay,
-            animationDuration: snowflake.animationDuration,
+            left: `${Math.random() * 100}%`,
+            animationDelay: `${Math.random() * 10}s`,
+            animationDuration: `${8 + Math.random() * 4}s`,
           } as React.CSSProperties}
         />
       ))}
@@ -37,7 +28,7 @@ const SnowEffect = () => {
 };
 
 export default function Home() {
-  const currentYear = useMemo(() => new Date().getFullYear(), []);
+  const currentYear = 2024;
 
   return (
     <div className="relative min-h-screen w-full overflow-x-hidden">
@@ -65,20 +56,51 @@ export default function Home() {
       <NavBar />
 
       <main className="relative z-10 flex flex-col items-center w-full px-4 mt-16">
-        <Introduction />
-        <ScrollSeparator />
-        <Experiences />
-        <Projects />
-        <Interests />
-        <GlobeContainer/>
-        <Contact />
+        {/* Introduction - no extra spacing */}
+        <section className="w-full">
+          <Introduction />
+        </section>
+        
+        {/* All other components wrapped in FadeInSection for scroll trigger */}
+        <FadeInSection direction="up" rootMargin="0px 0px -300px 0px" className="w-full">
+          <section className="pt-20 w-full">
+            <ScrollSeparator />
+          </section>
+        </FadeInSection>
+        
+        <FadeInSection direction="up" className="w-full" rootMargin="0px 0px -300px 0px">
+          <section id="experiences" className="pt-10 w-full">
+            <Experiences />
+          </section>
+        </FadeInSection>
+        
+        <FadeInSection direction="up" className="w-full" rootMargin="0px 0px -300px 0px">
+          <section id="projects" className="pt-10 w-full">
+            <Projects />
+          </section>
+        </FadeInSection>
+        
+        <FadeInSection direction="up" className="w-full" rootMargin="0px 0px -300px 0px">
+          <section id="interests" className="pt-10 w-full">
+            <Interests />
+          </section>
+        </FadeInSection>
+        
+        <FadeInSection direction="scale" className="w-full" rootMargin="0px 0px -300px 0px">
+          <section id="globe" className="pt-10 w-full">
+            <GlobeContainer/>
+          </section>
+        </FadeInSection>
+        
+        <FadeInSection direction="scale" className="w-full" rootMargin="0px 0px -300px 0px">
+          <section id="contact" className="pt-20 w-full">
+            <Contact />
+          </section>
+        </FadeInSection>
       </main>
 
-      <footer className="relative flex items-center justify-center text-sm text-gray-400 mt-20 mb-10">
-        <div className="backdrop-blur-sm bg-white/5 px-6 py-3 rounded-full border border-white/10 hover:bg-white/10 transition-all duration-300">
-          <p>&copy; {currentYear} Oscar Pang. All rights reserved.</p>
-        </div>
-      </footer>
+      <div className="mb-20"></div>
+
     </div>
   )
 }

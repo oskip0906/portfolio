@@ -310,7 +310,7 @@ export default function ExpandedMap({ isOpen, onClose }: { isOpen: boolean; onCl
         <div className="flex items-center justify-between p-4 backdrop-blur-sm border-b border-white/10">
           <div className="flex items-center gap-3">
             <Map className="text-blue-400" size={24} />
-            <h2 className="text-xl font-semibold text-white">Explore My Journey through Photos</h2>
+            <h2 className="text-xl font-semibold text-white">Explore My Photos</h2>
           </div>
           <button
             onClick={onClose}

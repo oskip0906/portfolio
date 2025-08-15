@@ -43,9 +43,9 @@ export default function Contact() {
   return (
     <section ref={ref} id="contact" className="w-full max-w-7xl mx-auto px-4 mb-12">
       <motion.div
-        initial={{ opacity: 0, y: 50 } as any}
-        animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 } as any}
-        transition={{ duration: 0.8 }}
+        initial={{ opacity: 0 } as any}
+        animate={inView ? { opacity: 1 } : { opacity: 0 } as any}
+        transition={{ duration: 0.6, ease: "easeOut" }}
         className="text-center mb-10"
       >
         <h2 className="text-5xl font-bold bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-4">
@@ -65,15 +65,12 @@ export default function Contact() {
           {contacts.map((contact, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 100, scale: 0.8 } as any}
-              animate={inView ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 100, scale: 0.8 } as any}
+              initial={{ opacity: 0 } as any}
+              animate={inView ? { opacity: 1 } : { opacity: 0 } as any}
               transition={{ 
-                delay: index * 0.1, 
-                duration: 0.6, 
-                ease: "easeOut",
-                opacity: { duration: 0.4 },
-                y: { duration: 0.6 },
-                scale: { duration: 0.6 }
+                delay: index * 0.05, 
+                duration: 0.4, 
+                ease: "easeOut"
               }}
               className="flex flex-col items-center group"
             >
@@ -101,7 +98,7 @@ export default function Contact() {
               <motion.span
                 initial={{ opacity: 0 } as any}
                 animate={inView ? { opacity: 1 } : { opacity: 0 } as any}
-                transition={{ delay: 0.3 + index * 0.1, duration: 0.4 }}
+                transition={{ delay: 0.1 + index * 0.05, duration: 0.3 }}
                 className="mt-4 text-sm font-medium text-gray-300 group-hover:text-white transition-colors duration-200 capitalize"
               >
                 {contact.type}
@@ -113,9 +110,9 @@ export default function Contact() {
 
       {/* Bottom Decoration */}
       <motion.div
-        initial={{ opacity: 0, y: 20 } as any}
-        animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 } as any}
-        transition={{ duration: 0.8, delay: 0.5 }}
+        initial={{ opacity: 0 } as any}
+        animate={inView ? { opacity: 1 } : { opacity: 0 } as any}
+        transition={{ duration: 0.4, delay: 0.2 }}
         className="flex justify-center"
       >
         <div className="flex space-x-3">
