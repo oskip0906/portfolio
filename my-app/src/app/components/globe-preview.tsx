@@ -6,6 +6,7 @@ const LazyGlobe = dynamic(() => import("./lazy-globe"), { ssr: false })
 
 export default function GlobePreview({ onGlobeClick }: { onGlobeClick: () => void }) {
 	const containerRef = useRef<HTMLDivElement | null>(null)
+	const globeContainerRef = useRef<HTMLDivElement | null>(null)
 	const [dimensions, setDimensions] = useState<{ width: number; height: number }>({ width: 320, height: 320 })
 
 	useEffect(() => {
@@ -24,6 +25,28 @@ export default function GlobePreview({ onGlobeClick }: { onGlobeClick: () => voi
 		return () => resizeObserver.disconnect()
 	}, [])
 
+	useEffect(() => {
+		const globeContainer = globeContainerRef.current
+		if (!globeContainer) return
+
+		const handleWheel = (e: WheelEvent) => {
+			e.preventDefault()
+		}
+
+		const handleTouchMove = (e: TouchEvent) => {
+			e.preventDefault()
+		}
+
+		// Add event listeners with passive: false to allow preventDefault
+		globeContainer.addEventListener('wheel', handleWheel, { passive: false })
+		globeContainer.addEventListener('touchmove', handleTouchMove, { passive: false })
+
+		return () => {
+			globeContainer.removeEventListener('wheel', handleWheel)
+			globeContainer.removeEventListener('touchmove', handleTouchMove)
+		}
+	}, [])
+
 	return (
 		<section id="globe" className="w-full max-w-7xl mx-auto px-4 mb-12">
 			<div className="text-center mb-8">
@@ -40,9 +63,8 @@ export default function GlobePreview({ onGlobeClick }: { onGlobeClick: () => voi
 				className="flex items-center justify-center"
 			>
 				<div
+					ref={globeContainerRef}
 					onClick={onGlobeClick}
-					onWheel={(e) => e.preventDefault()}
-					onTouchMove={(e) => e.preventDefault()}
 					className="relative rounded-full p-[3px] bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 shadow-[0_0_40px_rgba(147,51,234,0.35)] cursor-pointer transition-transform duration-300 hover:scale-105 overscroll-none touch-none"
 				>
 					<div ref={containerRef} className="rounded-full bg-black/60 backdrop-blur-md overflow-hidden w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 lg:w-96 lg:h-96">

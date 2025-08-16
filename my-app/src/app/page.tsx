@@ -63,43 +63,43 @@ export default function Home() {
         
         {/* All other components wrapped in FadeInSection for scroll trigger */}
         <FadeInSection direction="up" rootMargin="0px 0px -300px 0px" className="w-full">
-          <section className="pt-20 w-full">
+          <section className="pt-12 md:pt-16 w-full">
             <ScrollSeparator />
           </section>
         </FadeInSection>
         
         <FadeInSection direction="up" className="w-full" rootMargin="0px 0px -300px 0px">
-          <section id="experiences" className="pt-10 w-full">
+          <section id="experiences" className="sm:pt-4 md:pt-8 w-full">
             <Experiences />
           </section>
         </FadeInSection>
         
         <FadeInSection direction="up" className="w-full" rootMargin="0px 0px -300px 0px">
-          <section id="projects" className="pt-10 w-full">
+          <section id="projects" className="sm:pt-4 md:pt-8 w-full">
             <Projects />
           </section>
         </FadeInSection>
         
         <FadeInSection direction="up" className="w-full" rootMargin="0px 0px -300px 0px">
-          <section id="interests" className="pt-10 w-full">
+          <section id="interests" className="sm:pt-4 md:pt-8 w-full">
             <Interests />
           </section>
         </FadeInSection>
         
         <FadeInSection direction="scale" className="w-full" rootMargin="0px 0px -300px 0px">
-          <section id="globe" className="pt-10 w-full">
+          <section id="globe" className="sm:pt-6 md:pt-10 w-full">
             <GlobeContainer/>
           </section>
         </FadeInSection>
         
         <FadeInSection direction="scale" className="w-full" rootMargin="0px 0px -300px 0px">
-          <section id="contact" className="pt-20 w-full">
+          <section id="contact" className="sm:pt-6 md:pt-10 w-full">
             <Contact />
           </section>
         </FadeInSection>
       </main>
 
-      <div className="mb-20"></div>
+      <div className="mb-8"></div>
 
     </div>
   )
