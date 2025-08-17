@@ -16,7 +16,7 @@ const NavBar = memo(() => {
     if (menuOpen) {
       timeoutRef.current = setTimeout(() => {
         setMenuOpen(false);
-      }, 2000);
+      }, 3000);
     }
     
     return () => {
@@ -65,10 +65,12 @@ const NavBar = memo(() => {
         <button
           onClick={toggleMenu}
           onTouchStart={toggleMenu}
-          className="w-20 h-20 rounded-full bg-gradient-to-br from-purple-600/50 to-blue-500/50 text-white text-3xl flex items-center justify-center shadow-lg focus:outline-none transition-all duration-300 ease-in-out hover:scale-110 hover:shadow-xl"
+          className="w-20 h-20 rounded-full bg-gradient-to-br from-cyan-500/50 to-purple-500/50 text-white text-3xl flex items-center justify-center shadow-lg focus:outline-none transition-all duration-300 ease-in-out hover:scale-110 hover:shadow-xl backdrop-blur-sm border border-white/20"
           aria-label="Toggle Menu"
           aria-expanded={menuOpen}
-          style={{ boxShadow: "0 4px 15px rgba(0, 0, 0, 0.2)" } as any}
+          style={{ 
+            boxShadow: "0 4px 15px rgba(0, 0, 0, 0.3), 0 0 20px rgba(34, 211, 238, 0.3)" 
+          } as any}
         >
           {menuOpen ? "✕" : "☰"}
         </button>
@@ -76,28 +78,33 @@ const NavBar = memo(() => {
         <AnimatePresence>
           {menuOpen && (
             <motion.div
-              className="absolute top-24 left-1/2 transform -translate-x-1/2 mt-2 w-60 rounded-lg bg-sky-100/20 dark:bg-sky-800/80 text-gray-800 dark:text-white shadow-xl flex flex-col items-start justify-center space-y-1 p-3 backdrop-blur-sm"
+              className="absolute top-24 left-1/2 transform -translate-x-1/2 mt-2 w-56 rounded-xl backdrop-blur-xl bg-gradient-to-br from-slate-800/70 to-slate-700/60 border border-white/20 shadow-2xl overflow-hidden"
               style={{
-                boxShadow:
-                  "0 10px 25px rgba(0, 0, 0, 0.1), 0 5px 10px rgba(0, 0, 0, 0.05)",
+                boxShadow: "0 10px 25px rgba(0, 0, 0, 0.3), 0 0 20px rgba(34, 211, 238, 0.2)",
               } as any}
               initial={{ scale: 0.9, opacity: 0, y: -10 } as any}
               animate={{ scale: 1, opacity: 1, y: 0 } as any}
               exit={{ scale: 0.9, opacity: 0, y: -10 } as any}
-              transition={{ duration: 0.1, ease: "easeOut" }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
               role="menu"
             >
-              {menuItems.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={item.action}
-                  onTouchStart={item.action}
-                  className="w-full text-left px-4 py-2.5 rounded-md hover:scale-110 transition-transform flex items-center"
-                  role="menuitem"
-                >
-                  <span className="mr-2">{item.icon}</span> {item.label}
-                </button>
-              ))}
+              <div className="py-2">
+                {menuItems.map((item, index) => (
+                  <motion.button
+                    key={item.id}
+                    onClick={item.action}
+                    onTouchStart={item.action}
+                    className="w-full text-left px-4 py-2.5 hover:bg-gradient-to-r hover:from-cyan-500/20 hover:to-purple-500/20 transition-all duration-200 flex items-center text-gray-100 hover:text-white border-l-2 border-transparent hover:border-l-cyan-400"
+                    role="menuitem"
+                    initial={{ opacity: 0, x: -20 } as any}
+                    animate={{ opacity: 1, x: 0 } as any}
+                    transition={{ delay: index * 0.05, duration: 0.2 }}
+                  >
+                    <span className="mr-3 text-xl">{item.icon}</span>
+                    <span className="text-base font-medium">{item.label}</span>
+                  </motion.button>
+                ))}
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
