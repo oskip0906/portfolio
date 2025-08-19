@@ -90,19 +90,16 @@ const NavBar = memo(() => {
             >
               <div className="py-2">
                 {menuItems.map((item, index) => (
-                  <motion.button
+                  <button
                     key={item.id}
                     onClick={item.action}
                     onTouchStart={item.action}
                     className="w-full text-left px-4 py-2.5 hover:bg-gradient-to-r hover:from-cyan-500/20 hover:to-purple-500/20 transition-all duration-200 flex items-center text-gray-100 hover:text-white border-l-2 border-transparent hover:border-l-cyan-400"
                     role="menuitem"
-                    initial={{ opacity: 0, x: -20 } as any}
-                    animate={{ opacity: 1, x: 0 } as any}
-                    transition={{ delay: index * 0.05, duration: 0.2 }}
                   >
                     <span className="mr-3 text-xl">{item.icon}</span>
                     <span className="text-base font-medium">{item.label}</span>
-                  </motion.button>
+                  </button>
                 ))}
               </div>
             </motion.div>
