@@ -47,6 +47,19 @@ export default function GlobePreview({ onGlobeClick }: { onGlobeClick: () => voi
 		}
 	}, [])
 
+	useEffect(() => {
+		const urls = [
+			"https://unpkg.com/three-globe@2.29.0/example/img/earth-blue-marble.jpg",
+			"https://unpkg.com/three-globe@2.29.0/example/img/earth-topology.png",
+		]
+		urls.forEach((url) => {
+			const img = new Image()
+			img.crossOrigin = "anonymous"
+			img.decoding = "async"
+			img.src = url
+		})
+	}, [])
+
 	return (
 		<section id="globe" className="w-full max-w-7xl mx-auto px-4 mb-12">
 			<div className="text-center mb-8">

@@ -27,8 +27,9 @@ export default function LazyGlobe({ width, height }: { width: number; height: nu
 			atmosphereColor="lightskyblue"
 			atmosphereAltitude={0.2}
 			enablePointerInteraction={false}
-			globeImageUrl="//unpkg.com/three-globe/example/img/earth-blue-marble.jpg"
-			bumpImageUrl="//unpkg.com/three-globe/example/img/earth-topology.png"
+			rendererConfig={{ antialias: true, powerPreference: "high-performance" }}
+			globeImageUrl="https://unpkg.com/three-globe@2.29.0/example/img/earth-blue-marble.jpg"
+			bumpImageUrl="https://unpkg.com/three-globe@2.29.0/example/img/earth-topology.png"
 		/>
 	)
 } 

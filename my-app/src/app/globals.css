@@ -2,30 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Performance optimizations */
-* {
-  box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
 body {
   background: oklch(0.21 0.034 264.665);
-  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
   overflow-x: hidden;
   margin: 0;
   padding: 0;
-  /* Prevent layout shifts */
-  min-height: 100vh;
-  /* Improve rendering performance */
-  will-change: auto;
+  box-sizing: border-box;
 }
 
-/* Component optimizations */
 .pagination-button {
   font-size: 2px;
   color: #fff;
@@ -33,14 +18,12 @@ body {
   margin: 12px;
   padding: 10px;
   border-radius: 50%;
-  transition: all 0.2s ease;
 }
 
 .pagination-button:hover {
-  transform: scale(1.1);
+  cursor:pointer;
 }
 
-/* Responsive improvements */
 @media (max-width: 640px) {
   .swiper-button-prev,
   .swiper-button-next {
@@ -60,11 +43,11 @@ body {
   /* Ensure sections have proper spacing on mobile */
   section {
     scroll-margin-top: 20px;
-    margin-bottom: 1.5rem !important;
+    margin-bottom: 3rem !important;
     /* Ensure sections are visible on mobile */
     min-height: auto;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
   }
 
   /* Reduce aggressive animations on mobile for better performance */
@@ -83,18 +66,8 @@ body {
     min-height: calc(100vh - 64px);
     min-height: calc(-webkit-fill-available - 64px);
   }
-
-  /* Optimize animations on mobile */
-  @media (prefers-reduced-motion: reduce) {
-    * {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-    }
-  }
 }
 
-/* Swiper optimizations */
 .swiper-pagination {
   margin-top: 3rem !important;
   position: relative !important;
@@ -104,15 +77,12 @@ body {
   width: 15px !important;
   height: 15px !important;
   background-color: #6b7280 !important;
-  transition: all 0.3s ease !important;
 }
 
 .swiper-pagination-bullet-active {
   background-color: #ffffff !important;
-  transform: scale(1.2);
 }
 
-/* Optimized snow animation */
 .snow {
   position: absolute;
   width: 3px;
@@ -121,22 +91,20 @@ body {
   background: linear-gradient(30deg, #2345a3, #2563eb, #60a5fa, #93c5fd, #dde6ec);
   box-shadow: 0 0 5px rgba(206, 196, 196, 0.8);
   animation: falling linear infinite;
-  animation-delay: 2s;
-  opacity: 0;
-  will-change: transform, opacity;
-  transform: translateZ(0);
+  animation-delay: 2s; /* Add delay before animation starts */
+  opacity: 0; /* Start invisible */
 } 
 
 @keyframes falling {
   0% {
-    transform: translateY(0) translateZ(0);
+    transform: translateY(0);
     opacity: 0;
   }
   10% {
     opacity: 1;
   }
   100% {
-    transform: translateY(500px) translateZ(0);
+    transform: translateY(500px);
     opacity: 0;
   }
 }
@@ -167,20 +135,11 @@ body {
   animation: rainbow-glow 5s linear infinite;
 }
 
-/* Performance optimizations for animations */
-@media (prefers-reduced-motion: no-preference) {
-  .animate-blob,
-  .animate-float,
-  .animate-float-delayed,
-  .animate-grid-move,
-  .animate-pulse-slow {
-    will-change: transform;
-    transform: translateZ(0);
-  }
+/* Hide vertical scrollbars globally while preserving scroll */
+html, body {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and old Edge */
 }
-
-/* Ensure root elements never show scrollbars */
-:root {
-  scrollbar-width: none !important;
-  -ms-overflow-style: none !important;
+body::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, newer Edge */
 }

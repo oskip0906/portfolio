@@ -3,7 +3,7 @@ import { useEffect, useState, useRef } from "react"
 import { motion } from "framer-motion"
 import { Swiper, SwiperSlide } from "swiper/react"
 import { Navigation, Pagination, EffectCoverflow } from "swiper/modules"
-import { ExternalLink, Calendar } from "lucide-react"
+import { ExternalLink, Calendar, ChevronLeft, ChevronRight } from "lucide-react"
 import "swiper/css"
 import "swiper/css/navigation"
 import "swiper/css/pagination"
@@ -21,6 +21,8 @@ export default function Projects() {
   const [projects, setProjects] = useState<Project[]>([])
   const ref = useRef(null)
   const inView = true
+  const prevRef = useRef<HTMLButtonElement | null>(null)
+  const nextRef = useRef<HTMLButtonElement | null>(null)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -55,18 +57,43 @@ export default function Projects() {
         initial={{ opacity: 0, scale: 0.9, y: 50 } as any}
         animate={inView ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.9, y: 50 } as any}
         transition={{ delay: 0.3, duration: 0.8 }}
+        className="relative"
       >
+        <motion.button
+          ref={prevRef}
+          aria-label="Previous slide"
+          whileHover={{ scale: 1.05 } as any}
+          whileTap={{ scale: 0.95 } as any}
+          className="hidden sm:flex absolute top-1/2 -left-2 md:-left-6 xl:-left-10 z-20 items-center justify-center h-12 w-12 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white shadow-xl hover:shadow-[0_0_35px_rgba(34,211,238,0.65)] hover:ring-2 hover:ring-cyan-400/50 transition focus:outline-none"
+        >
+          <ChevronLeft size={22} />
+        </motion.button>
+        <motion.button
+          ref={nextRef}
+          aria-label="Next slide"
+          whileHover={{ scale: 1.05 } as any}
+          whileTap={{ scale: 0.95 } as any}
+          className="hidden sm:flex absolute top-1/2 -right-2 md:-right-6 xl:-right-10 z-20 items-center justify-center h-12 w-12 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white shadow-xl hover:shadow-[0_0_35px_rgba(168,85,247,0.65)] hover:ring-2 hover:ring-purple-400/50 transition focus:outline-none"
+        >
+          <ChevronRight size={22} />
+        </motion.button>
         <Swiper
           modules={[Navigation, Pagination, EffectCoverflow]}
           effect="coverflow"
           grabCursor={true}
           centeredSlides={true}
           slidesPerView="auto"
-          slideToClickedSlide={true}
+          slideToClickedSlide={false}
           initialSlide={1}
-          navigation={{
-            nextEl: ".swiper-button-next",
-            prevEl: ".swiper-button-prev",
+          navigation={{ prevEl: prevRef.current, nextEl: nextRef.current } as any}
+          onBeforeInit={(swiper) => {
+            const navigation = swiper.params.navigation as any
+            navigation.prevEl = prevRef.current
+            navigation.nextEl = nextRef.current
+          }}
+          onInit={(swiper) => {
+            swiper.navigation.init()
+            swiper.navigation.update()
           }}
           pagination={{
             clickable: true,
