@@ -2,15 +2,7 @@
 import type React from "react"
 import { useEffect, useState, useRef } from "react"
 import { motion } from "framer-motion"
-
-interface Experience {
-  title: string
-  company: string
-  date: string
-  description: string
-  image: string
-  link: string
-}
+import { getExperiences, type Experience } from "../../../lib/database"
 
 interface ExperienceCardProps {
   experience: Experience
@@ -129,9 +121,8 @@ export default function Experiences() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("/experiences.json")
-        const data = await response.json()
-        setExperiences(data.experiences)
+        const data = await getExperiences()
+        setExperiences(data)
       } catch (error) {
         console.error("Error fetching data:", error)
       }

@@ -2,15 +2,9 @@
 import { useRef, useState, useEffect, useCallback } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { X, PowerOff, Map } from "lucide-react"
+import { getLocations, type Location } from "@/lib/database"
 import mapboxgl from "mapbox-gl"
 import "mapbox-gl/dist/mapbox-gl.css"
-
-interface Location {
-  id: number
-  name: string
-  coordinates: [number, number]
-  photos: string[]
-}
 
 const mapStyles = [
   { id: 'Standard', name: 'Standard', style: 'mapbox://styles/mapbox/standard' },
@@ -155,10 +149,16 @@ export default function ExpandedMap({ isOpen, onClose }: { isOpen: boolean; onCl
   const markers = useRef<mapboxgl.Marker[]>([])
 
   useEffect(() => {
-    fetch('/locations.json')
-      .then(res => res.json())
-      .then(data => setLocations(data))
-      .catch(err => console.error('Failed to load locations:', err))
+    const fetchData = async () => {
+      try {
+        const data = await getLocations()
+        setLocations(data)
+      } catch (error) {
+        console.error('Failed to load locations:', error)
+      }
+    }
+
+    fetchData()
   }, [])
 
   const createMarkerElement = (location: Location) => {
@@ -226,15 +226,52 @@ export default function ExpandedMap({ isOpen, onClose }: { isOpen: boolean; onCl
   useEffect(() => {
     if (!isOpen || !mapContainer.current || map.current) return
 
-    mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN || ''
+    const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN
+    
+    if (!mapboxToken) {
+      console.warn('Mapbox access token not found. Please set NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN in your environment variables.')
+      // Show a message in the map container
+      if (mapContainer.current) {
+        mapContainer.current.innerHTML = `
+          <div class="flex items-center justify-center h-full bg-gray-900 text-white">
+            <div class="text-center">
+              <p class="text-lg mb-2">Map unavailable</p>
+              <p class="text-sm text-gray-400">Mapbox token not configured</p>
+            </div>
+          </div>
+        `
+      }
+      return
+    }
 
-    // Initialize map
-    map.current = new mapboxgl.Map({
-      container: mapContainer.current,
-      style: mapStyles[currentStyleIndex].style,
-      center: [-79.9, 43.5],
-      zoom: 1,
-    })
+    mapboxgl.accessToken = mapboxToken
+
+    // Initialize map with error handling
+    try {
+      map.current = new mapboxgl.Map({
+        container: mapContainer.current,
+        style: mapStyles[currentStyleIndex].style,
+        center: [-79.9, 43.5],
+        zoom: 1,
+        trackResize: true,
+        preserveDrawingBuffer: true,
+        failIfMajorPerformanceCaveat: false
+      })
+    } catch (error) {
+      console.error('Failed to initialize map:', error)
+      // Show error message in container
+      if (mapContainer.current) {
+        mapContainer.current.innerHTML = `
+          <div class="flex items-center justify-center h-full bg-gray-900 text-white">
+            <div class="text-center">
+              <p class="text-lg mb-2">Map failed to load</p>
+              <p class="text-sm text-gray-400">Check console for details</p>
+            </div>
+          </div>
+        `
+      }
+      return
+    }
 
     // Add navigation controls
     map.current.addControl(new mapboxgl.NavigationControl(), 'top-right')

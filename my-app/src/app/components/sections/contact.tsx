@@ -1,12 +1,7 @@
 "use client"
 import { useEffect, useState, useRef } from "react"
 import { motion } from "framer-motion"
-
-interface Contact {
-  type: string
-  image: string
-  value: string
-}
+import { getContacts, type Contact } from "@/lib/database"
 
 export default function Contact() {
   const [contacts, setContacts] = useState<Contact[]>([])
@@ -17,9 +12,8 @@ export default function Contact() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("/contacts.json")
-        const data = await response.json()
-        setContacts(data.contacts)
+        const data = await getContacts()
+        setContacts(data)
       } catch (error) {
         console.error("Error fetching data:", error)
       } finally {

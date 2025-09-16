@@ -5,16 +5,10 @@ import MusicPlayer from "../music-player"
 import SpotifyPlayer from "../spotify"
 import { Typewriter } from "react-simple-typewriter"
 import { Music, Headphones } from "lucide-react"
-
-interface Intro {
-  name: string
-  title: string
-  bio: string
-  image: string | undefined
-}
+import { getIntro, type Intro as IntroType } from "../../../lib/database"
 
 const Introduction = memo(() => {
-  const [intro, setIntro] = useState<Intro>({ name: "", title: "", bio: "", image: undefined })
+  const [intro, setIntro] = useState<IntroType | null>(null)
   const [showSpotify, setShowSpotify] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -23,12 +17,8 @@ const Introduction = memo(() => {
     try {
       setIsLoading(true)
       setError(null)
-      const response = await fetch("/intro.json")
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
-      }
-      const data = await response.json()
-      setIntro(data.intro)
+      const data = await getIntro()
+      setIntro(data)
     } catch (error) {
       console.error("Error fetching data:", error)
       setError(error instanceof Error ? error.message : "Failed to load data")
@@ -55,12 +45,12 @@ const Introduction = memo(() => {
     )
   }
 
-  if (error) {
+  if (error || !intro) {
     return (
       <div id="introduction" className="w-full max-w-7xl mx-auto px-4 mb-12">
         <div className="text-center text-red-400">
-          <p>Error loading content: {error}</p>
-          <button 
+          <p>Error loading content: {error || "No data available"}</p>
+          <button
             onClick={fetchData}
             className="mt-4 px-4 py-2 bg-cyan-500 text-white rounded-lg hover:bg-cyan-600 transition-colors"
           >

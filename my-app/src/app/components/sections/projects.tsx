@@ -4,18 +4,11 @@ import { motion } from "framer-motion"
 import { Swiper, SwiperSlide } from "swiper/react"
 import { Navigation, Pagination, EffectCoverflow } from "swiper/modules"
 import { ExternalLink, Calendar, ChevronLeft, ChevronRight } from "lucide-react"
+import { getProjects, type Project } from "@/lib/database"
 import "swiper/css"
 import "swiper/css/navigation"
 import "swiper/css/pagination"
 import "swiper/css/effect-coverflow"
-
-interface Project {
-  name: string
-  date: string
-  description: string
-  link: string
-  image: string
-}
 
 export default function Projects() {
   const [projects, setProjects] = useState<Project[]>([])
@@ -27,9 +20,8 @@ export default function Projects() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("/projects.json")
-        const data = await response.json()
-        setProjects(data.projects)
+        const data = await getProjects()
+        setProjects(data)
       } catch (error) {
         console.error("Error fetching data:", error)
       }

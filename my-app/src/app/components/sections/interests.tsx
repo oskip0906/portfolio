@@ -2,12 +2,7 @@
 import { useEffect, useState, useRef } from "react"
 import { motion } from "framer-motion"
 import { Sparkles } from "lucide-react"
-
-interface Interest {
-  name: string
-  description: string
-  emote: string
-}
+import { getInterests, type Interest } from "../../../lib/database"
 
 export default function Interests() {
   const [interests, setInterests] = useState<Interest[]>([])
@@ -17,9 +12,8 @@ export default function Interests() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("/interests.json")
-        const data = await response.json()
-        setInterests(data.interests)
+        const data = await getInterests()
+        setInterests(data)
       } catch (error) {
         console.error("Error fetching data:", error)
       }

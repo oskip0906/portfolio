@@ -29,20 +29,14 @@ export default function GlobePreview({ onGlobeClick }: { onGlobeClick: () => voi
 		const globeContainer = globeContainerRef.current
 		if (!globeContainer) return
 
-		const handleWheel = (e: WheelEvent) => {
-			e.preventDefault()
-		}
-
 		const handleTouchMove = (e: TouchEvent) => {
 			e.preventDefault()
 		}
 
-		// Add event listeners with passive: false to allow preventDefault
-		globeContainer.addEventListener('wheel', handleWheel, { passive: false })
+		// Only prevent touch moves to avoid scroll conflicts on mobile
 		globeContainer.addEventListener('touchmove', handleTouchMove, { passive: false })
 
 		return () => {
-			globeContainer.removeEventListener('wheel', handleWheel)
 			globeContainer.removeEventListener('touchmove', handleTouchMove)
 		}
 	}, [])
