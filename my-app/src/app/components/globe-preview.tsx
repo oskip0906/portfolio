@@ -1,59 +1,6 @@
 "use client"
-import { useEffect, useRef, useState } from "react"
-import dynamic from "next/dynamic"
-
-const LazyGlobe = dynamic(() => import("./lazy-globe"), { ssr: false })
 
 export default function GlobePreview({ onGlobeClick }: { onGlobeClick: () => void }) {
-	const containerRef = useRef<HTMLDivElement | null>(null)
-	const globeContainerRef = useRef<HTMLDivElement | null>(null)
-	const [dimensions, setDimensions] = useState<{ width: number; height: number }>({ width: 320, height: 320 })
-
-	useEffect(() => {
-		if (typeof window === "undefined" || !containerRef.current) return
-
-		const updateSize = () => {
-			if (containerRef.current) {
-				const { clientWidth, clientHeight } = containerRef.current
-				setDimensions({ width: clientWidth, height: clientHeight })
-			}
-		}
-
-		updateSize()
-		const resizeObserver = new ResizeObserver(updateSize)
-		resizeObserver.observe(containerRef.current)
-		return () => resizeObserver.disconnect()
-	}, [])
-
-	useEffect(() => {
-		const globeContainer = globeContainerRef.current
-		if (!globeContainer) return
-
-		const handleTouchMove = (e: TouchEvent) => {
-			e.preventDefault()
-		}
-
-		// Only prevent touch moves to avoid scroll conflicts on mobile
-		globeContainer.addEventListener('touchmove', handleTouchMove, { passive: false })
-
-		return () => {
-			globeContainer.removeEventListener('touchmove', handleTouchMove)
-		}
-	}, [])
-
-	useEffect(() => {
-		const urls = [
-			"https://unpkg.com/three-globe@2.29.0/example/img/earth-blue-marble.jpg",
-			"https://unpkg.com/three-globe@2.29.0/example/img/earth-topology.png",
-		]
-		urls.forEach((url) => {
-			const img = new Image()
-			img.crossOrigin = "anonymous"
-			img.decoding = "async"
-			img.src = url
-		})
-	}, [])
-
 	return (
 		<section id="globe" className="w-full max-w-7xl mx-auto px-4 mb-12">
 			<div className="text-center mb-8">
@@ -66,16 +13,19 @@ export default function GlobePreview({ onGlobeClick }: { onGlobeClick: () => voi
         </p>
 			</div>
 
-			<div
-				className="flex items-center justify-center"
-			>
+			<div className="flex items-center justify-center">
 				<div
-					ref={globeContainerRef}
 					onClick={onGlobeClick}
-					className="relative rounded-full p-[3px] bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 shadow-[0_0_40px_rgba(147,51,234,0.35)] cursor-pointer transition-transform duration-300 hover:scale-105 overscroll-none touch-none"
+					className="relative rounded-full p-[3px] bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 shadow-[0_0_40px_rgba(147,51,234,0.35)] cursor-pointer transition-transform duration-300 hover:scale-105"
 				>
-					<div ref={containerRef} className="rounded-full bg-black/60 backdrop-blur-md overflow-hidden w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 lg:w-96 lg:h-96">
-						<LazyGlobe width={dimensions.width} height={dimensions.height} />
+					<div className="rounded-full bg-black/60 backdrop-blur-md overflow-hidden w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 lg:w-96 lg:h-96 flex items-center justify-center">
+						<img 
+							src="/earth.svg" 
+							alt="Earth Globe" 
+							width={400} 
+							height={400}
+							className="text-cyan-400"
+						/>
 					</div>
 					<div className="pointer-events-none absolute -inset-4 rounded-full blur-2xl bg-gradient-to-r from-cyan-500/20 via-purple-500/20 to-pink-500/20" />
 				</div>

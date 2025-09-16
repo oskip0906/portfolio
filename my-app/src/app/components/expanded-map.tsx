@@ -1,10 +1,8 @@
 "use client"
 import { useRef, useState, useEffect, useCallback } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { X, PowerOff, Map } from "lucide-react"
+import { X, Map } from "lucide-react"
 import { getLocations, type Location } from "@/lib/database"
-import mapboxgl from "mapbox-gl"
-import "mapbox-gl/dist/mapbox-gl.css"
 
 const mapStyles = [
   { id: 'Standard', name: 'Standard', style: 'mapbox://styles/mapbox/standard' },
@@ -144,9 +142,38 @@ export default function ExpandedMap({ isOpen, onClose }: { isOpen: boolean; onCl
   const [locations, setLocations] = useState<Location[]>([])
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null)
   const [currentStyleIndex, setCurrentStyleIndex] = useState(0)
+  const [isMapboxLoading, setIsMapboxLoading] = useState(false)
+  const [mapboxLoaded, setMapboxLoaded] = useState(false)
+  const [mapboxgl, setMapboxgl] = useState<any>(null)
   const mapContainer = useRef<HTMLDivElement | null>(null)
-  const map = useRef<mapboxgl.Map | null>(null)
-  const markers = useRef<mapboxgl.Marker[]>([])
+  const map = useRef<any>(null)
+  const markers = useRef<any[]>([])
+
+  // Lazy load mapbox-gl
+  const loadMapbox = useCallback(async () => {
+    if (mapboxLoaded || isMapboxLoading) return
+
+    setIsMapboxLoading(true)
+    
+    try {
+      // Load CSS first
+      if (!document.querySelector('link[href*="mapbox-gl.css"]')) {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = 'https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.css'
+        document.head.appendChild(link)
+      }
+
+      // Dynamically import mapbox-gl
+      const mapboxModule = await import('mapbox-gl')
+      setMapboxgl(mapboxModule.default)
+      setMapboxLoaded(true)
+    } catch (error) {
+      console.error('Failed to load Mapbox GL:', error)
+    } finally {
+      setIsMapboxLoading(false)
+    }
+  }, [mapboxLoaded, isMapboxLoading])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -193,7 +220,7 @@ export default function ExpandedMap({ isOpen, onClose }: { isOpen: boolean; onCl
   }
 
   const addMarkers = () => {
-    if (!map.current || locations.length === 0) return
+    if (!map.current || locations.length === 0 || !mapboxgl) return
 
     // Clear existing markers
     markers.current.forEach((marker) => marker.remove())
@@ -223,8 +250,15 @@ export default function ExpandedMap({ isOpen, onClose }: { isOpen: boolean; onCl
     }
   }
 
+  // Load mapbox when modal opens
   useEffect(() => {
-    if (!isOpen || !mapContainer.current || map.current) return
+    if (isOpen && !mapboxLoaded && !isMapboxLoading) {
+      loadMapbox()
+    }
+  }, [isOpen, loadMapbox, mapboxLoaded, isMapboxLoading])
+
+  useEffect(() => {
+    if (!isOpen || !mapContainer.current || map.current || !mapboxgl) return
 
     const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN
     
@@ -295,7 +329,7 @@ export default function ExpandedMap({ isOpen, onClose }: { isOpen: boolean; onCl
         map.current = null
       }
     }
-  }, [isOpen])
+  }, [isOpen, mapboxgl])
 
   useEffect(() => {
     if (!map.current || locations.length === 0) return
@@ -313,7 +347,7 @@ export default function ExpandedMap({ isOpen, onClose }: { isOpen: boolean; onCl
         mapInstance.off("load", addMarkers)
       }
     }
-  }, [locations])
+  }, [locations, mapboxgl])
 
   // Lock body scroll when modal is open
   useEffect(() => {
@@ -359,25 +393,38 @@ export default function ExpandedMap({ isOpen, onClose }: { isOpen: boolean; onCl
 
         {/* Map Container */}
         <div className="relative w-full h-full">
-          <div ref={mapContainer} className="w-full h-full" />
+          <div ref={mapContainer} className="w-full h-full">
+            {/* Loading state */}
+            {isMapboxLoading && (
+              <div className="flex items-center justify-center h-full bg-gray-900 text-white">
+                <div className="text-center">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-400 mx-auto mb-4"></div>
+                  <p className="text-lg mb-2">Loading Map...</p>
+                  <p className="text-sm text-gray-400">Please wait</p>
+                </div>
+              </div>
+            )}
+          </div>
 
           {/* Map Style Selector */}
-          <div className="absolute top-4 left-4 z-10">
-            <div className="bg-black/80 backdrop-blur-sm rounded-lg p-2 flex gap-2">
-              {mapStyles.map((style, index) => (
-                <button
-                  key={style.id}
-                  onClick={() => changeMapStyle(index)}
-                  className={`px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 ${currentStyleIndex === index
-                    ? 'bg-blue-500 text-white shadow-lg'
-                    : 'bg-white/20 text-white hover:bg-white/30'
-                    }`}
-                >
-                  {style.name}
-                </button>
-              ))}
+          {mapboxLoaded && (
+            <div className="absolute top-4 left-4 z-10">
+              <div className="bg-black/80 backdrop-blur-sm rounded-lg p-2 flex gap-2">
+                {mapStyles.map((style, index) => (
+                  <button
+                    key={style.id}
+                    onClick={() => changeMapStyle(index)}
+                    className={`px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 ${currentStyleIndex === index
+                      ? 'bg-blue-500 text-white shadow-lg'
+                      : 'bg-white/20 text-white hover:bg-white/30'
+                      }`}
+                  >
+                    {style.name}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </motion.div>
 

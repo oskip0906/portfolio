@@ -12,63 +12,45 @@ export interface ComprehensiveRow {
 
 // Type definitions for specific content types
 export interface Location {
-  id: string
   name: string
   coordinates: [number, number]
   photos: string[]
-  description?: string
 }
 
 export interface Project {
   date: ReactNode
-  link: string | undefined
-  name: string | undefined
-  image: string | Blob | undefined
-  id: string
-  title: string
   description: string
-  technologies: string[]
-  githubUrl?: string
-  liveUrl?: string
-  imageUrl?: string
-  featured: boolean
+  image: string
+  link: string
+  name: string
 }
 
 export interface Experience {
-  id: string
   title: string
   company: string
-  duration: string
+  date: ReactNode
   description: string
-  technologies: string[]
-  current: boolean
+  image: string
+  link: string
 }
 
 export interface Interest {
-  id: string
-  title: string
+  name: string
+  emote: string
   description: string
-  icon?: string
-  category: string
 }
 
 export interface Contact {
-  image: string | Blob | undefined
-  id: string
+  image: string
   type: string
   value: string
-  label: string
-  url?: string
-  icon?: string
 }
 
 export interface Intro {
-  id: string
   name: string
   title: string
-  description: string
-  profileImage?: string
-  resumeUrl?: string
+  bio: string
+  image: string
 }
 
 // Database functions
