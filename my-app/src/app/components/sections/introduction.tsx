@@ -6,6 +6,7 @@ import SpotifyPlayer from "../spotify"
 import { Typewriter } from "react-simple-typewriter"
 import { Music, Headphones } from "lucide-react"
 import { getIntro, type Intro as IntroType } from "../../../lib/database"
+import Image from "next/image"
 
 const Introduction = memo(() => {
   const [intro, setIntro] = useState<IntroType | null>(null)
@@ -206,15 +207,17 @@ const Introduction = memo(() => {
                     href="https://www.utoronto.ca/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block w-full h-full"
+                    className="block w-full h-full relative"
                     aria-label="Visit University of Toronto website"
                   >
-                    <motion.img
+                    <Image
                       src={intro.image}
                       alt="Profile"
-                      className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
-                      whileHover={{ scale: 1.05 } as any}
-                      loading="eager"
+                      fill
+                      sizes="(max-width: 640px) 200px, (max-width: 1024px) 240px, 320px"
+                      className="object-cover hover:scale-110 transition-transform duration-500"
+                      priority
+                      quality={90}
                     />
                   </a>
                 </div>

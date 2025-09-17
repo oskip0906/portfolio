@@ -27,12 +27,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        <link rel="preconnect" href="https://unpkg.com" />
-        <link rel="dns-prefetch" href="https://unpkg.com" />
-        <link rel="preload" as="image" href="https://unpkg.com/three-globe@2.29.0/example/img/earth-blue-marble.jpg" crossOrigin="anonymous" />
-        <link rel="preload" as="image" href="https://unpkg.com/three-globe@2.29.0/example/img/earth-topology.png" crossOrigin="anonymous" />
-      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

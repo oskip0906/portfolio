@@ -5,6 +5,7 @@ import { Swiper, SwiperSlide } from "swiper/react"
 import { Navigation, Pagination, EffectCoverflow } from "swiper/modules"
 import { ExternalLink, Calendar, ChevronLeft, ChevronRight } from "lucide-react"
 import { getProjects, type Project } from "@/lib/database"
+import Image from "next/image"
 import "swiper/css"
 import "swiper/css/navigation"
 import "swiper/css/pagination"
@@ -117,10 +118,14 @@ export default function Projects() {
               >
                 {/* Project Image */}
                 <div className="relative h-64 overflow-hidden">
-                  <motion.img
+                  <Image
                     src={project.image}
                     alt={project.name}
-                    className="w-full h-full object-cover"
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    className="object-cover"
+                    priority={index < 3}
+                    quality={75}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
 

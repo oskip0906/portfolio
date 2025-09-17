@@ -3,6 +3,7 @@ import type React from "react"
 import { useEffect, useState, useRef } from "react"
 import { motion } from "framer-motion"
 import { getExperiences, type Experience } from "../../../lib/database"
+import Image from "next/image"
 
 interface ExperienceCardProps {
   experience: Experience
@@ -67,12 +68,15 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, index, isIn
                 >
                   <motion.div
                     whileHover={{ scale: 1.1, rotate: 5 } as any}
-                    className="w-16 h-16 rounded-full overflow-hidden border-2 border-white/20 shadow-lg"
+                    className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-white/20 shadow-lg"
                   >
-                    <img
+                    <Image
                       src={experience.image || "/placeholder.svg"}
                       alt={experience.company}
-                      className="w-full h-full object-cover"
+                      fill
+                      sizes="64px"
+                      className="object-cover"
+                      quality={80}
                     />
                   </motion.div>
                 </a>

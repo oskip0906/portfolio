@@ -1,4 +1,5 @@
 "use client"
+import Image from "next/image"
 
 export default function GlobePreview({ onGlobeClick }: { onGlobeClick: () => void }) {
 	return (
@@ -19,12 +20,13 @@ export default function GlobePreview({ onGlobeClick }: { onGlobeClick: () => voi
 					className="relative rounded-full p-[3px] bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 shadow-[0_0_40px_rgba(147,51,234,0.35)] cursor-pointer transition-transform duration-300 hover:scale-105"
 				>
 					<div className="rounded-full bg-black/60 backdrop-blur-md overflow-hidden w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 lg:w-96 lg:h-96 flex items-center justify-center">
-						<img 
+						<Image 
 							src="/earth.svg" 
 							alt="Earth Globe" 
 							width={400} 
 							height={400}
 							className="text-cyan-400"
+							priority
 						/>
 					</div>
 					<div className="pointer-events-none absolute -inset-4 rounded-full blur-2xl bg-gradient-to-r from-cyan-500/20 via-purple-500/20 to-pink-500/20" />

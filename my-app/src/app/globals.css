@@ -50,11 +50,6 @@ body {
     padding-bottom: 1rem;
   }
 
-  /* Reduce aggressive animations on mobile for better performance */
-  .snow {
-    display: none;
-  }
-
   /* Fix viewport issues on mobile browsers */
   body {
     min-height: 100vh;
@@ -83,32 +78,6 @@ body {
   background-color: #ffffff !important;
 }
 
-.snow {
-  position: absolute;
-  width: 3px;
-  height: 9px;
-  border-radius: 50%;
-  background: linear-gradient(30deg, #2345a3, #2563eb, #60a5fa, #93c5fd, #dde6ec);
-  box-shadow: 0 0 5px rgba(206, 196, 196, 0.8);
-  animation: falling linear infinite;
-  animation-delay: 2s; /* Add delay before animation starts */
-  opacity: 0; /* Start invisible */
-} 
-
-@keyframes falling {
-  0% {
-    transform: translateY(0);
-    opacity: 0;
-  }
-  10% {
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(500px);
-    opacity: 0;
-  }
-}
-
 @keyframes rainbow-glow {
   0%,
   100% {
@@ -134,4 +103,3 @@ body {
 .animate-rainbow-glow {
   animation: rainbow-glow 5s linear infinite;
 }
-

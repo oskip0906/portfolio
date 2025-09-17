@@ -3,6 +3,7 @@ import { useRef, useState, useEffect, useCallback } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { X, Map } from "lucide-react"
 import { getLocations, type Location } from "@/lib/database"
+import Image from "next/image"
 
 const mapStyles = [
   { id: 'Standard', name: 'Standard', style: 'mapbox://styles/mapbox/standard' },
@@ -89,10 +90,15 @@ function PhotoGallery({ location, onClose }: { location: Location; onClose: () =
                 </svg>
               </button>
             )}
-            <div className="relative w-full max-w-md">
-              <img
+            <div className="relative w-full max-w-md aspect-square">
+              <Image
                 src={location.photos[currentPhoto] || "/placeholder.svg"}
-                className="w-full aspect-square object-cover rounded-lg"
+                alt={`${location.name} - Photo ${currentPhoto + 1}`}
+                fill
+                sizes="(max-width: 768px) 100vw, 400px"
+                className="object-cover rounded-lg"
+                quality={80}
+                priority={currentPhoto === 0}
               />
               {/* Photo counter */}
               <div className="absolute bottom-3 right-3 backdrop-blur-sm bg-black/60 text-white px-3 py-1 rounded-full text-sm">
@@ -118,15 +124,18 @@ function PhotoGallery({ location, onClose }: { location: Location; onClose: () =
                 <button
                   key={index}
                   onClick={() => setCurrentPhoto(index)}
-                  className={`flex-shrink-0 w-16 h-16 rounded-md overflow-hidden border-2 transition-all ${currentPhoto === index
+                  className={`relative flex-shrink-0 w-16 h-16 rounded-md overflow-hidden border-2 transition-all ${currentPhoto === index
                     ? 'border-blue-400 scale-110'
                     : 'border-white/20 hover:border-white/40'
                     }`}
                 >
-                  <img
+                  <Image
                     src={photo}
                     alt={`${location.name} photo ${index + 1}`}
-                    className="w-full h-full object-cover"
+                    fill
+                    sizes="64px"
+                    className="object-cover"
+                    quality={60}
                   />
                 </button>
               ))}
