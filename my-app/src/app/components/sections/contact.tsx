@@ -25,23 +25,27 @@ export default function Contact() {
   }, [])
 
   const LoadingSkeleton = () => (
-    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-8 mb-16">
       {[...Array(6)].map((_, index) => (
-        <div key={index} className="flex flex-col items-center space-y-3">
-          <div className="w-20 h-20 bg-white/10 rounded-2xl animate-pulse border border-white/20" />
+        <div key={index} className="flex flex-col items-center">
+          <div className="w-20 h-20 bg-white/10 rounded-2xl animate-pulse border border-white/20 mb-4" />
+          <div className="h-4 bg-white/10 rounded animate-pulse w-16"></div>
         </div>
       ))}
     </div>
   )
 
   return (
-    <section ref={ref} id="contact" className="w-full max-w-7xl mx-auto px-4 mb-12">
-      <motion.div
-        initial={{ opacity: 0 } as any}
-        animate={inView ? { opacity: 1 } : { opacity: 0 } as any}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        className="text-center mb-10"
-      >
+    <motion.section
+      ref={ref}
+      id="contact"
+      className="w-full max-w-7xl mx-auto px-4 mb-12"
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+    >
+      <div className="text-center mb-10">
         <h2 className="text-5xl font-bold bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-4">
           Let's Connect
         </h2>
@@ -49,7 +53,7 @@ export default function Contact() {
         <p className="text-xl text-gray-300 max-w-2xl mx-auto">
           Find me on these platforms and let's connect
         </p>
-      </motion.div>
+      </div>
 
       {/* Contact Grid */}
       {loading ? (
@@ -59,11 +63,12 @@ export default function Contact() {
           {contacts.map((contact, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0 } as any}
-              animate={inView ? { opacity: 1 } : { opacity: 0 } as any}
-              transition={{ 
-                delay: index * 0.05, 
-                duration: 0.4, 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{
+                delay: index * 0.05,
+                duration: 0.4,
                 ease: "easeOut"
               }}
               className="flex flex-col items-center group"
@@ -83,6 +88,8 @@ export default function Contact() {
                       src={contact.image}
                       alt={contact.type}
                       className="w-full h-full object-contain"
+                      style={{ aspectRatio: '1/1' }}
+                      loading="lazy"
                     />
                   </div>
                 </div>
@@ -90,8 +97,9 @@ export default function Contact() {
 
               {/* Label */}
               <motion.span
-                initial={{ opacity: 0 } as any}
-                animate={inView ? { opacity: 1 } : { opacity: 0 } as any}
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
                 transition={{ delay: 0.1 + index * 0.05, duration: 0.3 }}
                 className="mt-4 text-sm font-medium text-gray-300 group-hover:text-white transition-colors duration-200 capitalize"
               >
@@ -104,8 +112,9 @@ export default function Contact() {
 
       {/* Bottom Decoration */}
       <motion.div
-        initial={{ opacity: 0 } as any}
-        animate={inView ? { opacity: 1 } : { opacity: 0 } as any}
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
         transition={{ duration: 0.4, delay: 0.2 }}
         className="flex justify-center"
       >
@@ -114,13 +123,10 @@ export default function Contact() {
             <motion.div
               key={i}
               className="w-2 h-2 bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 rounded-full"
-              animate={inView ? {
+              animate={{
                 scale: [1, 1.5, 1],
                 opacity: [0.5, 1, 0.5],
-              } : {
-                scale: 1,
-                opacity: 0.5,
-              } as any}
+              }}
               transition={{
                 duration: 2,
                 repeat: Number.POSITIVE_INFINITY,
@@ -130,6 +136,6 @@ export default function Contact() {
           ))}
         </div>
       </motion.div>
-    </section>
+    </motion.section>
   )
 }

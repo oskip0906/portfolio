@@ -13,50 +13,77 @@ import "swiper/css/effect-coverflow"
 
 export default function Projects() {
   const [projects, setProjects] = useState<Project[]>([])
+  const [isLoading, setIsLoading] = useState(true)
   const ref = useRef(null)
-  const inView = true
   const prevRef = useRef<HTMLButtonElement | null>(null)
   const nextRef = useRef<HTMLButtonElement | null>(null)
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setIsLoading(true)
         const data = await getProjects()
         setProjects(data)
       } catch (error) {
         console.error("Error fetching data:", error)
+      } finally {
+        setIsLoading(false)
       }
     }
 
     fetchData()
   }, [])
 
+  const ProjectsSkeleton = () => (
+    <div className="flex justify-center">
+      <div className="max-w-md">
+        <div className="backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-3xl overflow-hidden shadow-2xl h-[600px] flex flex-col">
+          <div className="relative h-64 bg-white/10 animate-pulse"></div>
+          <div className="p-6 flex-1 flex flex-col">
+            <div className="h-4 bg-white/10 rounded animate-pulse mb-3 w-20"></div>
+            <div className="h-6 bg-white/10 rounded animate-pulse mb-4"></div>
+            <div className="space-y-2 mb-6 flex-1">
+              <div className="h-4 bg-white/10 rounded animate-pulse"></div>
+              <div className="h-4 bg-white/10 rounded animate-pulse w-3/4"></div>
+              <div className="h-4 bg-white/10 rounded animate-pulse w-1/2"></div>
+            </div>
+            <div className="h-12 bg-white/10 rounded-full animate-pulse"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+
   return (
-    <section ref={ref} id="projects" className="w-full max-w-screen-xl mx-auto px-4 mb-12">
-      <motion.div
-        initial={{ opacity: 0, y: 50 } as any}
-        animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 } as any}
-        transition={{ duration: 0.8 }}
-        className="text-center mb-16"
-      >
+    <motion.section
+      ref={ref}
+      id="projects"
+      className="w-full max-w-screen-xl mx-auto px-4 mb-12"
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+    >
+      <div className="text-center mb-16">
         <h2 className="text-5xl font-bold bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-4 mt-6">
           Projects
         </h2>
         <div className="w-24 h-1 bg-gradient-to-r from-cyan-400 to-purple-400 rounded-full mx-auto mb-8"></div>
-        <p className="text-xl text-gray-300 max-w-2xl mx-auto">Showcasing my creative work and technical expertise</p>
-      </motion.div>
+        <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+          Showcasing my creative work and technical expertise
+        </p>
+      </div>
 
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9, y: 50 } as any}
-        animate={inView ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.9, y: 50 } as any}
-        transition={{ delay: 0.3, duration: 0.8 }}
-        className="relative"
-      >
-        <motion.button
+      {isLoading ? (
+        <ProjectsSkeleton />
+      ) : (
+        <div className="relative">
+          <motion.button
           ref={prevRef}
           aria-label="Previous slide"
-          whileHover={{ scale: 1.05 } as any}
-          whileTap={{ scale: 0.95 } as any}
+          whileHover={{ scale: 1.1, rotate: -5 }}
+          whileTap={{ scale: 0.9 }}
+          transition={{ type: "spring", stiffness: 400, damping: 17 }}
           className="hidden sm:flex absolute top-1/2 -left-2 md:-left-6 xl:-left-10 z-20 items-center justify-center h-12 w-12 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white shadow-xl hover:shadow-[0_0_35px_rgba(34,211,238,0.65)] hover:ring-2 hover:ring-cyan-400/50 transition focus:outline-none"
         >
           <ChevronLeft size={22} />
@@ -64,8 +91,9 @@ export default function Projects() {
         <motion.button
           ref={nextRef}
           aria-label="Next slide"
-          whileHover={{ scale: 1.05 } as any}
-          whileTap={{ scale: 0.95 } as any}
+          whileHover={{ scale: 1.1, rotate: 5 }}
+          whileTap={{ scale: 0.9 }}
+          transition={{ type: "spring", stiffness: 400, damping: 17 }}
           className="hidden sm:flex absolute top-1/2 -right-2 md:-right-6 xl:-right-10 z-20 items-center justify-center h-12 w-12 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white shadow-xl hover:shadow-[0_0_35px_rgba(168,85,247,0.65)] hover:ring-2 hover:ring-purple-400/50 transition focus:outline-none"
         >
           <ChevronRight size={22} />
@@ -103,19 +131,7 @@ export default function Projects() {
         >
           {projects.map((project, index) => (
             <SwiperSlide key={index} className="max-w-md">
-              <motion.div
-                initial={{ opacity: 0, y: 100, scale: 0.8 } as any}
-                animate={inView ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 100, scale: 0.8 } as any}
-                transition={{ 
-                  delay: index * 0.1 + 0.5, 
-                  duration: 0.8, 
-                  ease: "easeOut",
-                  opacity: { duration: 0.6 },
-                  y: { duration: 0.8 },
-                  scale: { duration: 0.8 }
-                }}
-                className="group relative backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-3xl overflow-hidden shadow-2xl h-[600px] flex flex-col"
-              >
+              <div className="group relative backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-3xl overflow-hidden shadow-2xl h-[600px] flex flex-col hover:shadow-[0_20px_50px_rgba(8,_112,_184,_0.7)] transition-shadow duration-300">
                 {/* Project Image */}
                 <div className="relative h-64 overflow-hidden">
                   <Image
@@ -124,8 +140,10 @@ export default function Projects() {
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     className="object-cover"
-                    priority={index < 3}
                     quality={75}
+                    style={{ aspectRatio: '16/9' }}
+                    placeholder="blur"
+                    blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
 
@@ -168,11 +186,12 @@ export default function Projects() {
                     <ExternalLink size={16} />
                   </motion.a>
                 </div>
-              </motion.div>
+              </div>
             </SwiperSlide>
           ))}
         </Swiper>
-      </motion.div>
-    </section>
+        </div>
+      )}
+    </motion.section>
   )
 }

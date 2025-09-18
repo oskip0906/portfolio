@@ -2,9 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Font loading optimization */
+@font-face {
+  font-family: 'fallback';
+  size-adjust: 100.06%;
+  ascent-override: 95%;
+  src: local('Arial');
+}
+
+/* Prevent layout shifts during content loading */
+.content-container {
+  contain: layout;
+}
+
 body {
   background: oklch(0.21 0.034 264.665);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   overflow-x: hidden;
   margin: 0;
   padding: 0;

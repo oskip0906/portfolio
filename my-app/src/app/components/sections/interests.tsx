@@ -6,30 +6,55 @@ import { getInterests, type Interest } from "../../../lib/database"
 
 export default function Interests() {
   const [interests, setInterests] = useState<Interest[]>([])
+  const [isLoading, setIsLoading] = useState(true)
   const ref = useRef(null)
-  const inView = true
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setIsLoading(true)
         const data = await getInterests()
         setInterests(data)
       } catch (error) {
         console.error("Error fetching data:", error)
+      } finally {
+        setIsLoading(false)
       }
     }
 
     fetchData()
   }, [])
 
+  const InterestsSkeleton = () => (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {[...Array(6)].map((_, index) => (
+        <div key={index} className="relative h-64 backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-cyan-400/60 rounded-2xl p-6 shadow-2xl">
+          <div className="absolute top-4 right-4 w-6 h-6 bg-white/10 rounded animate-pulse"></div>
+          <div className="relative z-10">
+            <div className="w-16 h-16 bg-white/10 rounded mb-4 animate-pulse"></div>
+            <div className="h-6 bg-white/10 rounded mb-4 animate-pulse"></div>
+            <div className="space-y-2">
+              <div className="h-4 bg-white/10 rounded animate-pulse"></div>
+              <div className="h-4 bg-white/10 rounded animate-pulse w-3/4"></div>
+              <div className="h-4 bg-white/10 rounded animate-pulse w-1/2"></div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+
   return (
-    <section ref={ref} id="interests" className="w-full max-w-7xl mx-auto px-4 mb-12">
-      <motion.div
-        initial={{ opacity: 0, y: 50 } as any}
-        animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 } as any}
-        transition={{ duration: 0.8 }}
-        className="text-center mb-10"
-      >
+    <motion.section
+      ref={ref}
+      id="interests"
+      className="w-full max-w-7xl mx-auto px-4 mb-12"
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+    >
+      <div className="text-center mb-10">
         <h2 className="text-5xl font-bold bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-4 mt-6">
           Interests
         </h2>
@@ -37,26 +62,19 @@ export default function Interests() {
         <p className="text-xl text-gray-300 max-w-2xl mx-auto">
           The passions and hobbies that fuel my creativity and drive
         </p>
-      </motion.div>
+      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {interests.map((interest, index) => (
+      {isLoading ? (
+        <InterestsSkeleton />
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {interests.map((interest, index) => (
             <motion.div
             key={index}
-            initial={{ opacity: 0, y: 100, scale: 0.8 } as any}
-            animate={
-              inView
-                ? ({ opacity: 1, y: 0, scale: 1 } as any)
-                : ({ opacity: 0, y: 100, scale: 0.8 } as any)
-            }
-            transition={{
-              delay: index * 0.2,
-              duration: 0.8,
-              ease: "easeOut",
-              opacity: { duration: 0.6 },
-              y: { duration: 0.8 },
-              scale: { duration: 0.8 }
-            }}
+            initial={{ opacity: 0, y: 20, rotateY: -15 }}
+            whileInView={{ opacity: 1, y: 0, rotateY: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.4, delay: index * 0.1 }}
             className="group relative"
             >
             <div className="relative h-full backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-cyan-400/60 rounded-2xl p-6 shadow-2xl overflow-hidden transition-all duration-500 shadow-[0_0_0_1px_rgba(34,211,238,0.3),0_0_0_2px_rgba(168,85,247,0.2)]">
@@ -101,8 +119,9 @@ export default function Interests() {
               <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1/2 h-px bg-gradient-to-r from-transparent via-purple-400 to-transparent"></div>
             </div>
             </motion.div>
-        ))}
-      </div>
-    </section>
+          ))}
+        </div>
+      )}
+    </motion.section>
   )
 }

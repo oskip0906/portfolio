@@ -1,7 +1,6 @@
 "use client"
 import type React from "react"
 import { useState, useRef, useCallback, memo, useEffect } from "react"
-import { motion } from "framer-motion"
 import { Play, Pause, Music } from "lucide-react"
 
 const MusicPlayer: React.FC = memo(() => {
@@ -89,7 +88,7 @@ const MusicPlayer: React.FC = memo(() => {
         {/* Player controls container */}
         <div className="bg-black/40 backdrop-blur-sm rounded-2xl p-4 border border-white/5">
           <div className="flex items-center justify-center gap-4 mb-4">
-            <motion.button
+            <button
               onClick={togglePlayPause}
               className="group relative bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-400 hover:to-pink-400 text-white rounded-full p-4 font-semibold transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-purple-500/30"
               aria-label={isPlaying ? "Pause music" : "Play music"}
@@ -98,7 +97,7 @@ const MusicPlayer: React.FC = memo(() => {
               <span className="relative z-10 flex items-center justify-center">
                 {isPlaying ? <Pause className="w-6 h-6" /> : <Play className="w-6 h-6 ml-1" />}
               </span>
-            </motion.button>
+            </button>
           </div>
 
           {/* Progress bar container */}

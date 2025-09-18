@@ -36,19 +36,52 @@ const Introduction = memo(() => {
     setShowSpotify(showSpotifyPlayer)
   }, [])
 
-  if (isLoading) {
-    return (
-      <div id="introduction" className="w-full max-w-7xl mx-auto px-4 mb-12">
-        <div className="flex items-center justify-center h-64">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-400"></div>
+  const IntroductionSkeleton = () => (
+    <motion.div
+      id="introduction"
+      className="w-full max-w-7xl mx-auto px-4"
+      initial={{ opacity: 1 }}
+      animate={{ opacity: 1 }}
+    >
+      <section className="relative overflow-visible z-0">
+        <div className="relative backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-3xl p-4 md:p-6 lg:p-8 shadow-2xl overflow-visible shadow-[0_0_20px_rgba(34,211,238,0.5)]">
+          <div className="relative flex flex-col lg:flex-row items-center gap-8 lg:gap-12 min-h-[600px]">
+            <div className="flex-1 text-center lg:text-left w-full">
+              <div className="mb-6">
+                <div className="h-12 bg-white/10 rounded-lg mb-4 animate-pulse"></div>
+                <div className="h-1 w-24 bg-gradient-to-r from-cyan-400 to-purple-400 rounded-full mx-auto lg:mx-0"></div>
+              </div>
+              <div className="mb-8">
+                <div className="h-8 bg-white/10 rounded-lg animate-pulse"></div>
+              </div>
+              <div className="mb-8">
+                <div className="bg-white/5 rounded-2xl p-4 md:p-6 border border-white/10">
+                  <div className="h-32 bg-white/10 rounded-lg animate-pulse"></div>
+                </div>
+              </div>
+              <div className="space-y-6">
+                <div className="h-12 bg-white/10 rounded-2xl animate-pulse"></div>
+                <div className="h-24 bg-white/10 rounded-lg animate-pulse"></div>
+              </div>
+            </div>
+            <div className="relative flex-shrink-0">
+              <div className="relative w-64 h-64 sm:w-60 sm:h-60 lg:w-80 lg:h-80">
+                <div className="absolute inset-8 rounded-full bg-white/10 animate-pulse"></div>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-    )
+      </section>
+    </motion.div>
+  )
+
+  if (isLoading) {
+    return <IntroductionSkeleton />
   }
 
   if (error || !intro) {
     return (
-      <div id="introduction" className="w-full max-w-7xl mx-auto px-4 mb-12">
+      <div id="introduction" className="w-full max-w-7xl mx-auto px-4 mb-6">
         <div className="text-center text-red-400">
           <p>Error loading content: {error || "No data available"}</p>
           <button
@@ -63,13 +96,13 @@ const Introduction = memo(() => {
   }
 
   return (
-    <div id="introduction" className="w-full max-w-7xl mx-auto px-4 mb-12">
-      <motion.section
-        initial={{ opacity: 0, y: 50 } as any}
-        animate={{ opacity: 1, y: 0 } as any}
-        transition={{ duration: 1, ease: "easeOut" }}
-        className="relative overflow-visible z-0"
-      >
+    <motion.div
+      id="introduction"
+      className="w-full max-w-7xl mx-auto px-4 mb-6"
+      initial={{ opacity: 1 }}
+      animate={{ opacity: 1 }}
+    >
+      <section className="relative overflow-visible z-0">
         <div className="relative backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-3xl p-4 md:p-6 lg:p-8 shadow-2xl overflow-visible shadow-[0_0_20px_rgba(34,211,238,0.5)]">
 
           <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
@@ -86,7 +119,7 @@ const Introduction = memo(() => {
                 transition={{ delay: 0.3, duration: 0.6 }}
                 className="mb-6"
               >
-                <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-4 leading-tight pb-2">
+                <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-4 leading-tight">
                   Hi, I'm {intro.name}!
                 </h1>
                 <div className="h-1 w-24 bg-gradient-to-r from-cyan-400 to-purple-400 rounded-full mx-auto lg:mx-0"></div>
@@ -112,7 +145,7 @@ const Introduction = memo(() => {
                 className="mb-8"
               >
                 <div className="text-base sm:text-md md:text-lg text-gray-300 leading-relaxed backdrop-blur-sm bg-white/5 rounded-2xl p-4 md:p-6 border border-white/10 overflow-visible">
-                  <div className="flex items-start min-h-[120px]">
+                  <div className="flex items-start min-h-[140px] h-[140px] overflow-hidden">
                     <Typewriter
                       words={intro.bio.split(";")}
                       loop={false}
@@ -175,6 +208,7 @@ const Introduction = memo(() => {
                   animate={{ opacity: 1, y: 0 } as any}
                   exit={{ opacity: 0, y: -20 } as any}
                   transition={{ duration: 0.5, ease: "easeOut" }}
+                  className="min-h-[200px]"
                 >
                   {showSpotify ? <SpotifyPlayer /> : <MusicPlayer />}
                 </motion.div>
@@ -218,27 +252,19 @@ const Introduction = memo(() => {
                       className="object-cover hover:scale-110 transition-transform duration-500"
                       priority
                       quality={90}
+                      style={{ aspectRatio: '1/1' }}
+                      placeholder="blur"
+                      blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
                     />
                   </a>
                 </div>
 
-                {/* Floating elements */}
-                <motion.div
-                  animate={{ y: [-10, 10, -10] } as any}
-                  transition={{ duration: 4, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
-                  className="absolute -top-4 -right-4 w-8 h-8 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-full shadow-lg"
-                ></motion.div>
-                <motion.div
-                  animate={{ y: [10, -10, 10] } as any}
-                  transition={{ duration: 3, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
-                  className="absolute -bottom-4 -left-4 w-6 h-6 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full shadow-lg"
-                ></motion.div>
               </div>
             </motion.div>
           </div>
         </div>
-      </motion.section>
-    </div>
+      </section>
+    </motion.div>
   )
 })
 

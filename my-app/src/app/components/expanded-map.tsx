@@ -372,13 +372,13 @@ export default function ExpandedMap({ isOpen, onClose }: { isOpen: boolean; onCl
   if (!isOpen) return null
 
   return (
-          <motion.div
-        initial={{ opacity: 0 } as any}
-        animate={{ opacity: 1 } as any}
-        exit={{ opacity: 0 } as any}
-        transition={{ duration: 0.3 }}
-        className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[10000] flex items-center justify-center p-0"
-      >
+    <motion.div
+      initial={{ opacity: 0 } as any}
+      animate={{ opacity: 1 } as any}
+      exit={{ opacity: 0 } as any}
+      transition={{ duration: 0.3 }}
+      className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[10000] flex items-center justify-center p-0"
+    >
       <motion.div
         initial={{ scale: 0.9, opacity: 0 } as any}
         animate={{ scale: 1, opacity: 1 } as any}
