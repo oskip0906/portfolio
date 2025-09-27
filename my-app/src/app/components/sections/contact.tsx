@@ -7,7 +7,6 @@ export default function Contact() {
   const [contacts, setContacts] = useState<Contact[]>([])
   const [loading, setLoading] = useState(true)
   const ref = useRef(null)
-  const inView = true
 
   useEffect(() => {
     const fetchData = async () => {

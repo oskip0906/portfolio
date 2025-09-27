@@ -26,7 +26,6 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, index, isIn
         y: { duration: 0.6 },
         scale: { duration: 0.6 }
       }}
-      whileHover={{ scale: 1.02 } as any}
       className="group relative cursor-pointer"
       onClick={() => setShowDetails(prev => !prev)}
     >

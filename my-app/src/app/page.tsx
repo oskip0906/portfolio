@@ -5,14 +5,17 @@ import Projects from "./components/sections/projects"
 import Contact from "./components/sections/contact"
 import NavBar from "./components/navbar"
 import GlobeContainer from "./components/sections/globe-container"
+import ParticleBackground from "./components/particle-background"
 
 export default function Home() {
 
   return (
     <div className="relative min-h-screen w-full overflow-x-hidden">
-      {/* Simple Background */}
+      {/* Base Background Gradient */}
       <div className="fixed inset-0 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900"></div>
 
+      {/* Animated Particle Background */}
+      <ParticleBackground />
 
       <NavBar />
 
