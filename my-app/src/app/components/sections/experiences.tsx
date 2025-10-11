@@ -30,10 +30,23 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, index, isIn
       onClick={() => setShowDetails(prev => !prev)}
     >
       <div className="relative w-full">
-        <div className="relative w-full backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-2xl p-12 shadow-2xl overflow-hidden">
+        <div className="relative w-full backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-2xl p-12 shadow-2xl overflow-hidden min-h-[330px] flex items-center justify-center">
           <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-purple-500/10 to-pink-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
-          <div className="relative z-10 flex flex-col">
+          {/* Main Content */}
+          <motion.div
+            initial={false}
+            animate={{ 
+              opacity: showDetails ? 0 : 1,
+              scale: showDetails ? 0.95 : 1
+            } as any}
+            transition={{ 
+              duration: 0.4,
+              ease: [0.4, 0, 0.2, 1]
+            }}
+            className="absolute inset-0 p-12 flex flex-col"
+            style={{ pointerEvents: showDetails ? 'none' : 'auto' }}
+          >
             <div className="flex items-start justify-between mb-4">
               <div className="flex-1">
                 <h3 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent mb-2">
@@ -66,7 +79,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, index, isIn
               </a>
             </div>
 
-            <div className="flex items-center justify-start">
+            <div className="flex items-center justify-start mt-auto">
               <motion.div
                 whileHover={{ scale: 1.03 } as any}
                 className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 rounded-full border border-white/20 text-sm text-gray-200"
@@ -75,18 +88,33 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, index, isIn
                 View details
               </motion.div>
             </div>
+          </motion.div>
 
+          {/* Description Content */}
+          <motion.div
+            initial={false}
+            animate={{ 
+              opacity: showDetails ? 1 : 0,
+              scale: showDetails ? 1 : 0.95
+            } as any}
+            transition={{ 
+              duration: 0.4,
+              ease: [0.4, 0, 0.2, 1]
+            }}
+            className="absolute inset-0 p-12 flex flex-col items-center justify-center"
+            style={{ pointerEvents: showDetails ? 'auto' : 'none' }}
+          >
+            <p className="text-gray-200 leading-relaxed text-center">
+              {experience.description}
+            </p>
             <motion.div
-              initial={false}
-              animate={showDetails ? { height: "auto", opacity: 1 } : { height: 0, opacity: 0 } as any}
-              transition={{ duration: 0.25, ease: "easeOut" }}
-              className="overflow-hidden mt-4"
+              whileHover={{ scale: 1.03 } as any}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full border border-white/20 text-sm text-gray-200 mt-6"
             >
-              <p className="text-gray-200 leading-relaxed">
-                {experience.description}
-              </p>
+              <span className="mr-1">←</span>
+              Back
             </motion.div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </motion.div>
