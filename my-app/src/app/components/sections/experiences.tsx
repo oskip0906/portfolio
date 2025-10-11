@@ -101,19 +101,14 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, index, isIn
               duration: 0.4,
               ease: [0.4, 0, 0.2, 1]
             }}
-            className="absolute inset-0 p-12 flex flex-col items-center justify-center"
+            className="absolute inset-0 p-6 flex items-center justify-center overflow-hidden"
             style={{ pointerEvents: showDetails ? 'auto' : 'none' }}
           >
-            <p className="text-gray-200 leading-relaxed text-center">
-              {experience.description}
-            </p>
-            <motion.div
-              whileHover={{ scale: 1.03 } as any}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full border border-white/20 text-sm text-gray-200 mt-6"
-            >
-              <span className="mr-1">←</span>
-              Back
-            </motion.div>
+            <div className="overflow-y-auto max-h-full w-full px-2">
+              <p className="text-gray-200 leading-relaxed text-left">
+                {experience.description}
+              </p>
+            </div>
           </motion.div>
         </div>
       </div>
