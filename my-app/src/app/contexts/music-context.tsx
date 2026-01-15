@@ -175,7 +175,7 @@ export function MusicProvider({ children }: { children: ReactNode }) {
       {/* CRITICAL: Audio element lives here in the root, never unmounts */}
       <audio
         ref={audioRef}
-        src={currentSong}
+        src={currentSong ?? undefined}
         preload="metadata"
         className="hidden"
       />

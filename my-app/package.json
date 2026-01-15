@@ -22,7 +22,6 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-draggable": "^4.4.6",
-    "react-globe": "^5.0.2",
     "react-simple-typewriter": "^5.0.1",
     "swiper": "^11.1.15",
     "zod": "^3.25.67"
