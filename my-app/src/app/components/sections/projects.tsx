@@ -4,7 +4,7 @@ import { motion } from "framer-motion"
 import { Swiper, SwiperSlide } from "swiper/react"
 import { Navigation, Pagination, EffectCoverflow } from "swiper/modules"
 import { ExternalLink, Calendar, ChevronLeft, ChevronRight } from "lucide-react"
-import { getProjects, type Project } from "@/lib/database"
+import { type Project } from "@/lib/database"
 import Image from "next/image"
 import "swiper/css"
 import "swiper/css/navigation"
@@ -22,7 +22,9 @@ export default function Projects() {
     const fetchData = async () => {
       try {
         setIsLoading(true)
-        const data = await getProjects()
+        const response = await fetch('/api/projects')
+        if (!response.ok) throw new Error('Failed to fetch projects')
+        const data = await response.json()
         setProjects(data)
       } catch (error) {
         console.error("Error fetching data:", error)
@@ -36,20 +38,15 @@ export default function Projects() {
 
   const ProjectsSkeleton = () => (
     <div className="flex justify-center">
-      <div className="max-w-md">
-        <div className="backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-3xl overflow-hidden shadow-2xl h-[600px] flex flex-col">
-          <div className="relative h-64 bg-white/10 animate-pulse"></div>
-          <div className="p-6 flex-1 flex flex-col">
-            <div className="h-4 bg-white/10 rounded animate-pulse mb-3 w-20"></div>
-            <div className="h-6 bg-white/10 rounded animate-pulse mb-4"></div>
-            <div className="space-y-2 mb-6 flex-1">
-              <div className="h-4 bg-white/10 rounded animate-pulse"></div>
-              <div className="h-4 bg-white/10 rounded animate-pulse w-3/4"></div>
-              <div className="h-4 bg-white/10 rounded animate-pulse w-1/2"></div>
-            </div>
-            <div className="h-12 bg-white/10 rounded-full animate-pulse"></div>
-          </div>
+      <div className="max-w-md backdrop-blur-xl bg-white/5 border border-white/20 rounded-3xl h-[600px] p-6 flex flex-col gap-4">
+        <div className="h-64 bg-white/10 rounded-2xl animate-pulse"></div>
+        <div className="h-4 bg-white/10 rounded animate-pulse w-20"></div>
+        <div className="h-6 bg-white/10 rounded animate-pulse"></div>
+        <div className="flex-1 space-y-2">
+          <div className="h-4 bg-white/10 rounded animate-pulse"></div>
+          <div className="h-4 bg-white/10 rounded animate-pulse w-3/4"></div>
         </div>
+        <div className="h-12 bg-white/10 rounded-full animate-pulse"></div>
       </div>
     </div>
   )
@@ -58,21 +55,14 @@ export default function Projects() {
     <motion.section
       ref={ref}
       id="projects"
-      className="w-full max-w-screen-xl mx-auto px-4 mb-12"
+      className="w-full max-w-screen-xl mx-auto px-4"
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
     >
-      <div className="text-center mb-16">
-        <h2 className="text-5xl font-bold bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-4 mt-6">
-          Projects
-        </h2>
-        <div className="w-24 h-1 bg-gradient-to-r from-cyan-400 to-purple-400 rounded-full mx-auto mb-8"></div>
-        <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-          Showcasing my creative work and technical expertise
-        </p>
-      </div>
+      {/* Pagination at top */}
+      <div className="swiper-pagination-top flex justify-center mt-4 md:mt-8 mb-8"></div>
 
       {isLoading ? (
         <ProjectsSkeleton />
@@ -81,20 +71,18 @@ export default function Projects() {
           <motion.button
           ref={prevRef}
           aria-label="Previous slide"
-          whileHover={{ scale: 1.1, rotate: -5 }}
+          whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
-          transition={{ type: "spring", stiffness: 400, damping: 17 }}
-          className="hidden sm:flex absolute top-1/2 -left-2 md:-left-6 xl:-left-10 z-20 items-center justify-center h-12 w-12 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white shadow-xl hover:shadow-[0_0_35px_rgba(34,211,238,0.65)] hover:ring-2 hover:ring-cyan-400/50 transition focus:outline-none"
+          className="hidden sm:flex absolute top-1/2 -left-2 md:-left-6 xl:-left-10 z-20 items-center justify-center h-12 w-12 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white shadow-lg hover:shadow-cyan-400/30 transition"
         >
           <ChevronLeft size={22} />
         </motion.button>
         <motion.button
           ref={nextRef}
           aria-label="Next slide"
-          whileHover={{ scale: 1.1, rotate: 5 }}
+          whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
-          transition={{ type: "spring", stiffness: 400, damping: 17 }}
-          className="hidden sm:flex absolute top-1/2 -right-2 md:-right-6 xl:-right-10 z-20 items-center justify-center h-12 w-12 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white shadow-xl hover:shadow-[0_0_35px_rgba(168,85,247,0.65)] hover:ring-2 hover:ring-purple-400/50 transition focus:outline-none"
+          className="hidden sm:flex absolute top-1/2 -right-2 md:-right-6 xl:-right-10 z-20 items-center justify-center h-12 w-12 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white shadow-lg hover:shadow-purple-400/30 transition"
         >
           <ChevronRight size={22} />
         </motion.button>
@@ -119,6 +107,7 @@ export default function Projects() {
           pagination={{
             clickable: true,
             dynamicBullets: false,
+            el: '.swiper-pagination-top',
           }}
           coverflowEffect={{
             rotate: 30,
@@ -127,11 +116,11 @@ export default function Projects() {
             modifier: 2,
             slideShadows: false,
           }}
-          className="w-full"
+          className="w-full [&_.swiper-pagination-bullet]:w-3 [&_.swiper-pagination-bullet]:h-3 [&_.swiper-pagination-bullet]:bg-white/40 [&_.swiper-pagination-bullet]:opacity-100 [&_.swiper-pagination-bullet-active]:bg-gradient-to-r [&_.swiper-pagination-bullet-active]:from-cyan-400 [&_.swiper-pagination-bullet-active]:to-purple-400 [&_.swiper-pagination-bullet-active]:scale-125"
         >
           {projects.map((project, index) => (
             <SwiperSlide key={index} className="max-w-md">
-              <div className="group relative backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-3xl overflow-hidden shadow-2xl h-[600px] flex flex-col hover:shadow-[0_20px_50px_rgba(8,_112,_184,_0.7)] transition-shadow duration-300">
+              <div className="group backdrop-blur-xl bg-white/5 border border-white/20 rounded-3xl overflow-hidden shadow-2xl h-[600px] flex flex-col hover:shadow-cyan-500/30 transition-shadow duration-300">
                 {/* Project Image */}
                 <div className="relative h-64 overflow-hidden">
                   <Image

@@ -2,8 +2,11 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/next"
-import { LoadingProvider } from "./components/loading-context"
-import LoadingWrapper from "./components/loading-wrapper"
+import { MusicProvider } from "./contexts/music-context"
+import MusicPlayerFooter from "./components/music-player-footer"
+import NavBar from "./components/navbar"
+import ParticleBackground from "./components/particle-background"
+import PageLoader from "./components/page-loader"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,19 +36,31 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        {/* Preload critical images to prevent CLS */}
-        <link rel="preload" as="image" href="/earth.svg" />
-      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <LoadingProvider>
-          <LoadingWrapper>
-            {children}
-          </LoadingWrapper>
-        </LoadingProvider>
-        <Analytics />
+        <PageLoader>
+          <MusicProvider>
+            {/* Shared background across all pages */}
+            <div className="fixed inset-0 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 -z-20" />
+            <ParticleBackground />
+
+            {/* Fixed Navigation - Always at top */}
+            <NavBar />
+
+            {/* Scrollable Page Content with padding for fixed navbar and footer */}
+            <main className="relative z-10 pt-20 pb-8 min-h-screen flex justify-center overflow-y-auto">
+              <div className="w-full max-w-7xl px-4">
+                {children}
+              </div>
+            </main>
+
+            {/* Fixed Music Player Footer - Always at bottom */}
+            <MusicPlayerFooter />
+
+            <Analytics />
+          </MusicProvider>
+        </PageLoader>
       </body>
     </html>
   );

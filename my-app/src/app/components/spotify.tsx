@@ -42,7 +42,7 @@ export default function SpotifyPlayer() {
 
   return (
     <motion.div
-      className="w-full max-w-3xl backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-3xl p-4"
+      className="w-full backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-3xl p-2"
       initial={{ opacity: 0, y: 20 } as any}
       animate={{ opacity: 1, y: 0 } as any}
       transition={{ duration: 0.6 }}
@@ -77,31 +77,28 @@ export default function SpotifyPlayer() {
                 </div>
 
                 {/* Display Song Information */}
-                <div className="mt-2 text-center pt-2">
-                  <p className="text-white text-sm whitespace-nowrap overflow-hidden text-ellipsis" title={`${currentPlayingTrack.name} - ${currentPlayingTrack.artist} - ${currentPlayingTrack.album}`}>
-                    <span className="font-semibold">{currentPlayingTrack.name}</span> - <span className="text-slate-300">{currentPlayingTrack.artist}</span> - <span className="text-slate-400">{currentPlayingTrack.album}</span>
-                  </p>
+                <div className="text-center">
                   <div className="mt-2 flex justify-center gap-4 text-xs text-slate-400">
                     <span>Popularity: {currentPlayingTrack.popularity}/100</span>
                     <span>Released: {currentPlayingTrack.releaseDate}</span>
                   </div>
-                  
+                
                   {/* Button below song info */}
-                  <div className="mt-4">
+                  <div className="mt-4 mb-2">
                     <button
                       onClick={fetchRandomSong}
                       disabled={isLoading}
-                      className="px-4 py-2 bg-gradient-to-r from-cyan-500/60 to-purple-500/60 hover:from-cyan-400/70 hover:to-purple-400/70 text-white font-medium rounded-full transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2 mx-auto"
+                      className="px-4 py-2 bg-gradient-to-r from-cyan-500/60 to-purple-500/60 hover:from-cyan-400/70 hover:to-purple-400/70 text-white text-sm font-medium rounded-full transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2 mx-auto"
                     >
                       {isLoading ? (
                         <>
                           <Loader2 className="w-4 h-4 animate-spin" />
-                          Looking through Oscar's playlist...
+                          <span>Looking...</span>
                         </>
                       ) : (
                         <>
                           <Shuffle className="w-4 h-4" />
-                          Suggest Random Song
+                          <span>Suggest Random Song</span>
                         </>
                       )}
                     </button>
@@ -111,22 +108,22 @@ export default function SpotifyPlayer() {
             ) : (
               <div className="text-center py-4">
                 <p className="text-slate-300 text-sm mb-4">{message}</p>
-                
+
                 {/* Button for initial state */}
                 <button
                   onClick={fetchRandomSong}
                   disabled={isLoading}
-                  className="px-4 py-2 bg-gradient-to-r from-cyan-500/60 to-purple-500/60 hover:from-cyan-400/70 hover:to-purple-400/70 text-white font-medium rounded-full transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2 mx-auto"
+                  className="px-4 py-2 bg-gradient-to-r from-cyan-500/60 to-purple-500/60 hover:from-cyan-400/70 hover:to-purple-400/70 text-white text-sm font-medium rounded-full transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2 mx-auto"
                 >
                   {isLoading ? (
                     <>
                       <Loader2 className="w-4 h-4 animate-spin" />
-                      Looking through Oscar's playlist...
+                      <span>Looking...</span>
                     </>
                   ) : (
                     <>
                       <Shuffle className="w-4 h-4" />
-                      Suggest Random Song
+                      <span>Suggest Random Song</span>
                     </>
                   )}
                 </button>

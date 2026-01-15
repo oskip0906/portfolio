@@ -1,16 +1,14 @@
 "use client"
 import { useEffect, useState, useCallback, memo } from "react"
 import { motion } from "framer-motion"
-import MusicPlayer from "../music-player"
-import SpotifyPlayer from "../spotify"
 import { Typewriter } from "react-simple-typewriter"
-import { Music, Headphones } from "lucide-react"
-import { getIntro, type Intro as IntroType } from "../../../lib/database"
+import { type Intro as IntroType } from "../../../lib/database"
 import Image from "next/image"
+import SpotifyPlayer from "../spotify"
+import Contact from "./contact"
 
 const Introduction = memo(() => {
   const [intro, setIntro] = useState<IntroType | null>(null)
-  const [showSpotify, setShowSpotify] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -18,7 +16,9 @@ const Introduction = memo(() => {
     try {
       setIsLoading(true)
       setError(null)
-      const data = await getIntro()
+      const response = await fetch('/api/intro')
+      if (!response.ok) throw new Error('Failed to fetch intro')
+      const data = await response.json()
       setIntro(data)
     } catch (error) {
       console.error("Error fetching data:", error)
@@ -32,41 +32,26 @@ const Introduction = memo(() => {
     fetchData()
   }, [fetchData])
 
-  const handlePlayerToggle = useCallback((showSpotifyPlayer: boolean) => {
-    setShowSpotify(showSpotifyPlayer)
-  }, [])
-
   const IntroductionSkeleton = () => (
     <motion.div
       id="introduction"
-      className="w-full max-w-7xl mx-auto px-4"
+      className="w-full max-w-7xl mx-auto px-2 sm:px-4"
       initial={{ opacity: 1 }}
       animate={{ opacity: 1 }}
     >
       <section className="relative overflow-visible z-0">
-        <div className="relative backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-3xl p-4 md:p-6 lg:p-8 shadow-2xl overflow-visible shadow-[0_0_20px_rgba(34,211,238,0.5)]">
-          <div className="relative flex flex-col lg:flex-row items-center gap-8 lg:gap-12 min-h-[600px]">
-            <div className="flex-1 text-center lg:text-left w-full">
-              <div className="mb-6">
-                <div className="h-12 bg-white/10 rounded-lg mb-4 animate-pulse"></div>
-                <div className="h-1 w-24 bg-gradient-to-r from-cyan-400 to-purple-400 rounded-full mx-auto lg:mx-0"></div>
-              </div>
-              <div className="mb-8">
-                <div className="h-8 bg-white/10 rounded-lg animate-pulse"></div>
-              </div>
-              <div className="mb-8">
-                <div className="bg-white/5 rounded-2xl p-4 md:p-6 border border-white/10">
-                  <div className="h-32 bg-white/10 rounded-lg animate-pulse"></div>
-                </div>
-              </div>
-              <div className="space-y-6">
-                <div className="h-12 bg-white/10 rounded-2xl animate-pulse"></div>
-                <div className="h-24 bg-white/10 rounded-lg animate-pulse"></div>
-              </div>
-            </div>
-            <div className="relative flex-shrink-0">
-              <div className="relative w-64 h-64 sm:w-60 sm:h-60 lg:w-80 lg:h-80">
-                <div className="absolute inset-8 rounded-full bg-white/10 animate-pulse"></div>
+        <div className="backdrop-blur-xl bg-white/5 border border-white/20 rounded-2xl sm:rounded-3xl p-3 sm:p-4 md:p-6 lg:p-8 shadow-2xl relative">
+          {/* Profile Image Skeleton - Top Center on mobile, Top Right on md+ */}
+          <div className="flex justify-center md:absolute md:top-3 md:right-3 lg:top-6 lg:right-6 mb-4 md:mb-0">
+            <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 bg-white/10 rounded-full animate-pulse"></div>
+          </div>
+
+          <div className="flex flex-col items-center gap-4 sm:gap-6 lg:gap-12">
+            <div className="flex-1 text-center lg:text-left w-full md:pr-32 lg:pr-0 space-y-6">
+              <div className="h-12 bg-white/10 rounded-lg animate-pulse"></div>
+              <div className="h-8 bg-white/10 rounded-lg animate-pulse"></div>
+              <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
+                <div className="h-32 bg-white/10 rounded-lg animate-pulse"></div>
               </div>
             </div>
           </div>
@@ -81,7 +66,7 @@ const Introduction = memo(() => {
 
   if (error || !intro) {
     return (
-      <div id="introduction" className="w-full max-w-7xl mx-auto px-4 mb-6">
+      <div id="introduction" className="w-full max-w-7xl mx-auto px-4">
         <div className="text-center text-red-400">
           <p>Error loading content: {error || "No data available"}</p>
           <button
@@ -98,28 +83,53 @@ const Introduction = memo(() => {
   return (
     <motion.div
       id="introduction"
-      className="w-full max-w-7xl mx-auto px-4 mb-6"
+      className="w-full max-w-7xl mx-auto px-2 sm:px-4"
       initial={{ opacity: 1 }}
       animate={{ opacity: 1 }}
     >
       <section className="relative overflow-visible z-0">
-        <div className="relative backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-3xl p-4 md:p-6 lg:p-8 shadow-2xl overflow-visible shadow-[0_0_20px_rgba(34,211,238,0.5)]">
+        <div className="backdrop-blur-xl bg-white/5 border border-white/20 rounded-2xl sm:rounded-3xl p-3 sm:p-4 md:p-6 lg:p-8 shadow-2xl relative">
+          {/* Profile Image - Top Center on mobile, Top Right on md+ */}
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 } as any}
+            animate={{ scale: 1, opacity: 1 } as any}
+            transition={{ delay: 0.4, duration: 0.6 }}
+            className="flex justify-center md:absolute md:top-3 md:right-3 lg:top-6 lg:right-6 mb-4 md:mb-0"
+          >
+            <div className="relative w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32">
+              <a
+                href="https://www.utoronto.ca/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block w-full h-full relative rounded-full overflow-hidden bg-white/5 border-2 border-cyan-400/50 shadow-lg hover:scale-110 transition-transform duration-300"
+                style={{
+                  boxShadow: "0 0 15px rgba(34, 211, 238, 0.3), 0 0 30px rgba(139, 92, 246, 0.2), 0 0 45px rgba(236, 72, 153, 0.15)"
+                }}
+                aria-label="Visit University of Toronto website"
+              >
+                <Image
+                  src={intro.image}
+                  alt="Profile"
+                  fill
+                  sizes="(max-width: 640px) 96px, (max-width: 768px) 112px, 128px"
+                  className="object-cover"
+                  priority
+                  quality={90}
+                />
+              </a>
+            </div>
+          </motion.div>
 
-          <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
-            <div className="absolute top-4 left-4 w-20 h-20 bg-gradient-to-br from-cyan-400/20 to-blue-600/20 rounded-full blur-xl"></div>
-            <div className="absolute bottom-4 right-4 w-32 h-32 bg-gradient-to-br from-purple-400/20 to-pink-600/20 rounded-full blur-xl"></div>
-          </div>
-
-          <div className="relative flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
+          <div className="flex flex-col items-center gap-4 sm:gap-6 lg:gap-12">
             {/* Content */}
-            <div className="flex-1 text-center lg:text-left w-full">
+            <div className="flex-1 text-center lg:text-left w-full md:pr-32 lg:pr-0">
               <motion.div
                 initial={{ opacity: 0 } as any}
                 animate={{ opacity: 1 } as any}
                 transition={{ delay: 0.3, duration: 0.6 }}
                 className="mb-6"
               >
-                <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-4 leading-tight">
+                <h1 className="text-3xl font-bold bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-4 leading-tight">
                   Hi, I'm {intro.name}!
                 </h1>
                 <div className="h-1 w-24 bg-gradient-to-r from-cyan-400 to-purple-400 rounded-full mx-auto lg:mx-0"></div>
@@ -144,8 +154,8 @@ const Introduction = memo(() => {
                 transition={{ delay: 0.7, duration: 0.8 }}
                 className="mb-8"
               >
-                <div className="text-base sm:text-md md:text-lg text-gray-300 leading-relaxed backdrop-blur-sm bg-white/5 rounded-2xl p-4 md:p-6 border border-white/10 overflow-visible">
-                  <div className="flex items-start min-h-[140px] h-[140px] overflow-hidden">
+                <div className="text-md sm:text-lg text-gray-300 leading-relaxed bg-white/5 rounded-2xl p-6 border border-white/10">
+                  <div className="min-h-[120px]">
                     <Typewriter
                       words={intro.bio.split(";")}
                       loop={false}
@@ -159,109 +169,26 @@ const Introduction = memo(() => {
                 </div>
               </motion.div>
 
+              {/* Contact Section */}
               <motion.div
                 initial={{ opacity: 0, y: 20 } as any}
                 animate={{ opacity: 1, y: 0 } as any}
                 transition={{ delay: 0.9, duration: 0.8 }}
-                className="w-full relative z-30 space-y-6"
               >
-                {/* Player Toggle */}
-                <div className="flex justify-center">
-                  <div className="bg-black/20 backdrop-blur-sm rounded-2xl p-2 border border-white/10">
-                    <div className="flex gap-2">
-                      <motion.button
-                        onClick={() => handlePlayerToggle(false)}
-                        className={`flex items-center gap-2 px-4 py-2 rounded-xl font-medium transition-all duration-300 ${
-                          !showSpotify
-                            ? "bg-gradient-to-r from-cyan-500 to-purple-500 text-white shadow-lg"
-                            : "text-gray-300 hover:text-white hover:bg-white/10"
-                        }`}
-                        whileHover={{ scale: 1.02 } as any}
-                        whileTap={{ scale: 0.98 } as any}
-                        aria-label="Switch to chill music player"
-                      >
-                        <Music className="w-4 h-4" />
-                        Chill Music
-                      </motion.button>
-                      <motion.button
-                        onClick={() => handlePlayerToggle(true)}
-                        className={`flex items-center gap-2 px-4 py-2 rounded-xl font-medium transition-all duration-300 ${
-                          showSpotify
-                            ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg"
-                            : "text-gray-300 hover:text-white hover:bg-white/10"
-                        }`}
-                        whileHover={{ scale: 1.02 } as any}
-                        whileTap={{ scale: 0.98 } as any}
-                        aria-label="Switch to Spotify player"
-                      >
-                        <Headphones className="w-4 h-4" />
-                        Spotify
-                      </motion.button>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Player Display */}
-                <motion.div
-                  key={showSpotify ? "spotify" : "music"}
-                  initial={{ opacity: 0, y: 20 } as any}
-                  animate={{ opacity: 1, y: 0 } as any}
-                  exit={{ opacity: 0, y: -20 } as any}
-                  transition={{ duration: 0.5, ease: "easeOut" }}
-                  className="min-h-[200px]"
-                >
-                  {showSpotify ? <SpotifyPlayer /> : <MusicPlayer />}
-                </motion.div>
+                <Contact />
               </motion.div>
             </div>
-
-            {/* Profile Image */}
-            <motion.div
-              initial={{ scale: 0.8, opacity: 0, y: -20 } as any}
-              animate={{ scale: 1, opacity: 1, y: 0 } as any}
-              transition={{ delay: 0.4, duration: 1 }}
-              className="relative flex-shrink-0"
-            >
-              <div className="relative w-64 h-64 sm:w-60 sm:h-60 lg:w-80 lg:h-80">
-                {/* Animated rings */}
-                <motion.div
-                  animate={{ rotate: 360 } as any}
-                  transition={{ duration: 20, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
-                  className="absolute inset-0 rounded-full border-2 border-dashed border-cyan-400/30"
-                ></motion.div>
-                <motion.div
-                  animate={{ rotate: -360 } as any}
-                  transition={{ duration: 30, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
-                  className="absolute inset-4 rounded-full border border-purple-400/20"
-                ></motion.div>
-
-                {/* Profile image container */}
-                <div className="absolute inset-8 rounded-full overflow-hidden bg-gradient-to-br from-cyan-400/20 to-purple-400/20 backdrop-blur-sm border border-white/20 shadow-2xl">
-                  <a
-                    href="https://www.utoronto.ca/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block w-full h-full relative"
-                    aria-label="Visit University of Toronto website"
-                  >
-                    <Image
-                      src={intro.image}
-                      alt="Profile"
-                      fill
-                      sizes="(max-width: 640px) 200px, (max-width: 1024px) 240px, 320px"
-                      className="object-cover hover:scale-110 transition-transform duration-500"
-                      priority
-                      quality={90}
-                      style={{ aspectRatio: '1/1' }}
-                      placeholder="blur"
-                      blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
-                    />
-                  </a>
-                </div>
-
-              </div>
-            </motion.div>
           </div>
+
+          {/* Spotify Player Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 } as any}
+            animate={{ opacity: 1, y: 0 } as any}
+            transition={{ delay: 1.1, duration: 0.8 }}
+            className="pt-8 pb-8 md:mt-8 border-t border-white/10"
+          >
+            <SpotifyPlayer />
+          </motion.div>
         </div>
       </section>
     </motion.div>

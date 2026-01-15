@@ -1,14 +1,9 @@
 "use client"
 import { useRef, useState, useEffect, useCallback } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { X, Map } from "lucide-react"
-import { getLocations, type Location } from "@/lib/database"
+import { X } from "lucide-react"
+import { type Location } from "@/lib/database"
 import Image from "next/image"
-
-const mapStyles = [
-  { id: 'Standard', name: 'Standard', style: 'mapbox://styles/mapbox/standard' },
-  { id: 'Satellite', name: 'Satellite', style: 'mapbox://styles/mapbox/standard-satellite' },
-]
 
 function PhotoGallery({ location, onClose }: { location: Location; onClose: () => void }) {
   const [currentPhoto, setCurrentPhoto] = useState(0)
@@ -147,10 +142,14 @@ function PhotoGallery({ location, onClose }: { location: Location; onClose: () =
   )
 }
 
-export default function ExpandedMap({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+interface ExpandedMapProps {
+  isOpen: boolean
+  onClose: () => void
+}
+
+export default function ExpandedMap({ isOpen, onClose }: ExpandedMapProps) {
   const [locations, setLocations] = useState<Location[]>([])
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null)
-  const [currentStyleIndex, setCurrentStyleIndex] = useState(0)
   const [isMapboxLoading, setIsMapboxLoading] = useState(false)
   const [mapboxLoaded, setMapboxLoaded] = useState(false)
   const [mapboxgl, setMapboxgl] = useState<any>(null)
@@ -187,7 +186,11 @@ export default function ExpandedMap({ isOpen, onClose }: { isOpen: boolean; onCl
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await getLocations()
+        const response = await fetch('/api/locations')
+        if (!response.ok) {
+          throw new Error('Failed to fetch locations')
+        }
+        const data = await response.json()
         setLocations(data)
       } catch (error) {
         console.error('Failed to load locations:', error)
@@ -196,6 +199,7 @@ export default function ExpandedMap({ isOpen, onClose }: { isOpen: boolean; onCl
 
     fetchData()
   }, [])
+
 
   const createMarkerElement = (location: Location) => {
     const markerElement = document.createElement("div")
@@ -249,15 +253,6 @@ export default function ExpandedMap({ isOpen, onClose }: { isOpen: boolean; onCl
     })
   }
 
-  const changeMapStyle = (styleIndex: number) => {
-    if (map.current) {
-      map.current.setStyle(mapStyles[styleIndex].style)
-      setCurrentStyleIndex(styleIndex)
-
-      // Re-add markers after style change
-      map.current.once('styledata', addMarkers)
-    }
-  }
 
   // Load mapbox when modal opens
   useEffect(() => {
@@ -293,7 +288,7 @@ export default function ExpandedMap({ isOpen, onClose }: { isOpen: boolean; onCl
     try {
       map.current = new mapboxgl.Map({
         container: mapContainer.current,
-        style: mapStyles[currentStyleIndex].style,
+        style: 'mapbox://styles/mapbox/standard',
         center: [-79.9, 43.5],
         zoom: 1,
         trackResize: true,
@@ -317,7 +312,20 @@ export default function ExpandedMap({ isOpen, onClose }: { isOpen: boolean; onCl
     }
 
     // Add navigation controls
-    map.current.addControl(new mapboxgl.NavigationControl(), 'top-right')
+    // Position based on screen size
+    const isMobile = window.innerWidth < 640
+    const navControl = new mapboxgl.NavigationControl()
+    map.current.addControl(navControl, 'top-right')
+
+    // Add custom positioning for mobile via CSS
+    if (isMobile) {
+      setTimeout(() => {
+        const controlContainer = mapContainer.current?.querySelector('.mapboxgl-ctrl-top-right')
+        if (controlContainer) {
+          (controlContainer as HTMLElement).style.top = '5rem'
+        }
+      }, 100)
+    }
 
     // Disable keyboard interactions
     map.current.keyboard.disable()
@@ -386,20 +394,6 @@ export default function ExpandedMap({ isOpen, onClose }: { isOpen: boolean; onCl
         transition={{ duration: 0.3 }}
         className="relative w-full h-full overflow-hidden"
       >
-        {/* Header */}
-        <div className="flex items-center justify-between p-4 backdrop-blur-sm border-b border-white/10">
-          <div className="flex items-center gap-3">
-            <Map className="text-blue-400" size={24} />
-            <h2 className="text-xl font-semibold text-white">Explore My Photos</h2>
-          </div>
-          <button
-            onClick={onClose}
-            className="p-2 rounded-lg hover:bg-white/20 text-white hover:text-gray-200 transition-colors"
-          >
-            <X size={24} />
-          </button>
-        </div>
-
         {/* Map Container */}
         <div className="relative w-full h-full">
           <div ref={mapContainer} className="w-full h-full">
@@ -414,26 +408,6 @@ export default function ExpandedMap({ isOpen, onClose }: { isOpen: boolean; onCl
               </div>
             )}
           </div>
-
-          {/* Map Style Selector */}
-          {mapboxLoaded && (
-            <div className="absolute top-4 left-4 z-10">
-              <div className="bg-black/80 backdrop-blur-sm rounded-lg p-2 flex gap-2">
-                {mapStyles.map((style, index) => (
-                  <button
-                    key={style.id}
-                    onClick={() => changeMapStyle(index)}
-                    className={`px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 ${currentStyleIndex === index
-                      ? 'bg-blue-500 text-white shadow-lg'
-                      : 'bg-white/20 text-white hover:bg-white/30'
-                      }`}
-                  >
-                    {style.name}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
         </div>
       </motion.div>
 
