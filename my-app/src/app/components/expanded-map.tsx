@@ -7,6 +7,7 @@ import Image from "next/image"
 
 function PhotoGallery({ location, onClose }: { location: Location; onClose: () => void }) {
   const [currentPhoto, setCurrentPhoto] = useState(0)
+  const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set())
 
   const nextPhoto = useCallback(() => {
     setCurrentPhoto((prev) => (prev + 1) % location.photos.length)
@@ -85,18 +86,27 @@ function PhotoGallery({ location, onClose }: { location: Location; onClose: () =
                 </svg>
               </button>
             )}
-            <div className="relative w-full max-w-md aspect-square">
+            <div className="relative w-full max-w-md aspect-square bg-gradient-to-br from-slate-800/50 to-slate-900/50 rounded-lg overflow-hidden">
+              {/* Loading spinner - shows while image is loading */}
+              {!loadedImages.has(currentPhoto) && (
+                <div className="absolute inset-0 flex items-center justify-center z-10">
+                  <div className="w-10 h-10 border-2 border-white/20 border-t-blue-400 rounded-full animate-spin" />
+                </div>
+              )}
               <Image
                 src={location.photos[currentPhoto] || "/placeholder.svg"}
                 alt={`${location.name} - Photo ${currentPhoto + 1}`}
                 fill
                 sizes="(max-width: 768px) 100vw, 400px"
-                className="object-cover rounded-lg"
+                className={`object-cover rounded-lg transition-opacity duration-300 ${
+                  loadedImages.has(currentPhoto) ? 'opacity-100' : 'opacity-0'
+                }`}
                 quality={80}
                 priority={currentPhoto === 0}
+                onLoad={() => setLoadedImages(prev => new Set(prev).add(currentPhoto))}
               />
               {/* Photo counter */}
-              <div className="absolute bottom-3 right-3 backdrop-blur-sm bg-black/60 text-white px-3 py-1 rounded-full text-sm">
+              <div className="absolute bottom-3 right-3 backdrop-blur-sm bg-black/60 text-white px-3 py-1 rounded-full text-sm z-20">
                 {currentPhoto + 1} / {location.photos.length}
               </div>
             </div>
@@ -119,7 +129,7 @@ function PhotoGallery({ location, onClose }: { location: Location; onClose: () =
                 <button
                   key={index}
                   onClick={() => setCurrentPhoto(index)}
-                  className={`relative flex-shrink-0 w-16 h-16 rounded-md overflow-hidden border-2 transition-all ${currentPhoto === index
+                  className={`relative flex-shrink-0 w-16 h-16 rounded-md overflow-hidden border-2 transition-all bg-gradient-to-br from-slate-800/50 to-slate-900/50 ${currentPhoto === index
                     ? 'border-blue-400'
                     : 'border-white/20 hover:border-white/40'
                     }`}
@@ -129,7 +139,7 @@ function PhotoGallery({ location, onClose }: { location: Location; onClose: () =
                     alt={`${location.name} photo ${index + 1}`}
                     fill
                     sizes="64px"
-                    className="object-cover"
+                    className="object-cover transition-opacity duration-200"
                     quality={60}
                   />
                 </button>

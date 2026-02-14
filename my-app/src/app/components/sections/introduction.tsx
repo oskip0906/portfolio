@@ -149,9 +149,9 @@ const Introduction = memo(() => {
               </motion.div>
 
               <motion.div
-                initial={{ opacity: 0, y: 20 } as any}
-                animate={{ opacity: 1, y: 0 } as any}
-                transition={{ delay: 0.7, duration: 0.8 }}
+                initial={{ opacity: 0 } as any}
+                animate={{ opacity: 1 } as any}
+                transition={{ delay: 0.5, duration: 0.5 }}
                 className="mb-8"
               >
                 <div className="text-md sm:text-lg text-gray-300 leading-relaxed bg-white/5 rounded-2xl p-6 border border-white/10">
@@ -171,9 +171,9 @@ const Introduction = memo(() => {
 
               {/* Contact Section */}
               <motion.div
-                initial={{ opacity: 0, y: 20 } as any}
-                animate={{ opacity: 1, y: 0 } as any}
-                transition={{ delay: 0.9, duration: 0.8 }}
+                initial={{ opacity: 0 } as any}
+                animate={{ opacity: 1 } as any}
+                transition={{ delay: 0.6, duration: 0.5 }}
               >
                 <Contact />
               </motion.div>
@@ -182,9 +182,9 @@ const Introduction = memo(() => {
 
           {/* Spotify Player Section */}
           <motion.div
-            initial={{ opacity: 0, y: 20 } as any}
-            animate={{ opacity: 1, y: 0 } as any}
-            transition={{ delay: 1.1, duration: 0.8 }}
+            initial={{ opacity: 0 } as any}
+            animate={{ opacity: 1 } as any}
+            transition={{ delay: 0.7, duration: 0.5 }}
             className="pt-8 pb-8 md:mt-8 border-t border-white/10"
           >
             <SpotifyPlayer />

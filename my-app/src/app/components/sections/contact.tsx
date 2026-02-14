@@ -28,15 +28,12 @@ export default function Contact() {
         {contacts.map((contact, index) => (
           <motion.div
             key={index}
-            initial={{ opacity: 0, y: 100, scale: 0.8 } as any}
-            animate={{ opacity: 1, y: 0, scale: 1 } as any}
+            initial={{ opacity: 0, scale: 0.9 } as any}
+            animate={{ opacity: 1, scale: 1 } as any}
             transition={{
-              delay: index * 0.15,
-              duration: 0.6,
-              ease: "easeOut",
-              opacity: { duration: 0.5 },
-              y: { duration: 0.6 },
-              scale: { duration: 0.6 }
+              delay: index * 0.05,
+              duration: 0.3,
+              ease: [0.25, 0.46, 0.45, 0.94],
             }}
             className="flex flex-col items-center group"
           >
