@@ -152,3 +152,50 @@ body {
   height: 20px;
   box-shadow: 0 0 12px rgba(6, 182, 212, 1);
 }
+
+/* Color picker circle styling */
+.color-picker-circle {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: none;
+  cursor: pointer;
+}
+
+.color-picker-circle::-webkit-color-swatch-wrapper {
+  padding: 0;
+  border-radius: 50%;
+}
+
+.color-picker-circle::-webkit-color-swatch {
+  border: none;
+  border-radius: 50%;
+}
+
+.color-picker-circle::-moz-color-swatch {
+  border: none;
+  border-radius: 50%;
+}
+
+/* React Colorful custom styles */
+.react-colorful {
+  gap: 12px !important;
+}
+
+.react-colorful__saturation {
+  border-radius: 8px !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.react-colorful__hue {
+  border-radius: 8px !important;
+  height: 14px !important;
+}
+
+.react-colorful__saturation-pointer,
+.react-colorful__hue-pointer {
+  width: 18px !important;
+  height: 18px !important;
+  border: 2px solid white !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+}

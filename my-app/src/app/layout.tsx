@@ -3,10 +3,11 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/next"
 import { MusicProvider } from "./contexts/music-context"
-import MusicPlayerFooter from "./components/music-player-footer"
+import { BackgroundProvider } from "./contexts/background-context"
+import Footer from "./components/footer"
 import NavBar from "./components/navbar"
 import ParticleBackground from "./components/particle-background"
-import PageLoader from "./components/page-loader"
+import DynamicBackground from "./components/dynamic-background"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -39,10 +40,10 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <PageLoader>
+        <BackgroundProvider>
           <MusicProvider>
             {/* Shared background across all pages */}
-            <div className="fixed inset-0 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 -z-20" />
+            <DynamicBackground />
             <ParticleBackground />
 
             {/* Fixed Navigation - Always at top */}
@@ -56,11 +57,11 @@ export default function RootLayout({
             </main>
 
             {/* Fixed Music Player Footer - Always at bottom */}
-            <MusicPlayerFooter />
+            <Footer />
 
             <Analytics />
           </MusicProvider>
-        </PageLoader>
+        </BackgroundProvider>
       </body>
     </html>
   );

@@ -1,5 +1,4 @@
 "use client"
-import { motion } from "framer-motion"
 import { useEffect, useState, useMemo } from "react"
 
 interface Particle {
@@ -16,6 +15,8 @@ interface Particle {
 
 export default function ParticleBackground() {
   const [mounted, setMounted] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
 
   const colors = useMemo(() => [
     '#60a5fa', // blue-400
@@ -26,12 +27,22 @@ export default function ParticleBackground() {
     '#ffffff', // white
   ], [])
 
-  // Generate particles only once, using percentages for responsive positioning
+  // Check for mobile and reduced motion preference
+  useEffect(() => {
+    setMounted(true)
+    setIsMobile(window.innerWidth < 768)
+    setPrefersReducedMotion(window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+  }, [])
+
+  // Generate particles - fewer on mobile
   const particles = useMemo(() => {
     const newParticles: Particle[] = []
+    const orbCount = isMobile ? 2 : 4
+    const starCount = isMobile ? 8 : 20
+    const dotCount = isMobile ? 8 : 20
 
-    // Create floating orbs (reduced from 6 to 4)
-    for (let i = 0; i < 4; i++) {
+    // Create floating orbs
+    for (let i = 0; i < orbCount; i++) {
       newParticles.push({
         id: i,
         x: Math.random() * 100,
@@ -45,8 +56,8 @@ export default function ParticleBackground() {
       })
     }
 
-    // Create twinkling stars (reduced from 44 to 20)
-    for (let i = 4; i < 24; i++) {
+    // Create twinkling stars
+    for (let i = orbCount; i < orbCount + starCount; i++) {
       newParticles.push({
         id: i,
         x: Math.random() * 100,
@@ -60,8 +71,8 @@ export default function ParticleBackground() {
       })
     }
 
-    // Create glowing dots (reduced from 50 to 20)
-    for (let i = 24; i < 44; i++) {
+    // Create glowing dots
+    for (let i = orbCount + starCount; i < orbCount + starCount + dotCount; i++) {
       newParticles.push({
         id: i,
         x: Math.random() * 100,
@@ -76,21 +87,55 @@ export default function ParticleBackground() {
     }
 
     return newParticles
-  }, [colors])
-
-  // Mount check for SSR safety
-  useEffect(() => {
-    setMounted(true)
-  }, [])
+  }, [colors, isMobile])
 
   if (!mounted) return null
 
+  // Static particles for reduced motion preference
+  if (prefersReducedMotion) {
+    return (
+      <div className="fixed inset-0 pointer-events-none overflow-hidden -z-10">
+        {particles.slice(0, 10).map(particle => (
+          <div
+            key={particle.id}
+            className="absolute rounded-full"
+            style={{
+              left: `${particle.x}%`,
+              top: `${particle.y}%`,
+              width: particle.size,
+              height: particle.size,
+              backgroundColor: particle.type === 'orb' ? 'transparent' : particle.color,
+              background: particle.type === 'orb'
+                ? `radial-gradient(circle, ${particle.color}20 0%, transparent 70%)`
+                : undefined,
+              opacity: particle.opacity * 0.5,
+            }}
+          />
+        ))}
+      </div>
+    )
+  }
+
   return (
     <div className="fixed inset-0 pointer-events-none overflow-hidden -z-10">
+      <style jsx>{`
+        @keyframes pulse-orb {
+          0%, 100% { opacity: 0.3; transform: scale(0.8); }
+          50% { opacity: 1; transform: scale(1.1); }
+        }
+        @keyframes twinkle {
+          0%, 100% { opacity: 0.2; transform: scale(0.5); }
+          50% { opacity: 1; transform: scale(1.2); }
+        }
+        @keyframes glow {
+          0%, 100% { opacity: 0.4; transform: scale(0.6); }
+          50% { opacity: 1; transform: scale(1.4); }
+        }
+      `}</style>
       {particles.map(particle => {
         if (particle.type === 'orb') {
           return (
-            <motion.div
+            <div
               key={particle.id}
               className="absolute rounded-full blur-md"
               style={{
@@ -99,17 +144,7 @@ export default function ParticleBackground() {
                 width: particle.size,
                 height: particle.size,
                 background: `radial-gradient(circle, ${particle.color}30 0%, ${particle.color}10 70%, transparent 100%)`,
-                willChange: 'transform, opacity',
-              }}
-              animate={{
-                opacity: [particle.opacity * 0.3, particle.opacity * 1.2, particle.opacity * 0.3],
-                scale: [0.8, 1.1, 0.8],
-              }}
-              transition={{
-                duration: particle.duration,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: particle.delay,
+                animation: `pulse-orb ${particle.duration}s ease-in-out ${particle.delay}s infinite`,
               }}
             />
           )
@@ -117,41 +152,25 @@ export default function ParticleBackground() {
 
         if (particle.type === 'star') {
           return (
-            <motion.div
+            <div
               key={particle.id}
-              className="absolute"
+              className="absolute rounded-full"
               style={{
                 left: `${particle.x}%`,
                 top: `${particle.y}%`,
-                willChange: 'transform, opacity',
+                width: particle.size,
+                height: particle.size,
+                backgroundColor: particle.color,
+                boxShadow: `0 0 8px ${particle.color}`,
+                animation: `twinkle ${particle.duration}s ease-in-out ${particle.delay}s infinite`,
               }}
-              animate={{
-                opacity: [0.2, 1, 0.2],
-                scale: [0.5, 1.2, 0.5],
-              }}
-              transition={{
-                duration: particle.duration,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: particle.delay,
-              }}
-            >
-              <div
-                className="rounded-full"
-                style={{
-                  width: particle.size,
-                  height: particle.size,
-                  backgroundColor: particle.color,
-                  boxShadow: `0 0 8px ${particle.color}`,
-                }}
-              />
-            </motion.div>
+            />
           )
         }
 
         if (particle.type === 'dot') {
           return (
-            <motion.div
+            <div
               key={particle.id}
               className="absolute rounded-full"
               style={{
@@ -161,17 +180,7 @@ export default function ParticleBackground() {
                 height: particle.size,
                 backgroundColor: particle.color,
                 boxShadow: `0 0 4px ${particle.color}40`,
-                willChange: 'transform, opacity',
-              }}
-              animate={{
-                opacity: [particle.opacity * 0.4, particle.opacity * 1.3, particle.opacity * 0.4],
-                scale: [0.6, 1.4, 0.6],
-              }}
-              transition={{
-                duration: particle.duration,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: particle.delay,
+                animation: `glow ${particle.duration}s ease-in-out ${particle.delay}s infinite`,
               }}
             />
           )

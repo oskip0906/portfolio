@@ -8,7 +8,7 @@ export default function LoadingSpinner() {
     setMounted(true)
   }, [])
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black">
 
       <div className="flex flex-col items-center gap-6 relative z-10">
         <div className="relative">
