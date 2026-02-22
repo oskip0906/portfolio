@@ -2,7 +2,7 @@
 import type React from "react"
 import { useState, useCallback } from "react"
 import { motion } from "framer-motion"
-import { Play, Loader2, Shuffle } from "lucide-react"
+import { Loader2, Shuffle } from "lucide-react"
 
 interface SpotifyTrack {
   id: string
@@ -42,7 +42,7 @@ export default function SpotifyPlayer() {
 
   return (
     <motion.div
-      className="w-full backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-3xl p-2"
+      className="w-full h-full backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-3xl p-1.5"
       initial={{ opacity: 0 } as any}
       animate={{ opacity: 1 } as any}
       transition={{ duration: 0.4 }}
@@ -54,13 +54,13 @@ export default function SpotifyPlayer() {
         animate={{ opacity: 1 } as any}
         transition={{ delay: 0.1, duration: 0.3 }}
       >
-          <div className="flex flex-col items-center justify-center">
+          <div className="flex flex-col items-center justify-center min-h-[170px]">
             {currentPlayingTrack ? (
               <motion.div
-                className="w-full"
-                initial={{ opacity: 0, scale: 0.95 } as any}
-                animate={{ opacity: 1, scale: 1 } as any}
-                transition={{ duration: 0.3 }}
+                className="w-full min-h-[170px] flex flex-col justify-between"
+                initial={{ opacity: 0, y: 8 } as any}
+                animate={{ opacity: 1, y: 0 } as any}
+                transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
               >
                 <div className="rounded-2xl overflow-hidden shadow-2xl">
                   <iframe
@@ -78,13 +78,13 @@ export default function SpotifyPlayer() {
 
                 {/* Display Song Information */}
                 <div className="text-center">
-                  <div className="mt-2 flex justify-center gap-4 text-xs text-slate-400">
+                  <div className="flex justify-center gap-4 text-xs text-slate-400">
                     <span>Popularity: {currentPlayingTrack.popularity}/100</span>
                     <span>Released: {currentPlayingTrack.releaseDate}</span>
                   </div>
                 
                   {/* Button below song info */}
-                  <div className="mt-4 mb-2">
+                  <div className="mt-2 mb-1">
                     <button
                       onClick={fetchRandomSong}
                       disabled={isLoading}
@@ -106,8 +106,8 @@ export default function SpotifyPlayer() {
                 </div>
               </motion.div>
             ) : (
-              <div className="text-center py-4">
-                <p className="text-slate-300 text-sm mb-4">{message}</p>
+              <div className="text-center py-2 min-h-[170px] flex flex-col justify-center">
+                <p className="text-slate-300 text-sm mb-2">{message}</p>
 
                 {/* Button for initial state */}
                 <button
@@ -118,7 +118,7 @@ export default function SpotifyPlayer() {
                   {isLoading ? (
                     <>
                       <Loader2 className="w-4 h-4 animate-spin" />
-                      <span>Looking...</span>
+                      <span>Looking through my playlist...</span>
                     </>
                   ) : (
                     <>

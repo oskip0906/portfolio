@@ -1,8 +1,7 @@
 "use client"
-import { useCallback, memo } from "react"
+import { memo } from "react"
 import { motion } from "framer-motion"
-import { Loader2, Shuffle } from "lucide-react"
-import { useMusic } from "../contexts/music-context"
+import { Shuffle } from "lucide-react"
 
 const SpotifyFooterPlayer = memo(() => {
 

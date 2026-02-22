@@ -1,7 +1,6 @@
 "use client"
 import { memo, useCallback, useEffect } from "react"
 import { Play, Pause } from "lucide-react"
-import { motion } from "framer-motion"
 import { useMusic } from "../contexts/music-context"
 import ColorPicker from "./color-picker"
 
@@ -44,12 +43,7 @@ const Footer = memo(() => {
   }, [])
 
   return (
-    <motion.div
-      initial={{ y: 100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
-      className="fixed bottom-4 inset-x-0 mx-auto z-[9998] w-[95%] max-w-4xl"
-    >
+    <div className="fixed bottom-4 inset-x-0 mx-auto z-[9998] w-[95%] max-w-4xl">
       <div className="w-full px-4 py-3 rounded-full backdrop-blur-xl bg-gradient-to-r from-white/10 to-white/5 border border-white/20 shadow-2xl"
         style={{
           boxShadow: "0 8px 32px rgba(0, 0, 0, 0.3), 0 0 20px rgba(34, 211, 238, 0.15)"
@@ -90,7 +84,7 @@ const Footer = memo(() => {
           </span>
         </div>
       </div>
-    </motion.div>
+    </div>
   )
 })
 

@@ -15,31 +15,35 @@ interface Particle {
 
 export default function ParticleBackground() {
   const [mounted, setMounted] = useState(false)
-  const [isMobile, setIsMobile] = useState(false)
+  const [screenArea, setScreenArea] = useState(0)
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
 
   const colors = useMemo(() => [
-    '#60a5fa', // blue-400
-    '#a78bfa', // violet-400
-    '#c084fc', // purple-400
-    '#e879f9', // fuchsia-400
-    '#06b6d4', // cyan-500
-    '#ffffff', // white
+    '#60a5fa',
+    '#a78bfa',
+    '#c084fc',
+    '#e879f9',
+    '#06b6d4',
+    '#ffffff',
   ], [])
 
-  // Check for mobile and reduced motion preference
   useEffect(() => {
+    const update = () => setScreenArea(window.innerWidth * window.innerHeight)
+    update()
     setMounted(true)
-    setIsMobile(window.innerWidth < 768)
     setPrefersReducedMotion(window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+    window.addEventListener('resize', update)
+    return () => window.removeEventListener('resize', update)
   }, [])
 
-  // Generate particles - fewer on mobile
+  // Scale particle counts linearly with screen area.
+  // Reference: 1920×1080 (~2M px²) → orbs:10, stars:60, dots:50
   const particles = useMemo(() => {
     const newParticles: Particle[] = []
-    const orbCount = isMobile ? 2 : 4
-    const starCount = isMobile ? 8 : 20
-    const dotCount = isMobile ? 8 : 20
+    const scale = Math.min(screenArea / 2_073_600, 1.5) // cap at 1.5× for very large screens
+    const orbCount  = Math.round(scale * 10)
+    const starCount = Math.round(scale * 60)
+    const dotCount  = Math.round(scale * 50)
 
     // Create floating orbs
     for (let i = 0; i < orbCount; i++) {
@@ -87,7 +91,7 @@ export default function ParticleBackground() {
     }
 
     return newParticles
-  }, [colors, isMobile])
+  }, [colors, screenArea])
 
   if (!mounted) return null
 
