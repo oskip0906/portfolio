@@ -60,10 +60,9 @@ function PhotoGallery({ location, onClose }: { location: Location; onClose: () =
 
   // Lock body scroll while gallery is open
   useEffect(() => {
-    const previousOverflow = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
+    document.body.classList.add('scroll-locked')
     return () => {
-      document.body.style.overflow = previousOverflow
+      document.body.classList.remove('scroll-locked')
     }
   }, [])
 
@@ -403,10 +402,9 @@ export default function ExpandedMap({ isOpen, onClose }: ExpandedMapProps) {
   // Lock body scroll when modal is open
   useEffect(() => {
     if (isOpen) {
-      const previousOverflow = document.body.style.overflow
-      document.body.style.overflow = 'hidden'
+      document.body.classList.add('scroll-locked')
       return () => {
-        document.body.style.overflow = previousOverflow
+        document.body.classList.remove('scroll-locked')
       }
     }
   }, [isOpen])
