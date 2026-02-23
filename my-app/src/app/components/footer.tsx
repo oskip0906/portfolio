@@ -36,7 +36,14 @@ const Footer = memo(() => {
   } = useMusic()
   const { baseColor } = useBackground()
 
-  const [isVisible, setIsVisible] = useState(true)
+  const [isVisible, setIsVisible] = useState(() => {
+    if (typeof window === "undefined") return true
+    return localStorage.getItem("footer-visible") !== "false"
+  })
+
+  useEffect(() => {
+    localStorage.setItem("footer-visible", String(isVisible))
+  }, [isVisible])
 
   const lineGradient = (() => {
     const { h, s } = hexToHsl(baseColor)
