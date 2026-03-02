@@ -4,9 +4,25 @@ import { motion, AnimatePresence } from "framer-motion"
 import { X } from "lucide-react"
 import { type Location } from "@/lib/database"
 import Image from "next/image"
+import { useBackground } from "../contexts/background-context"
 
+function hexToRgb(hex: string): { r: number; g: number; b: number } {
+  const r = parseInt(hex.slice(1, 3), 16)
+  const g = parseInt(hex.slice(3, 5), 16)
+  const b = parseInt(hex.slice(5, 7), 16)
+  return { r, g, b }
+}
 
 function PhotoGallery({ location, onClose }: { location: Location; onClose: () => void }) {
+  const { baseColor } = useBackground()
+  const { r, g, b } = hexToRgb(baseColor)
+  // Create brighter version for glow
+  const brightR = Math.min(255, r + 80)
+  const brightG = Math.min(255, g + 80)
+  const brightB = Math.min(255, b + 80)
+  const glowColor = `rgba(${brightR}, ${brightG}, ${brightB}, 0.25)`
+  const glowColorStrong = `rgba(${brightR}, ${brightG}, ${brightB}, 0.4)`
+  const accentColor = `rgb(${brightR}, ${brightG}, ${brightB})`
   const [currentPhoto, setCurrentPhoto] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
 
@@ -81,13 +97,13 @@ function PhotoGallery({ location, onClose }: { location: Location; onClose: () =
         exit={{ scale: 0.9, opacity: 0 } as any}
         transition={{ duration: 0.5, ease: "easeInOut" }}
         className="relative max-w-lg w-full backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-xl shadow-xl overflow-hidden"
-        style={{ boxShadow: '0 0 30px rgba(59, 130, 246, 0.3)' } as any}
+        style={{ boxShadow: `0 0 25px ${glowColor}` }}
         onClick={(e) => e.stopPropagation()}
       >
         {isLoading ? (
           <div className="flex items-center justify-center h-64 p-4">
             <div className="text-center">
-              <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-400 mx-auto mb-3"></div>
+              <div className="animate-spin rounded-full h-10 w-10 border-b-2 mx-auto mb-3" style={{ borderColor: accentColor }}></div>
               <p className="text-sm text-white/70">Loading photos...</p>
             </div>
           </div>
@@ -110,7 +126,8 @@ function PhotoGallery({ location, onClose }: { location: Location; onClose: () =
                 {location.photos.length > 1 && (
                   <button
                     onClick={prevPhoto}
-                    className="bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-400 hover:to-purple-400 text-white p-2 rounded-full shadow-md"
+                    className="text-white p-2 rounded-full shadow-md transition-all"
+                    style={{ backgroundColor: accentColor, boxShadow: `0 0 8px ${glowColor}` }}
                   >
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
                       <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
@@ -135,7 +152,8 @@ function PhotoGallery({ location, onClose }: { location: Location; onClose: () =
                 {location.photos.length > 1 && (
                   <button
                     onClick={nextPhoto}
-                    className="bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-400 hover:to-purple-400 text-white p-2 rounded-full shadow-md"
+                    className="text-white p-2 rounded-full shadow-md transition-all"
+                    style={{ backgroundColor: accentColor, boxShadow: `0 0 8px ${glowColor}` }}
                   >
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
                       <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z" />
@@ -151,10 +169,11 @@ function PhotoGallery({ location, onClose }: { location: Location; onClose: () =
                     <button
                       key={index}
                       onClick={() => setCurrentPhoto(index)}
-                      className={`relative flex-shrink-0 w-12 h-12 rounded overflow-hidden border-2 ${currentPhoto === index
-                        ? 'border-blue-400'
-                        : 'border-white/20'
-                        }`}
+                      className="relative flex-shrink-0 w-12 h-12 rounded overflow-hidden border-2 transition-all"
+                      style={{
+                        borderColor: currentPhoto === index ? accentColor : 'rgba(255,255,255,0.2)',
+                        boxShadow: currentPhoto === index ? `0 0 10px ${glowColor}` : 'none'
+                      }}
                     >
                       <Image
                         src={photo}

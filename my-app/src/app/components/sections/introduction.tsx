@@ -7,6 +7,7 @@ import { motion } from "framer-motion"
 import { ExternalLink } from "lucide-react"
 import SpotifyPlayer from "../spotify"
 import Contact from "./contact"
+import { useBackground } from "../../contexts/background-context"
 
 const cardVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -22,6 +23,7 @@ const cardVariants = {
 }
 
 const Introduction = memo(() => {
+  const { isLoaded } = useBackground()
   const [intro, setIntro] = useState<IntroType | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -99,8 +101,19 @@ const Introduction = memo(() => {
     )
   }
 
-  if (isLoading || !intro) {
+  if (!isLoaded) {
     return <div id="introduction" className="w-full max-w-7xl mx-auto px-2 sm:px-4 min-h-[500px]" />
+  }
+
+  if (isLoading || !intro) {
+    return (
+      <div id="introduction" className="w-full max-w-7xl mx-auto px-2 sm:px-4 min-h-[500px] flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-400 mx-auto mb-3"></div>
+          <p className="text-sm text-white/70">Loading introduction...</p>
+        </div>
+      </div>
+    )
   }
 
   return (

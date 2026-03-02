@@ -6,6 +6,7 @@ interface BackgroundContextType {
   setBaseColor: (color: string) => void
   resetColor: () => void
   gradientStyle: string
+  isLoaded: boolean
 }
 
 const DEFAULT_COLOR = '#581c87'
@@ -80,7 +81,7 @@ export function BackgroundProvider({ children }: { children: ReactNode }) {
   const gradientStyle = generateGradient(baseColor)
 
   return (
-    <BackgroundContext.Provider value={{ baseColor, setBaseColor, resetColor, gradientStyle }}>
+    <BackgroundContext.Provider value={{ baseColor, setBaseColor, resetColor, gradientStyle, isLoaded: mounted }}>
       {children}
     </BackgroundContext.Provider>
   )
