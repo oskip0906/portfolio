@@ -102,15 +102,14 @@ const Introduction = memo(() => {
   }
 
   if (!isLoaded) {
-    return <div id="introduction" className="w-full max-w-7xl mx-auto px-2 sm:px-4 min-h-[500px]" />
+    return <div id="introduction" className="w-full max-w-7xl mx-auto px-2 sm:px-4 min-h-[50vh]" />
   }
 
   if (isLoading || !intro) {
     return (
-      <div id="introduction" className="w-full max-w-7xl mx-auto px-2 sm:px-4 min-h-[500px] flex items-center justify-center">
+      <div id="introduction" className="w-full max-w-7xl mx-auto px-2 sm:px-4 min-h-[50vh] flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-400 mx-auto mb-3"></div>
-          <p className="text-sm text-white/70">Loading introduction...</p>
+          <div className="animate-spin rounded-full h-20 w-20 border-b-2 border-blue-400 mx-auto mb-3"></div>
         </div>
       </div>
     )
@@ -183,7 +182,7 @@ const Introduction = memo(() => {
               </a>
             </div>
           </div>
-          <div className="text-md sm:text-lg text-gray-300 leading-relaxed bg-white/5 rounded-2xl p-6 border border-white/10 min-h-[160px]">
+          <div className="text-md sm:text-lg text-gray-300 leading-relaxed bg-white/5 rounded-2xl p-6 border border-white/10 min-h-[18vh]">
             <Typewriter
               words={intro.bio.split(";")}
               loop={false}

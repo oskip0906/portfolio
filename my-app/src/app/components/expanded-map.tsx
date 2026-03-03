@@ -96,12 +96,12 @@ function PhotoGallery({ location, onClose }: { location: Location; onClose: () =
         animate={{ scale: 1, opacity: 1 } as any}
         exit={{ scale: 0.9, opacity: 0 } as any}
         transition={{ duration: 0.5, ease: "easeInOut" }}
-        className="relative max-w-lg w-full backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-xl shadow-xl overflow-hidden"
+        className="relative w-full max-w-sm sm:max-w-lg md:max-w-xl lg:max-w-2xl h-[40vh] sm:h-[50vh] md:h-[55vh] lg:h-[60vh] flex flex-col backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-xl shadow-xl overflow-hidden"
         style={{ boxShadow: `0 0 25px ${glowColor}` }}
         onClick={(e) => e.stopPropagation()}
       >
         {isLoading ? (
-          <div className="flex items-center justify-center h-64 p-4">
+          <div className="flex items-center justify-center flex-1">
             <div className="text-center">
               <div className="animate-spin rounded-full h-10 w-10 border-b-2 mx-auto mb-3" style={{ borderColor: accentColor }}></div>
               <p className="text-sm text-white/70">Loading photos...</p>
@@ -110,8 +110,8 @@ function PhotoGallery({ location, onClose }: { location: Location; onClose: () =
         ) : (
           <>
             {/* Header */}
-            <div className="flex items-center justify-between p-4 backdrop-blur-sm border-b border-white/10">
-              <h3 className="text-xl font-semibold text-white">{location.name}</h3>
+            <div className="flex-shrink-0 flex items-center justify-between px-4 py-3 backdrop-blur-sm border-b border-white/10">
+              <h3 className="text-lg font-semibold text-white">{location.name}</h3>
               <button
                 onClick={onClose}
                 className="p-2 rounded-lg hover:bg-white/20 text-white hover:text-gray-200 transition-colors"
@@ -121,28 +121,27 @@ function PhotoGallery({ location, onClose }: { location: Location; onClose: () =
             </div>
 
             {/* Photo Display */}
-            <div className="p-4">
-              <div className="flex items-center justify-center gap-6 mb-3">
+            <div className="flex-1 flex flex-col overflow-hidden p-3 gap-2 min-h-0">
+              <div className="flex-1 flex items-center justify-center gap-4 min-h-0">
                 {location.photos.length > 1 && (
                   <button
                     onClick={prevPhoto}
-                    className="text-white p-2 rounded-full shadow-md transition-all"
-                    style={{ backgroundColor: accentColor, boxShadow: `0 0 8px ${glowColor}` }}
+                    className="flex-shrink-0 text-white p-2 rounded-full transition-all hover:scale-110"
+                    style={{ color: accentColor }}
                   >
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                       <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
                     </svg>
                   </button>
                 )}
-                <div className="relative w-full max-w-xs aspect-square bg-slate-800 rounded-lg overflow-hidden">
-                  {/* Render ALL photos at once, show/hide based on currentPhoto */}
+                <div className="relative flex-1 h-full bg-slate-800 rounded-lg overflow-hidden">
                   {location.photos.map((photo, index) => (
                     <Image
                       key={index}
                       src={photo || "/placeholder.svg"}
                       alt={`${location.name} - Photo ${index + 1}`}
                       fill
-                      className={`object-cover ${index === currentPhoto ? 'opacity-100' : 'opacity-0 absolute'}`}
+                      className={`object-contain ${index === currentPhoto ? 'opacity-100' : 'opacity-0 absolute'}`}
                     />
                   ))}
                   <div className="absolute bottom-2 right-2 bg-black/60 text-white px-2 py-0.5 rounded-full text-xs z-10">
@@ -152,10 +151,10 @@ function PhotoGallery({ location, onClose }: { location: Location; onClose: () =
                 {location.photos.length > 1 && (
                   <button
                     onClick={nextPhoto}
-                    className="text-white p-2 rounded-full shadow-md transition-all"
-                    style={{ backgroundColor: accentColor, boxShadow: `0 0 8px ${glowColor}` }}
+                    className="flex-shrink-0 text-white p-2 rounded-full transition-all hover:scale-110"
+                    style={{ color: accentColor }}
                   >
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                       <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z" />
                     </svg>
                   </button>
@@ -164,12 +163,12 @@ function PhotoGallery({ location, onClose }: { location: Location; onClose: () =
 
               {/* Thumbnail Navigation */}
               {location.photos.length > 1 && (
-                <div className="flex gap-1.5 justify-center overflow-x-auto">
+                <div className="flex-shrink-0 flex gap-1.5 justify-center overflow-x-auto">
                   {location.photos.map((photo, index) => (
                     <button
                       key={index}
                       onClick={() => setCurrentPhoto(index)}
-                      className="relative flex-shrink-0 w-12 h-12 rounded overflow-hidden border-2 transition-all"
+                      className="relative flex-shrink-0 w-10 h-10 rounded overflow-hidden border-2 transition-all"
                       style={{
                         borderColor: currentPhoto === index ? accentColor : 'rgba(255,255,255,0.2)',
                         boxShadow: currentPhoto === index ? `0 0 10px ${glowColor}` : 'none'
@@ -179,7 +178,7 @@ function PhotoGallery({ location, onClose }: { location: Location; onClose: () =
                         src={photo}
                         alt={`${location.name} photo ${index + 1}`}
                         fill
-                        sizes="48px"
+                        sizes="40px"
                         className="object-cover"
                       />
                     </button>

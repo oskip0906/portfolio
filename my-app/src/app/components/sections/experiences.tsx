@@ -42,7 +42,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, index, isIn
       >
         {/* Front side */}
         <div
-          className="w-full backdrop-blur-xl bg-white/5 border border-white/20 rounded-2xl p-12 shadow-2xl overflow-hidden min-h-[330px] flex items-center justify-center"
+          className="w-full backdrop-blur-xl bg-white/5 border border-white/20 rounded-2xl p-12 shadow-2xl overflow-hidden min-h-[33vh] flex items-center justify-center"
           style={{
             backfaceVisibility: "hidden",
             WebkitBackfaceVisibility: "hidden",
@@ -99,7 +99,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, index, isIn
 
         {/* Back side */}
         <div
-          className="absolute inset-0 top-0 left-0 w-full backdrop-blur-xl bg-white/5 border border-white/20 rounded-2xl p-6 shadow-2xl overflow-hidden min-h-[330px] flex items-center justify-center"
+          className="absolute inset-0 top-0 left-0 w-full backdrop-blur-xl bg-white/5 border border-white/20 rounded-2xl p-6 shadow-2xl overflow-hidden min-h-[33vh] flex items-center justify-center"
           style={{
             backfaceVisibility: "hidden",
             WebkitBackfaceVisibility: "hidden",

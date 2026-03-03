@@ -54,10 +54,10 @@ export default function SpotifyPlayer() {
         animate={{ opacity: 1 } as any}
         transition={{ delay: 0.1, duration: 0.3 }}
       >
-          <div className="flex flex-col items-center justify-center min-h-[170px]">
+          <div className="flex flex-col items-center justify-center min-h-[20vh]">
             {currentPlayingTrack ? (
               <motion.div
-                className="w-full min-h-[170px] flex flex-col justify-between"
+                className="w-full min-h-[20vh] flex flex-col justify-between"
                 initial={{ opacity: 0, y: 8 } as any}
                 animate={{ opacity: 1, y: 0 } as any}
                 transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
@@ -106,7 +106,7 @@ export default function SpotifyPlayer() {
                 </div>
               </motion.div>
             ) : (
-              <div className="text-center py-2 min-h-[170px] flex flex-col justify-center">
+              <div className="text-center py-2 min-h-[20vh] flex flex-col justify-center">
                 <p className="text-slate-300 text-sm mb-2">{message}</p>
 
                 {/* Button for initial state */}
