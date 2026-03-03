@@ -2,7 +2,7 @@
 import React, { useState, useCallback, memo } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Home, Briefcase, FolderOpen, Heart, Globe, Mail, Menu, X } from "lucide-react"
+import { Home, Briefcase, FolderOpen, Heart, Images, Menu, X } from "lucide-react"
 import { AnimatePresence, motion } from "framer-motion"
 
 const navItems = [
@@ -10,7 +10,7 @@ const navItems = [
   { href: '/experiences', label: 'Experiences', icon: Briefcase },
   { href: '/projects', label: 'Projects', icon: FolderOpen },
   { href: '/interests', label: 'Interests', icon: Heart },
-  { href: '/globe', label: 'Globe', icon: Globe },
+  { href: '/globe', label: 'Photos', icon: Images },
 ]
 
 const NavBar = memo(() => {

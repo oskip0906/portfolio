@@ -96,7 +96,7 @@ function PhotoGallery({ location, onClose }: { location: Location; onClose: () =
         animate={{ scale: 1, opacity: 1 } as any}
         exit={{ scale: 0.9, opacity: 0 } as any}
         transition={{ duration: 0.5, ease: "easeInOut" }}
-        className="relative w-full max-w-sm sm:max-w-lg md:max-w-xl lg:max-w-2xl h-[50vh] flex flex-col backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-xl shadow-xl overflow-hidden"
+        className="relative w-full max-w-sm sm:max-w-lg md:max-w-xl lg:max-w-2xl h-[50vh] md:h-[60vh] flex flex-col backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-xl shadow-xl overflow-hidden"
         style={{ boxShadow: `0 0 25px ${glowColor}` }}
         onClick={(e) => e.stopPropagation()}
       >

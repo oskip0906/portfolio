@@ -59,7 +59,7 @@ export default function Projects() {
   }, [])
 
   const ProjectsSkeleton = () => (
-    <div className="flex items-center justify-center h-[600px]">
+    <div className="flex items-center justify-center h-[550px]">
       <div className="text-center">
         <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-400 mx-auto mb-3"></div>
         <p className="text-sm text-white/70">Loading projects...</p>
@@ -77,7 +77,7 @@ export default function Projects() {
       transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
     >
       {/* Pagination at top */}
-      <div className="swiper-pagination-top flex justify-center mt-4 md:mt-8 mb-8"></div>
+      <div className="swiper-pagination-top flex justify-center mb-8"></div>
 
       {isLoading ? (
         <ProjectsSkeleton />
@@ -88,7 +88,7 @@ export default function Projects() {
             aria-label="Previous slide"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
-            className="hidden sm:flex absolute top-1/2 -left-2 md:-left-6 xl:-left-10 z-20 items-center justify-center h-12 w-12 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white shadow-lg hover:shadow-cyan-400/30 transition"
+            className="hidden sm:flex absolute top-1/2 left-0 md:-left-3 xl:-left-6 z-20 items-center justify-center h-12 w-12 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white shadow-lg hover:shadow-cyan-400/30 transition"
           >
             <ChevronLeft size={22} />
           </motion.button>
@@ -97,7 +97,7 @@ export default function Projects() {
             aria-label="Next slide"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
-            className="hidden sm:flex absolute top-1/2 -right-2 md:-right-6 xl:-right-10 z-20 items-center justify-center h-12 w-12 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white shadow-lg hover:shadow-purple-400/30 transition"
+            className="hidden sm:flex absolute top-1/2 right-0 md:-right-3 xl:-right-6 z-20 items-center justify-center h-12 w-12 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white shadow-lg hover:shadow-purple-400/30 transition"
           >
             <ChevronRight size={22} />
           </motion.button>
@@ -135,7 +135,7 @@ export default function Projects() {
           >
             {projects.map((project, index) => (
               <SwiperSlide key={index} className="max-w-md">
-                <div className="group backdrop-blur-xl bg-white/5 border border-white/20 rounded-3xl overflow-hidden shadow-2xl h-[600px] flex flex-col hover:shadow-cyan-500/30 transition-shadow duration-300">
+                <div className="group backdrop-blur-xl bg-white/5 border border-white/20 rounded-3xl overflow-hidden shadow-2xl h-[550px] flex flex-col hover:shadow-cyan-500/30 transition-shadow duration-300">
                   {/* Project Image */}
                   <div className="relative h-64 overflow-hidden bg-gradient-to-br from-slate-800/50 to-slate-900/50">
                     <Image

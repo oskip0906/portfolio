@@ -102,12 +102,12 @@ const Introduction = memo(() => {
   }
 
   if (!isLoaded) {
-    return <div id="introduction" className="w-full max-w-7xl mx-auto px-2 sm:px-4 min-h-[50vh]" />
+    return <div id="introduction" className="w-full max-w-7xl mx-auto px-2 sm:px-3 min-h-[50vh]" />
   }
 
   if (isLoading || !intro) {
     return (
-      <div id="introduction" className="w-full max-w-7xl mx-auto px-2 sm:px-4 min-h-[50vh] flex items-center justify-center">
+      <div id="introduction" className="w-full max-w-7xl mx-auto px-2 sm:px-3 min-h-[50vh] flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-20 w-20 border-b-2 border-blue-400 mx-auto mb-3"></div>
         </div>
@@ -116,17 +116,17 @@ const Introduction = memo(() => {
   }
 
   return (
-    <div id="introduction" className="w-full max-w-7xl mx-auto px-2 sm:px-4">
+    <div id="introduction" className="w-full max-w-7xl mx-auto px-2 sm:px-3">
       <div className="grid grid-cols-1 md:grid-cols-12 gap-4 sm:gap-5">
 
         <motion.div
-          className="md:col-span-8 backdrop-blur-xl bg-white/5 border border-white/20 rounded-2xl sm:rounded-3xl p-5 sm:p-6 md:p-8 shadow-2xl"
+          className="md:col-span-8 backdrop-blur-xl bg-white/5 border border-white/20 rounded-2xl sm:rounded-3xl p-4 sm:p-5 md:p-7 shadow-2xl"
           variants={cardVariants}
           initial="hidden"
           animate="visible"
           custom={0}
         >
-          <div className="flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-10 mb-10">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-8 mb-8">
             <div className="relative w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 mx-auto sm:mx-0 flex-shrink-0">
               <a
                 href="https://www.utoronto.ca/"
@@ -182,7 +182,7 @@ const Introduction = memo(() => {
               </a>
             </div>
           </div>
-          <div className="text-md sm:text-lg text-gray-300 leading-relaxed bg-white/5 rounded-2xl p-6 border border-white/10 min-h-[18vh]">
+          <div className="text-md sm:text-lg text-gray-300 leading-relaxed bg-white/5 rounded-2xl p-5 border border-white/10 min-h-[18vh]">
             <Typewriter
               words={intro.bio.split(";")}
               loop={false}
@@ -196,15 +196,15 @@ const Introduction = memo(() => {
         </motion.div>
 
         <motion.div
-          className="md:col-span-4 backdrop-blur-xl bg-white/5 border border-white/20 rounded-2xl sm:rounded-3xl p-4 sm:p-5 md:p-6 shadow-2xl flex flex-col justify-center"
+          className="md:col-span-4 backdrop-blur-xl bg-white/5 border border-white/20 rounded-2xl sm:rounded-3xl p-3.5 sm:p-4 md:p-5 shadow-2xl flex flex-col justify-center"
           variants={cardVariants}
           initial="hidden"
           animate="visible"
           custom={0.1}
         >
-          <h2 className="text-xl font-semibold text-white mb-4 text-center">Send Me a Message</h2>
-          <form onSubmit={handleSendMessage} className="flex flex-col gap-3">
-            <div className="flex flex-col gap-3">
+          <h2 className="text-xl font-semibold text-white mb-3 text-center">Send Me a Message</h2>
+          <form onSubmit={handleSendMessage} className="flex flex-col gap-2.5">
+            <div className="flex flex-col gap-2.5">
               <input
                 type="text"
                 name="senderName"
@@ -242,7 +242,7 @@ const Introduction = memo(() => {
         </motion.div>
 
         <motion.div
-          className="md:col-span-6 backdrop-blur-xl bg-white/5 border border-white/20 rounded-2xl sm:rounded-3xl p-4 sm:p-5 md:p-6 shadow-2xl flex flex-col justify-center"
+          className="md:col-span-6 backdrop-blur-xl bg-white/5 border border-white/20 rounded-2xl sm:rounded-3xl p-3.5 sm:p-4 md:p-5 shadow-2xl flex flex-col justify-center"
           variants={cardVariants}
           initial="hidden"
           animate="visible"
@@ -252,7 +252,7 @@ const Introduction = memo(() => {
         </motion.div>
 
         <motion.div
-          className="md:col-span-6 backdrop-blur-xl bg-white/5 border border-white/20 rounded-2xl sm:rounded-3xl p-4 sm:p-5 md:p-6 shadow-2xl flex flex-col justify-center"
+          className="md:col-span-6 backdrop-blur-xl bg-white/5 border border-white/20 rounded-2xl sm:rounded-3xl p-3.5 sm:p-4 md:p-5 shadow-2xl flex flex-col justify-center"
           variants={cardVariants}
           initial="hidden"
           animate="visible"

@@ -46,13 +46,14 @@ export default function Interests() {
               </div>
 
               <div className="relative z-10">
-                <div className="text-6xl mb-4 group-hover:scale-110 transition-transform duration-300">
-                  {interest.emote}
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="text-4xl group-hover:scale-110 transition-transform duration-300">
+                    {interest.emote}
+                  </div>
+                  <h3 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+                    {interest.name}
+                  </h3>
                 </div>
-
-                <h3 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent mb-4">
-                  {interest.name}
-                </h3>
 
                 <p className="text-gray-300 leading-relaxed">
                   {interest.description}
