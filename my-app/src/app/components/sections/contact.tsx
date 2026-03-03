@@ -50,7 +50,7 @@ export default function Contact() {
                 src={contact.image}
                 alt={contact.type}
                 className="w-full h-full object-contain"
-                loading="lazy"
+                loading="eager"
               />
             </a>
           </motion.div>

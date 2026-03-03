@@ -144,7 +144,8 @@ export default function Projects() {
                       fill
                       sizes="(max-width: 768px) 100vw, 400px"
                       className="object-cover"
-                      priority={index < 3}
+                      priority
+                      loading="eager"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent pointer-events-none"></div>
 

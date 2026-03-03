@@ -80,6 +80,8 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, index, isIn
                     sizes="64px"
                     className="object-cover"
                     quality={80}
+                    priority
+                    loading="eager"
                   />
                 </motion.div>
               </a>
