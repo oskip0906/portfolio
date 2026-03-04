@@ -109,7 +109,7 @@ const Introduction = memo(() => {
     return (
       <div id="introduction" className="w-full max-w-7xl mx-auto px-2 sm:px-3 min-h-[50vh] flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-20 w-20 border-b-2 border-blue-400 mx-auto mb-3"></div>
+          <div className="animate-spin rounded-full h-[7vh] w-[7vh] border-b-2 border-blue-400 mx-auto mb-3"></div>
         </div>
       </div>
     )
@@ -127,7 +127,7 @@ const Introduction = memo(() => {
           custom={0}
         >
           <div className="flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-8 mb-8">
-            <div className="relative w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 mx-auto sm:mx-0 flex-shrink-0">
+            <div className="relative w-[12vh] h-[12vh] sm:w-[13vh] sm:h-[13vh] md:w-[14vh] md:h-[14vh] max-w-40 max-h-40 mx-auto sm:mx-0 flex-shrink-0">
               <a
                 href="https://www.utoronto.ca/"
                 target="_blank"
@@ -142,7 +142,7 @@ const Introduction = memo(() => {
                   src={intro.image}
                   alt="Profile"
                   fill
-                  sizes="(max-width: 640px) 96px, (max-width: 768px) 112px, 128px"
+                  sizes="(max-width: 640px) 12vw, (max-width: 768px) 13vw, 14vw"
                   className="object-cover"
                   priority
                   quality={90}
@@ -182,7 +182,7 @@ const Introduction = memo(() => {
               </a>
             </div>
           </div>
-          <div className="text-md sm:text-lg text-gray-300 leading-relaxed bg-white/5 rounded-2xl p-5 border border-white/10 min-h-[18vh]">
+          <div className="text-md sm:text-lg text-gray-300 leading-relaxed bg-white/5 rounded-2xl p-5 border border-white/10 min-h-[14vh] sm:min-h-[16vh] md:min-h-[18vh] lg:min-h-[20vh]">
             <Typewriter
               words={intro.bio.split(";")}
               loop={false}

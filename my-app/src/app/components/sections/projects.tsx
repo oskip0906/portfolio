@@ -58,15 +58,6 @@ export default function Projects() {
     fetchData()
   }, [])
 
-  const ProjectsSkeleton = () => (
-    <div className="flex items-center justify-center h-[550px]">
-      <div className="text-center">
-        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-400 mx-auto mb-3"></div>
-        <p className="text-sm text-white/70">Loading projects...</p>
-      </div>
-    </div>
-  )
-
   return (
     <motion.section
       ref={ref}
@@ -79,9 +70,14 @@ export default function Projects() {
       {/* Pagination at top */}
       <div className="swiper-pagination-top flex justify-center mb-8"></div>
 
-      {isLoading ? (
-        <ProjectsSkeleton />
-      ) : (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: isLoading ? 0 : 1 }}
+        transition={{ duration: 1, ease: [0.25, 0.46, 0.45, 0.94] }}
+        className="relative"
+        style={{ minHeight: "62vh" }}
+      >
+        {!isLoading && (
         <div className="relative">
           <motion.button
             ref={prevRef}
@@ -135,9 +131,9 @@ export default function Projects() {
           >
             {projects.map((project, index) => (
               <SwiperSlide key={index} className="max-w-md">
-                <div className="group backdrop-blur-xl bg-white/5 border border-white/20 rounded-3xl overflow-hidden shadow-2xl h-[550px] flex flex-col hover:shadow-cyan-500/30 transition-shadow duration-300">
+                <div className="group backdrop-blur-xl bg-white/5 border border-white/20 rounded-3xl overflow-hidden shadow-2xl min-h-[55vh] sm:min-h-[58vh] md:min-h-[60vh] lg:min-h-[62vh] flex flex-col hover:shadow-cyan-500/30 transition-shadow duration-300">
                   {/* Project Image */}
-                  <div className="relative h-64 overflow-hidden bg-gradient-to-br from-slate-800/50 to-slate-900/50">
+                  <div className="relative h-[26vh] sm:h-[28vh] md:h-[30vh] overflow-hidden bg-gradient-to-br from-slate-800/50 to-slate-900/50">
                     <Image
                       src={project.image}
                       alt={project.name}
@@ -193,7 +189,8 @@ export default function Projects() {
             ))}
           </Swiper>
         </div>
-      )}
+        )}
+      </motion.div>
     </motion.section>
   )
 }

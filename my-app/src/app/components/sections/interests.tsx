@@ -25,7 +25,7 @@ export default function Interests() {
 
   return (
     <section ref={ref} id="interests" className="w-full max-w-7xl mx-auto px-4">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[3vh] sm:gap-8">
         {interests.map((interest, index) => (
           <motion.div
             key={index}
@@ -38,7 +38,7 @@ export default function Interests() {
             }}
             className="group relative"
           >
-            <div className="relative h-full backdrop-blur-xl bg-white/5 border border-white/20 rounded-2xl p-6 shadow-2xl overflow-hidden transition-all duration-500">
+            <div className="relative h-full backdrop-blur-xl bg-white/5 border border-white/20 rounded-2xl p-[2.5vh] sm:p-6 lg:p-[2.8vh] shadow-2xl overflow-hidden transition-all duration-500 min-h-[25vh] sm:min-h-[28vh] md:min-h-[30vh]">
               <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
               <div className="absolute top-4 right-4 opacity-20 group-hover:opacity-40 transition-opacity duration-300">
