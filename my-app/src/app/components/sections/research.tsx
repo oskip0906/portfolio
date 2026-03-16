@@ -3,16 +3,16 @@ import { useEffect, useState, useRef } from "react"
 import { motion } from "framer-motion"
 import { Swiper, SwiperSlide } from "swiper/react"
 import { Navigation, Pagination, EffectCoverflow } from "swiper/modules"
-import { ExternalLink, Calendar, ChevronLeft, ChevronRight, Tag } from "lucide-react"
-import { type Project } from "@/lib/database"
+import { Calendar, ChevronLeft, ChevronRight, FlaskConical, BookOpen, Tag } from "lucide-react"
+import { type Research } from "@/lib/database"
 import Image from "next/image"
 import "swiper/css"
 import "swiper/css/navigation"
 import "swiper/css/pagination"
 import "swiper/css/effect-coverflow"
 
-export default function Projects() {
-  const [projects, setProjects] = useState<Project[]>([])
+export default function Research() {
+  const [papers, setPapers] = useState<Research[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const ref = useRef(null)
   const prevRef = useRef<HTMLButtonElement | null>(null)
@@ -22,10 +22,10 @@ export default function Projects() {
     const fetchData = async () => {
       try {
         setIsLoading(true)
-        const response = await fetch('/api/projects')
-        if (!response.ok) throw new Error('Failed to fetch projects')
-        const data: Project[] = await response.json()
-        setProjects(data)
+        const response = await fetch('/api/research')
+        if (!response.ok) throw new Error('Failed to fetch research')
+        const data: Research[] = await response.json()
+        setPapers(data)
       } catch (error) {
         console.error("Error fetching data:", error)
       } finally {
@@ -39,14 +39,13 @@ export default function Projects() {
   return (
     <motion.section
       ref={ref}
-      id="projects"
+      id="research"
       className="w-full max-w-screen-xl mx-auto px-4"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
     >
-      {/* Pagination at top */}
-      <div className="swiper-pagination-top flex justify-center mb-8"></div>
+      <div className="swiper-pagination-research flex justify-center mb-8"></div>
 
       <motion.div
         initial={{ opacity: 0 }}
@@ -96,7 +95,7 @@ export default function Projects() {
             pagination={{
               clickable: true,
               dynamicBullets: false,
-              el: '.swiper-pagination-top',
+              el: '.swiper-pagination-research',
             }}
             coverflowEffect={{
               rotate: 30,
@@ -107,14 +106,14 @@ export default function Projects() {
             }}
             className="w-full [&_.swiper-pagination-bullet]:w-3 [&_.swiper-pagination-bullet]:h-3 [&_.swiper-pagination-bullet]:bg-white/40 [&_.swiper-pagination-bullet]:opacity-100 [&_.swiper-pagination-bullet-active]:bg-gradient-to-r [&_.swiper-pagination-bullet-active]:from-cyan-400 [&_.swiper-pagination-bullet-active]:to-purple-400 [&_.swiper-pagination-bullet-active]:scale-125"
           >
-            {projects.map((project, index) => (
+            {papers.map((paper, index) => (
               <SwiperSlide key={index} className="max-w-md">
                 <div className="group backdrop-blur-xl bg-white/5 border border-white/20 rounded-3xl overflow-hidden shadow-2xl min-h-[55vh] sm:min-h-[58vh] md:min-h-[60vh] lg:min-h-[62vh] flex flex-col hover:shadow-cyan-500/30 transition-shadow duration-300">
-                  {/* Project Image */}
+                  {/* Image */}
                   <div className="relative h-[26vh] sm:h-[28vh] md:h-[30vh] overflow-hidden bg-gradient-to-br from-slate-800/50 to-slate-900/50">
                     <Image
-                      src={project.image}
-                      alt={project.name}
+                      src={paper.image}
+                      alt={paper.name}
                       fill
                       sizes="(max-width: 768px) 100vw, 400px"
                       className="object-cover"
@@ -122,42 +121,46 @@ export default function Projects() {
                       loading="eager"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent pointer-events-none"></div>
-
-                    {/* Overlay content */}
                     <div className="absolute top-4 right-4">
                       <motion.a
-                        href={project.link}
+                        href={paper.link}
                         target="_blank"
                         rel="noopener noreferrer"
                         whileHover={{ scale: 1.1, rotate: 5 } as any}
-                        className="flex items-center justify-center w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full border border-white/30 text-white"
+                        className="flex items-center justify-center w-10 h-10 bg-black/50 backdrop-blur-sm rounded-full border border-white/20 text-white shadow-lg"
                       >
-                        <ExternalLink size={16} />
+                        <BookOpen size={16} />
                       </motion.a>
                     </div>
                   </div>
 
-                  {/* Project Info */}
+                  {/* Info */}
                   <div className="p-6 flex-1 flex flex-col">
                     <div className="flex items-center gap-2 mb-3">
                       <Calendar size={16} className="text-gray-400" />
-                      <span className="text-sm text-gray-400 font-medium">{project.date}</span>
+                      <span className="text-sm text-gray-400 font-medium">{paper.date}</span>
                     </div>
 
                     <h3 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent mb-4">
-                      {project.name}
+                      {paper.name}
                     </h3>
 
-                    <p className="text-gray-300 leading-relaxed flex-1 overflow-hidden">{project.description}</p>
+                    <p className="text-gray-300 leading-relaxed flex-1 overflow-hidden">{paper.description}</p>
 
-                    {project.type && (
-                      <div className="mt-4 pt-4 border-t border-white/10">
-                        <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border border-cyan-400/20 text-xs font-semibold tracking-wide text-cyan-300">
-                          <Tag size={11} className="opacity-70" />
-                          <span>{project.type}</span>
+                    <div className="mt-4 pt-4 border-t border-white/10 flex flex-wrap items-center gap-2">
+                      {paper.published_to && (
+                        <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/15 text-xs font-medium text-gray-300">
+                          <BookOpen size={11} className="opacity-60" />
+                          <span>{paper.published_to}</span>
                         </div>
-                      </div>
-                    )}
+                      )}
+                      {paper.focus && (
+                        <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border border-cyan-400/20 text-xs font-semibold tracking-wide text-cyan-300">
+                          <FlaskConical size={11} className="opacity-70" />
+                          <span>{paper.focus}</span>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               </SwiperSlide>

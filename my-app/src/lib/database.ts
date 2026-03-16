@@ -7,12 +7,23 @@ export interface Location {
   photos: string[]
 }
 
+export interface Research {
+  date: ReactNode
+  description: string
+  image: string
+  link: string
+  name: string
+  focus: string
+  published_to: string
+}
+
 export interface Project {
   date: ReactNode
   description: string
   image: string
   link: string
   name: string
+  type: string
 }
 
 export interface Experience {

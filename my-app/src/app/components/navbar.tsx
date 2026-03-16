@@ -2,13 +2,14 @@
 import React, { useState, useCallback, memo } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Home, Briefcase, FolderOpen, Heart, Images, Menu, X } from "lucide-react"
+import { Home, Briefcase, FolderOpen, Heart, Images, Menu, X, FlaskConical } from "lucide-react"
 import { AnimatePresence, motion } from "framer-motion"
 
 const navItems = [
   { href: '/', label: 'Home', icon: Home },
   { href: '/experiences', label: 'Experiences', icon: Briefcase },
   { href: '/projects', label: 'Projects', icon: FolderOpen },
+  { href: '/research', label: 'Research', icon: FlaskConical },
   { href: '/interests', label: 'Interests', icon: Heart },
   { href: '/globe', label: 'Photos', icon: Images },
 ]
