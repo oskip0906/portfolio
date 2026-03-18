@@ -4,7 +4,6 @@ import "./globals.css";
 import { Analytics } from "@vercel/analytics/next"
 import { MusicProvider } from "./contexts/music-context"
 import { BackgroundProvider } from "./contexts/background-context"
-import Footer from "./components/footer"
 import NavBar from "./components/navbar"
 import ParticleBackground from "./components/particle-background"
 import DynamicBackground from "./components/dynamic-background"
@@ -49,15 +48,12 @@ export default function RootLayout({
             {/* Fixed Navigation - Always at top */}
             <NavBar />
 
-            {/* Scrollable Page Content with padding for fixed navbar and footer */}
-            <main className="relative z-10 pt-20 pb-8 min-h-screen flex justify-center overflow-y-auto">
+            {/* Scrollable Page Content with padding for fixed navbar */}
+            <main className="relative z-10 pt-20 min-h-screen flex justify-center overflow-y-auto">
               <div className="w-full max-w-7xl px-4">
                 {children}
               </div>
             </main>
-
-            {/* Fixed Music Player Footer - Always at bottom */}
-            <Footer />
 
             <Analytics />
           </MusicProvider>

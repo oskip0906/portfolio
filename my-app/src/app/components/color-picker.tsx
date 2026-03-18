@@ -28,11 +28,11 @@ export default function ColorPicker() {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: 10, scale: 0.9 }}
+            initial={{ opacity: 0, y: -8, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 10, scale: 0.9 }}
+            exit={{ opacity: 0, y: -8, scale: 0.9 }}
             transition={{ duration: 0.2 }}
-            className="absolute bottom-full mb-6 left-1/2 -translate-x-1/2 p-4 rounded-xl backdrop-blur-xl bg-white/10 border border-white/20 shadow-2xl"
+            className="absolute top-full mt-3 left-1/2 -translate-x-1/2 p-4 rounded-xl backdrop-blur-xl bg-white/10 border border-white/20 shadow-2xl z-[10000]"
           >
             <HexColorPicker
               color={baseColor}

@@ -6,7 +6,7 @@ export default function GlobePage() {
   const router = useRouter()
 
   return (
-    <div className="min-h-screen mt-2 sm:mt-4">
+    <div className="w-full flex justify-center py-8">
       <ExpandedMap
         isOpen={true}
         onClose={() => router.push("/")}

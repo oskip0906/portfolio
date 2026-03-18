@@ -177,7 +177,7 @@ const Introduction = memo(() => {
               </a>
             </div>
           </div>
-          <div className="text-md sm:text-lg text-gray-300 leading-relaxed bg-white/5 rounded-2xl p-5 border border-white/10 min-h-[14vh] sm:min-h-[16vh] md:min-h-[18vh] lg:min-h-[20vh]">
+          <div className="text-md sm:text-lg text-gray-300 leading-relaxed bg-white/5 rounded-2xl p-5 border border-white/10 min-h-[20vh]">
             <Typewriter
               words={intro.bio.split(";")}
               loop={false}

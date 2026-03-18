@@ -38,14 +38,14 @@ export default function Interests() {
             }}
             className="group relative"
           >
-            <div className="relative h-full backdrop-blur-xl bg-white/5 border border-white/20 rounded-2xl p-[2.5vh] sm:p-6 lg:p-[2.8vh] shadow-2xl overflow-hidden transition-all duration-500 min-h-[25vh] sm:min-h-[28vh] md:min-h-[30vh]">
+            <div className="relative h-full flex flex-col backdrop-blur-xl bg-white/5 border border-white/20 rounded-2xl p-[2.5vh] sm:p-6 lg:p-[2.8vh] shadow-2xl overflow-hidden transition-all duration-500 min-h-[25vh] sm:min-h-[28vh] md:min-h-[30vh]">
               <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
               <div className="absolute top-4 right-4 opacity-20 group-hover:opacity-40 transition-opacity duration-300">
                 <Sparkles size={24} className="text-cyan-400" />
               </div>
 
-              <div className="relative z-10">
+              <div className="relative z-10 h-full flex flex-col justify-center">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="text-4xl group-hover:scale-110 transition-transform duration-300">
                     {interest.emote}

@@ -3,7 +3,7 @@ import Experiences from "../components/sections/experiences"
 
 export default function ExperiencesPage() {
   return (
-    <div className="min-h-screen mt-2 sm:mt-4">
+    <div className="w-full flex justify-center py-8">
       <Experiences />
     </div>
   )
