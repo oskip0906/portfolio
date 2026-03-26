@@ -88,7 +88,7 @@ const Introduction = memo(() => {
 
   if (error) {
     return (
-      <div id="introduction" className="w-full max-w-7xl mx-auto px-4">
+      <div id="introduction" className="w-full mx-auto px-4">
         <div className="text-center text-red-400">
           <p>Error loading content: {error}</p>
           <button
@@ -103,7 +103,7 @@ const Introduction = memo(() => {
   }
 
   if (!isLoaded) {
-    return <div id="introduction" className="w-full max-w-7xl mx-auto px-2 sm:px-3 min-h-[50vh]" />
+    return <div id="introduction" className="w-full mx-auto px-2 sm:px-3 min-h-[50vh]" />
   }
 
   if (isLoading || !intro) {
@@ -111,7 +111,7 @@ const Introduction = memo(() => {
   }
 
   return (
-    <div id="introduction" className="w-full max-w-7xl mx-auto px-2 sm:px-3">
+    <div id="introduction" className="w-full mx-auto px-2 sm:px-3">
       <div className="grid grid-cols-1 md:grid-cols-12 gap-4 sm:gap-5">
 
         <motion.div
@@ -187,6 +187,11 @@ const Introduction = memo(() => {
               deleteSpeed={50}
               delaySpeed={1000}
             />
+          </div>
+
+          <div className="mt-4 text-center text-sm text-gray-400">
+            <span className="font-semibold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">This website includes: </span>
+            🎵 A Music Player · 🎨 Background Customization · 📍 A Timeline Footer · 📸 An Unique Photo Gallery
           </div>
         </motion.div>
 

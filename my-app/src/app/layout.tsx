@@ -7,6 +7,7 @@ import { BackgroundProvider } from "./contexts/background-context"
 import NavBar from "./components/navbar"
 import ParticleBackground from "./components/particle-background"
 import DynamicBackground from "./components/dynamic-background"
+import Timeline from "./components/timeline"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -45,15 +46,22 @@ export default function RootLayout({
             <DynamicBackground />
             <ParticleBackground />
 
+            {/* Vertical decorative patterns */}
+            <div className="decorative-pattern-left" aria-hidden="true" />
+            <div className="decorative-pattern-right" aria-hidden="true" />
+
             {/* Fixed Navigation - Always at top */}
             <NavBar />
 
             {/* Scrollable Page Content with padding for fixed navbar */}
             <main className="relative z-10 pt-20 min-h-screen flex justify-center overflow-y-auto">
-              <div className="w-full max-w-7xl px-4">
+              <div className="w-full px-4 pb-32 md:max-w-[90vw] lg:max-w-[75vw]">
                 {children}
               </div>
             </main>
+
+            {/* Fixed Timeline */}
+            <Timeline />
 
             <Analytics />
           </MusicProvider>

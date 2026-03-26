@@ -32,7 +32,10 @@ export default function ColorPicker() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -8, scale: 0.9 }}
             transition={{ duration: 0.2 }}
-            className="absolute top-full mt-3 left-1/2 -translate-x-1/2 p-4 rounded-xl backdrop-blur-xl bg-white/10 border border-white/20 shadow-2xl z-[10000]"
+            className="absolute top-full mt-3 left-1/2 -translate-x-1/2 p-4 rounded-xl backdrop-blur-xl border border-white/20 shadow-2xl z-[10000]"
+            style={{
+              background: "rgba(20, 20, 30, 0.5)"
+            }}
           >
             <HexColorPicker
               color={baseColor}

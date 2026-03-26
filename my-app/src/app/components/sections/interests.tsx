@@ -24,7 +24,7 @@ export default function Interests() {
   }, [])
 
   return (
-    <section ref={ref} id="interests" className="w-full max-w-7xl mx-auto px-4">
+    <section ref={ref} id="interests" className="w-full mx-auto px-4">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[3vh] sm:gap-8">
         {interests.map((interest, index) => (
           <motion.div

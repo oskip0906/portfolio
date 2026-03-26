@@ -17,6 +17,7 @@ export default function Projects() {
   const ref = useRef(null)
   const prevRef = useRef<HTMLButtonElement | null>(null)
   const nextRef = useRef<HTMLButtonElement | null>(null)
+  const swiperRef = useRef<any>(null)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,6 +35,21 @@ export default function Projects() {
     }
 
     fetchData()
+  }, [])
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!swiperRef.current) return
+
+      if (e.key === 'ArrowLeft') {
+        swiperRef.current.slidePrev()
+      } else if (e.key === 'ArrowRight') {
+        swiperRef.current.slideNext()
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
   }, [])
 
   return (
@@ -90,6 +106,7 @@ export default function Projects() {
               navigation.nextEl = nextRef.current
             }}
             onInit={(swiper) => {
+              swiperRef.current = swiper
               swiper.navigation.init()
               swiper.navigation.update()
             }}
