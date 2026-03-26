@@ -6,10 +6,11 @@ interface BackgroundContextType {
   setBaseColor: (color: string) => void
   resetColor: () => void
   gradientStyle: string
+  bottomColor: string
   isLoaded: boolean
 }
 
-const DEFAULT_COLOR = '#581c87'
+const DEFAULT_COLOR = '#eee9f1ff'
 const STORAGE_KEY = 'portfolio-background-color'
 
 const BackgroundContext = createContext<BackgroundContextType | undefined>(undefined)
@@ -39,15 +40,18 @@ function hexToHsl(hex: string): { h: number; s: number; l: number } {
   return { h: h * 360, s: s * 100, l: l * 100 }
 }
 
-// Generate gradient from a single color
-function generateGradient(hex: string): string {
+// Generate gradient and colors from a single color
+function generateBackgroundStyles(hex: string): { gradientStyle: string; bottomColor: string } {
   const { h, s } = hexToHsl(hex)
   // Dark top, vibrant middle (user color), dark bottom
   const darkColor = `hsl(${h}, ${Math.min(s, 30)}%, 8%)`
   const midColor = `hsl(${h}, ${s}%, 25%)`
   const bottomColor = `hsl(${h}, ${Math.min(s, 20)}%, 6%)`
 
-  return `linear-gradient(to bottom right, ${darkColor}, ${midColor}, ${bottomColor})`
+  return {
+    gradientStyle: `linear-gradient(to bottom right, ${darkColor}, ${midColor}, ${bottomColor})`,
+    bottomColor
+  }
 }
 
 export function BackgroundProvider({ children }: { children: ReactNode }) {
@@ -78,10 +82,10 @@ export function BackgroundProvider({ children }: { children: ReactNode }) {
     setBaseColorState(DEFAULT_COLOR)
   }, [])
 
-  const gradientStyle = generateGradient(baseColor)
+  const { gradientStyle, bottomColor } = generateBackgroundStyles(baseColor)
 
   return (
-    <BackgroundContext.Provider value={{ baseColor, setBaseColor, resetColor, gradientStyle, isLoaded: mounted }}>
+    <BackgroundContext.Provider value={{ baseColor, setBaseColor, resetColor, gradientStyle, bottomColor, isLoaded: mounted }}>
       {children}
     </BackgroundContext.Provider>
   )
