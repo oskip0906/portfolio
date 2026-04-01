@@ -1,7 +1,7 @@
 "use client"
-import React, { useState, useCallback, memo } from "react"
+import React, { useState, useCallback, memo, useEffect } from "react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { Home, Briefcase, FolderOpen, Heart, Images, Menu, X, FlaskConical } from "lucide-react"
 import { AnimatePresence, motion } from "framer-motion"
 import ColorPicker from "./color-picker"
@@ -19,15 +19,45 @@ const navItems = [
 const NavBar = memo(() => {
   const [menuOpen, setMenuOpen] = useState(false)
   const pathname = usePathname()
+  const router = useRouter()
+  const currentItemIndex = navItems.findIndex(item => item.href === pathname)
 
   const toggleMenu = useCallback(() => setMenuOpen(prev => !prev), [])
   const closeMenu = useCallback(() => setMenuOpen(false), [])
 
+  useEffect(() => {
+    const handleNumberShortcut = (event: KeyboardEvent) => {
+      if (event.metaKey || event.ctrlKey || event.altKey) return
+
+      const target = event.target as HTMLElement | null
+      if (
+        target &&
+        (target.tagName === "INPUT" ||
+          target.tagName === "TEXTAREA" ||
+          target.isContentEditable)
+      ) {
+        return
+      }
+
+      if (!["1", "2", "3", "4", "5", "6"].includes(event.key)) return
+
+      const index = Number(event.key) - 1
+      const destination = navItems[index]?.href
+      if (!destination || destination === pathname) return
+
+      event.preventDefault()
+      router.push(destination)
+      setMenuOpen(false)
+    }
+
+    window.addEventListener("keydown", handleNumberShortcut)
+    return () => window.removeEventListener("keydown", handleNumberShortcut)
+  }, [pathname, router])
+
   return (
     <nav className="fixed top-4 inset-x-0 mx-auto z-[9999] w-[90vw] flex justify-center">
-      {/* Desktop Navigation */}
       <div
-        className="hidden md:flex items-center gap-2 px-3 py-2 rounded-full backdrop-blur-xl bg-gradient-to-r from-white/10 to-white/5 border border-white/20 shadow-2xl w-full"
+        className="hidden lg:flex items-center gap-2 px-3 py-2 rounded-full backdrop-blur-xl bg-gradient-to-r from-white/10 to-white/5 border border-white/20 shadow-2xl w-full"
         style={{
           boxShadow: "0 8px 32px rgba(0, 0, 0, 0.3), 0 0 20px rgba(34, 211, 238, 0.15)"
         }}
@@ -39,7 +69,7 @@ const NavBar = memo(() => {
 
         {/* Center: Nav Tabs */}
         <div className="flex-1 flex items-center justify-center gap-1">
-          {navItems.map((item) => {
+          {navItems.map((item, index) => {
             const Icon = item.icon
             const isActive = pathname === item.href
 
@@ -53,7 +83,7 @@ const NavBar = memo(() => {
                   }`}
                 >
                   <Icon size={16} />
-                  <span className="text-sm font-medium whitespace-nowrap">{item.label}</span>
+                  <span className="text-sm font-medium whitespace-nowrap">{item.label} [{index + 1}]</span>
                 </div>
               </Link>
             )
@@ -66,9 +96,9 @@ const NavBar = memo(() => {
         </div>
       </div>
 
-      {/* Mobile Navigation */}
+      {/* Condensed Navigation (below lg) */}
       <div
-        className="md:hidden w-full relative flex items-center px-3 py-2 rounded-full backdrop-blur-xl bg-gradient-to-r from-white/10 to-white/5 border border-white/20 shadow-2xl"
+        className="lg:hidden w-full relative flex items-center px-3 py-2 rounded-full backdrop-blur-xl bg-gradient-to-r from-white/10 to-white/5 border border-white/20 shadow-2xl"
         style={{
           boxShadow: "0 8px 32px rgba(0, 0, 0, 0.3), 0 0 20px rgba(34, 211, 238, 0.15)"
         }}
@@ -87,7 +117,9 @@ const NavBar = memo(() => {
               return (
                 <>
                   <Icon size={18} />
-                  <span className="text-sm font-medium">{currentItem?.label || 'Home'}</span>
+                  <span className="text-sm font-medium">
+                    {(currentItem?.label || "Home")} [{(currentItemIndex >= 0 ? currentItemIndex : 0) + 1}]
+                  </span>
                 </>
               )
             })()}
@@ -133,7 +165,7 @@ const NavBar = memo(() => {
                 transition={{ duration: 0.18, ease: [0.25, 0.46, 0.45, 0.94] }}
               >
                 <div className="py-2">
-                  {navItems.map((item) => {
+                  {navItems.map((item, index) => {
                     const Icon = item.icon
                     const isActive = pathname === item.href
 
@@ -156,7 +188,7 @@ const NavBar = memo(() => {
                               isActive ? 'text-white' : 'text-gray-300'
                             }`}
                           >
-                            {item.label}
+                            {item.label} [{index + 1}]
                           </span>
                         </div>
                       </Link>
