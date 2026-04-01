@@ -1,6 +1,6 @@
 "use client"
 import { motion, AnimatePresence } from "framer-motion"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef, useCallback, useLayoutEffect } from "react"
 
 interface Memory {
   title: string
@@ -15,6 +15,10 @@ export default function Timeline() {
   const [memories, setMemories] = useState<Memory[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [screenWidth, setScreenWidth] = useState(0)
+  const [lineInsets, setLineInsets] = useState({ left: 0, right: 0 })
+  const [lineTop, setLineTop] = useState(0)
+  const containerRef = useRef<HTMLDivElement | null>(null)
+  const dotRefs = useRef<(HTMLButtonElement | null)[]>([])
 
   useEffect(() => {
     setMounted(true)
@@ -82,6 +86,55 @@ export default function Timeline() {
 
   const nodeCount = memories.length
 
+  const calculateGeometry = useCallback(() => {
+    const container = containerRef.current
+    if (!container || nodeCount === 0) return
+
+    const containerRect = container.getBoundingClientRect()
+    const centers = dotRefs.current
+      .slice(0, nodeCount)
+      .map((dot) => {
+        if (!dot) return null
+        const rect = dot.getBoundingClientRect()
+        return rect.left + rect.width / 2
+      })
+      .filter((center): center is number => center !== null)
+
+    if (centers.length !== nodeCount) return
+
+    const firstCenter = centers[0]
+    const lastCenter = centers[centers.length - 1]
+    const firstDotRect = dotRefs.current[0]?.getBoundingClientRect()
+
+    setLineInsets({
+      left: Math.max(0, firstCenter - containerRect.left),
+      right: Math.max(0, containerRect.right - lastCenter),
+    })
+
+    if (firstDotRect) {
+      setLineTop(firstDotRect.top + firstDotRect.height / 2 - containerRect.top)
+    }
+  }, [nodeCount])
+
+  useLayoutEffect(() => {
+    const frame = window.requestAnimationFrame(() => {
+      calculateGeometry()
+    })
+
+    const observer = new ResizeObserver(() => {
+      calculateGeometry()
+    })
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current)
+    }
+
+    return () => {
+      window.cancelAnimationFrame(frame)
+      observer.disconnect()
+    }
+  }, [calculateGeometry, nodeCount, activeIndex, hoveredIndex])
+
   if (!mounted || isLoading) {
     return null
   }
@@ -92,12 +145,18 @@ export default function Timeline() {
 
   return (
     <div className="fixed bottom-8 left-0 right-0 z-50 flex justify-center px-2">
-      <div className="timeline-container relative flex justify-between items-center pointer-events-none w-full max-w-[75vw]">
+      <div
+        ref={containerRef}
+        className="timeline-container relative flex justify-between items-center pointer-events-none w-full max-w-[75vw]"
+      >
         {/* Connecting line - horizontal */}
         <motion.div
-          className="absolute left-0 right-0 h-px top-1/2 -translate-y-1/2"
+          className="absolute h-px"
           style={{
             background: "linear-gradient(to right, rgba(34, 211, 238, 0.3), rgba(139, 92, 246, 0.3), rgba(236, 72, 153, 0.3), rgba(139, 92, 246, 0.3), rgba(34, 211, 238, 0.3))",
+            left: `${lineInsets.left}px`,
+            right: `${lineInsets.right}px`,
+            top: `${lineTop}px`,
           }}
           initial={{ scaleX: 0, opacity: 0 }}
           animate={{ scaleX: 1, opacity: 1 }}
@@ -202,6 +261,9 @@ export default function Timeline() {
 
               {/* Dot */}
               <motion.button
+                ref={(el) => {
+                  dotRefs.current[i] = el
+                }}
                 className="relative w-3 h-3 rounded-full z-10 cursor-pointer border-0 p-0"
                 style={{
                   backgroundColor: color,

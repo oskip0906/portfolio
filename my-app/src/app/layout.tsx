@@ -7,7 +7,6 @@ import { BackgroundProvider } from "./contexts/background-context"
 import NavBar from "./components/navbar"
 import ParticleBackground from "./components/particle-background"
 import DynamicBackground from "./components/dynamic-background"
-import Timeline from "./components/timeline"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -55,9 +54,6 @@ export default function RootLayout({
                 {children}
               </div>
             </main>
-
-            {/* Fixed Timeline */}
-            <Timeline />
 
             <Analytics />
           </MusicProvider>

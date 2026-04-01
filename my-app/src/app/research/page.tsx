@@ -3,7 +3,7 @@ import Research from "../components/sections/research"
 
 export default function ResearchPage() {
   return (
-    <div className="w-full flex justify-center pt-[4vh] sm:pt-[6vh] md:pt-[3vh]">
+    <div className="w-full flex justify-center pt-10 md:pt-12">
       <Research />
     </div>
   )

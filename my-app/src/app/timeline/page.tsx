@@ -73,7 +73,7 @@ export default function TimelinePage() {
       <div className="relative">
         {/* Vertical connecting line */}
         <motion.div
-          className="absolute left-8 top-0 bottom-0 w-px"
+          className="absolute left-2 -translate-x-1/2 top-0 bottom-0 w-px"
           style={{
             background: "linear-gradient(to bottom, rgba(34, 211, 238, 0.3), rgba(139, 92, 246, 0.3), rgba(236, 72, 153, 0.3))",
           }}
