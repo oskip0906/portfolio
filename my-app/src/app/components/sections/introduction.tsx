@@ -122,7 +122,7 @@ const Introduction = memo(() => {
           custom={0}
         >
           <div className="flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-8 mb-8">
-            <div className="relative w-[12vh] h-[12vh] sm:w-[13vh] sm:h-[13vh] md:w-[14vh] md:h-[14vh] max-w-40 max-h-40 mx-auto sm:mx-0 flex-shrink-0">
+            <div className="relative aspect-square h-[12vh] sm:h-[13vh] md:h-[14vh] max-w-40 max-h-40 mx-auto sm:mx-0 flex-shrink-0">
               <a
                 href="https://www.utoronto.ca/"
                 target="_blank"
@@ -187,11 +187,6 @@ const Introduction = memo(() => {
               deleteSpeed={50}
               delaySpeed={1000}
             />
-          </div>
-
-          <div className="mt-4 text-center text-sm text-gray-400">
-            <span className="font-semibold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">This website includes: </span>
-            🎵 A Music Player · 🎨 Background Customization · 📍 A Timeline Footer · 📸 An Unique Photo Gallery
           </div>
         </motion.div>
 

@@ -46,16 +46,12 @@ export default function RootLayout({
             <DynamicBackground />
             <ParticleBackground />
 
-            {/* Vertical decorative patterns */}
-            <div className="decorative-pattern-left" aria-hidden="true" />
-            <div className="decorative-pattern-right" aria-hidden="true" />
-
             {/* Fixed Navigation - Always at top */}
             <NavBar />
 
             {/* Scrollable Page Content with padding for fixed navbar */}
             <main className="relative z-10 pt-20 min-h-screen flex justify-center overflow-y-auto">
-              <div className="w-full px-4 pb-32 md:max-w-[90vw] lg:max-w-[75vw]">
+              <div className="w-[90vw] pb-32">
                 {children}
               </div>
             </main>

@@ -2,13 +2,12 @@
 import { useEffect, useState, useRef } from "react"
 import { motion } from "framer-motion"
 import { Swiper, SwiperSlide } from "swiper/react"
-import { Navigation, Pagination, EffectCoverflow } from "swiper/modules"
+import { Navigation, EffectCoverflow } from "swiper/modules"
 import { Calendar, ChevronLeft, ChevronRight, FlaskConical, BookOpen, Tag } from "lucide-react"
 import { type Research } from "@/lib/database"
 import Image from "next/image"
 import "swiper/css"
 import "swiper/css/navigation"
-import "swiper/css/pagination"
 import "swiper/css/effect-coverflow"
 
 export default function Research() {
@@ -56,13 +55,11 @@ export default function Research() {
     <motion.section
       ref={ref}
       id="research"
-      className="w-full max-w-screen-xl mx-auto px-4"
+      className="w-full"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
     >
-      <div className="swiper-pagination-research flex justify-center mb-8"></div>
-
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: isLoading ? 0 : 1 }}
@@ -91,11 +88,17 @@ export default function Research() {
             <ChevronRight size={22} />
           </motion.button>
           <Swiper
-            modules={[Navigation, Pagination, EffectCoverflow]}
+            modules={[Navigation, EffectCoverflow]}
             effect="coverflow"
             grabCursor={true}
             centeredSlides={true}
-            slidesPerView="auto"
+            slidesPerView={1.3}
+            breakpoints={{
+              640: { slidesPerView: 1.6 },
+              768: { slidesPerView: 2 },
+              1024: { slidesPerView: 2.4 },
+              1280: { slidesPerView: 2.8 },
+            }}
             slideToClickedSlide={false}
             initialSlide={1}
             navigation={{ prevEl: prevRef.current, nextEl: nextRef.current } as any}
@@ -109,11 +112,6 @@ export default function Research() {
               swiper.navigation.init()
               swiper.navigation.update()
             }}
-            pagination={{
-              clickable: true,
-              dynamicBullets: false,
-              el: '.swiper-pagination-research',
-            }}
             coverflowEffect={{
               rotate: 30,
               stretch: 0,
@@ -121,10 +119,10 @@ export default function Research() {
               modifier: 2,
               slideShadows: false,
             }}
-            className="w-full [&_.swiper-pagination-bullet]:w-3 [&_.swiper-pagination-bullet]:h-3 [&_.swiper-pagination-bullet]:bg-white/40 [&_.swiper-pagination-bullet]:opacity-100 [&_.swiper-pagination-bullet-active]:bg-gradient-to-r [&_.swiper-pagination-bullet-active]:from-cyan-400 [&_.swiper-pagination-bullet-active]:to-purple-400 [&_.swiper-pagination-bullet-active]:scale-125"
+            className="w-full"
           >
             {papers.map((paper, index) => (
-              <SwiperSlide key={index} className="max-w-md">
+              <SwiperSlide key={index}>
                 <div className="group backdrop-blur-xl bg-white/5 border border-white/20 rounded-3xl overflow-hidden shadow-2xl min-h-[55vh] sm:min-h-[58vh] md:min-h-[60vh] lg:min-h-[62vh] flex flex-col hover:shadow-cyan-500/30 transition-shadow duration-300">
                   {/* Image */}
                   <div className="relative h-[26vh] sm:h-[28vh] md:h-[30vh] overflow-hidden bg-gradient-to-br from-slate-800/50 to-slate-900/50">

@@ -23,7 +23,7 @@ export default function LayoutContent({ children }: { children: React.ReactNode 
 
       {/* Scrollable Page Content with padding for fixed navbar */}
       <main className="relative z-10 pt-20 min-h-screen flex justify-center overflow-y-auto">
-        <div className="w-full px-4" style={{ maxWidth: "75vw" }}>
+        <div className="w-[90vw] px-4">
           {children}
         </div>
       </main>

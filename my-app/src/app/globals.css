@@ -87,21 +87,6 @@ body.scroll-locked {
   }
 }
 
-.swiper-pagination {
-  margin-top: 3rem !important;
-  position: relative !important;
-}
-
-.swiper-pagination-bullet {
-  width: 15px !important;
-  height: 15px !important;
-  background-color: #6b7280 !important;
-}
-
-.swiper-pagination-bullet-active {
-  background-color: #ffffff !important;
-}
-
 @keyframes rainbow-glow {
   0%,
   100% {
@@ -223,79 +208,5 @@ body.scroll-locked {
   to {
     transform: translateY(100vh);
     opacity: 0;
-  }
-}
-
-.decorative-pattern-left,
-.decorative-pattern-right {
-  position: fixed;
-  top: 0;
-  height: 100vh;
-  width: 1px;
-  z-index: 5;
-  pointer-events: none;
-}
-
-.decorative-pattern-left {
-  left: clamp(40px, 5vw, 80px);
-}
-
-.decorative-pattern-right {
-  right: clamp(40px, 5vw, 80px);
-}
-
-.decorative-pattern-left::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 3px;
-  height: 3px;
-  border-radius: 50%;
-  background: rgba(34, 211, 238, 0.5);
-  box-shadow:
-    0 0 6px rgba(34, 211, 238, 0.8),
-    0 50px 0 rgba(139, 92, 246, 0.5),
-    0 50px 6px rgba(139, 92, 246, 0.8),
-    0 100px 0 rgba(34, 211, 238, 0.5),
-    0 100px 6px rgba(34, 211, 238, 0.8),
-    0 150px 0 rgba(139, 92, 246, 0.5),
-    0 150px 6px rgba(139, 92, 246, 0.8);
-  animation: float-down 8s linear infinite;
-}
-
-.decorative-pattern-right::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 3px;
-  height: 3px;
-  border-radius: 50%;
-  background: rgba(236, 72, 153, 0.5);
-  box-shadow:
-    0 0 6px rgba(236, 72, 153, 0.8),
-    0 50px 0 rgba(139, 92, 246, 0.5),
-    0 50px 6px rgba(139, 92, 246, 0.8),
-    0 100px 0 rgba(236, 72, 153, 0.5),
-    0 100px 6px rgba(236, 72, 153, 0.8),
-    0 150px 0 rgba(139, 92, 246, 0.5),
-    0 150px 6px rgba(139, 92, 246, 0.8);
-  animation: float-down 10s linear infinite;
-}
-
-@media (max-width: 768px) {
-  .decorative-pattern-left {
-    left: clamp(16px, 3vw, 32px);
-  }
-  .decorative-pattern-right {
-    right: clamp(16px, 3vw, 32px);
-  }
-  .decorative-pattern-left::before,
-  .decorative-pattern-right::before {
-    width: 2px;
-    height: 2px;
   }
 }

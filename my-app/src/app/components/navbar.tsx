@@ -24,7 +24,7 @@ const NavBar = memo(() => {
   const closeMenu = useCallback(() => setMenuOpen(false), [])
 
   return (
-    <nav className="fixed top-4 inset-x-0 mx-auto z-[9999] w-[95%] max-w-5xl flex justify-center">
+    <nav className="fixed top-4 inset-x-0 mx-auto z-[9999] w-[90vw] flex justify-center">
       {/* Desktop Navigation */}
       <div
         className="hidden md:flex items-center gap-2 px-3 py-2 rounded-full backdrop-blur-xl bg-gradient-to-r from-white/10 to-white/5 border border-white/20 shadow-2xl w-full"
