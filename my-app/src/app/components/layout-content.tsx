@@ -22,7 +22,7 @@ export default function LayoutContent({ children }: { children: React.ReactNode 
       <NavBar />
 
       {/* Scrollable Page Content with padding for fixed navbar */}
-      <main className="relative z-10 pt-20 min-h-screen flex justify-center overflow-y-auto">
+      <main className="relative z-10 pt-10 md:pt-20 min-h-screen flex justify-center overflow-y-auto">
         <div className="w-[90vw] px-4">
           {children}
         </div>

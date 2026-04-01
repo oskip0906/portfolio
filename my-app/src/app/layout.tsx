@@ -50,8 +50,8 @@ export default function RootLayout({
             <NavBar />
 
             {/* Scrollable Page Content with padding for fixed navbar */}
-            <main className="relative z-10 pt-20 min-h-screen flex justify-center overflow-y-auto">
-              <div className="w-[90vw] pb-32">
+            <main className="relative z-10 pt-10 md:pt-20 min-h-screen flex justify-center overflow-y-auto">
+              <div className="w-[90vw] pb-16">
                 {children}
               </div>
             </main>
