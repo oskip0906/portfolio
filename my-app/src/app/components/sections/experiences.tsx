@@ -1,6 +1,6 @@
 "use client"
 import type React from "react"
-import { useEffect, useState, useRef } from "react"
+import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
 import type { Experience } from "../../../lib/database"
 import Image from "next/image"
@@ -122,8 +122,6 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, index, isIn
 
 export default function Experiences() {
   const [experiences, setExperiences] = useState<Experience[]>([])
-  const ref = useRef(null)
-  const inView = true
 
   useEffect(() => {
     const fetchData = async () => {
@@ -141,10 +139,10 @@ export default function Experiences() {
   }, [])
 
   return (
-    <section ref={ref} id="experiences" className="w-full mx-auto px-4">
+    <section id="experiences" className="w-full mx-auto px-4">
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
         {experiences.map((experience, index) => (
-          <ExperienceCard key={index} experience={experience} index={index} isInView={inView} />
+          <ExperienceCard key={index} experience={experience} index={index} isInView={true} />
         ))}
       </div>
     </section>

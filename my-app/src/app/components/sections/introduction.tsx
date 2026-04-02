@@ -84,7 +84,7 @@ const Introduction = memo(() => {
     } finally {
       setIsSending(false)
     }
-  }, [intro, message])
+  }, [message])
 
   if (error) {
     return (

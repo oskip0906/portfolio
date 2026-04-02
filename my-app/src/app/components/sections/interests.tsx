@@ -1,12 +1,11 @@
 "use client"
-import { useEffect, useState, useRef } from "react"
+import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
 import { Sparkles } from "lucide-react"
 import { type Interest } from "../../../lib/database"
 
 export default function Interests() {
   const [interests, setInterests] = useState<Interest[]>([])
-  const ref = useRef(null)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,7 +23,7 @@ export default function Interests() {
   }, [])
 
   return (
-    <section ref={ref} id="interests" className="w-full mx-auto px-4">
+    <section id="interests" className="w-full mx-auto px-4">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[3vh] sm:gap-8">
         {interests.map((interest, index) => (
           <motion.div

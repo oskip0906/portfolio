@@ -1,11 +1,10 @@
 "use client"
-import { useEffect, useState, useRef } from "react"
+import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
 import { type Contact } from "@/lib/database"
 
 export default function Contact() {
   const [contacts, setContacts] = useState<Contact[]>([])
-  const ref = useRef(null)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,7 +22,7 @@ export default function Contact() {
   }, [])
 
   return (
-    <section ref={ref} id="contact" className="w-full pt-1 pb-0">
+    <section id="contact" className="w-full pt-1 pb-0">
       <h2 className="text-xl font-semibold text-white mb-4 text-center">Let&apos;s Connect</h2>
 
       <div className="relative w-full flex justify-between items-center">

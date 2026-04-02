@@ -10,12 +10,11 @@ import "swiper/css"
 import "swiper/css/navigation"
 import "swiper/css/pagination"
 import "swiper/css/effect-coverflow"
-import "./carousel-pagination.css"
+import "../carousel-pagination.css"
 
 export default function Projects() {
   const [projects, setProjects] = useState<Project[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const ref = useRef(null)
   const prevRef = useRef<HTMLButtonElement | null>(null)
   const nextRef = useRef<HTMLButtonElement | null>(null)
   const swiperRef = useRef<any>(null)
@@ -55,7 +54,6 @@ export default function Projects() {
 
   return (
     <motion.section
-      ref={ref}
       id="projects"
       className="w-full px-2 sm:px-4 md:px-8 lg:px-12 xl:px-16"
       initial={{ opacity: 0 }}
@@ -98,7 +96,6 @@ export default function Projects() {
               grabCursor={true}
               centeredSlides={true}
               slidesPerView="auto"
-              slideToClickedSlide={false}
               initialSlide={1}
               navigation={{ prevEl: prevRef.current, nextEl: nextRef.current } as any}
               onBeforeInit={(swiper) => {
