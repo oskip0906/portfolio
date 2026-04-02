@@ -2,13 +2,15 @@
 import { useEffect, useState, useRef } from "react"
 import { motion } from "framer-motion"
 import { Swiper, SwiperSlide } from "swiper/react"
-import { Navigation, EffectCoverflow } from "swiper/modules"
+import { Navigation, Pagination, EffectCoverflow } from "swiper/modules"
 import { Calendar, ChevronLeft, ChevronRight, FlaskConical, BookOpen, Tag } from "lucide-react"
 import { type Research } from "@/lib/database"
 import Image from "next/image"
 import "swiper/css"
 import "swiper/css/navigation"
+import "swiper/css/pagination"
 import "swiper/css/effect-coverflow"
+import "./carousel-pagination.css"
 
 export default function Research() {
   const [papers, setPapers] = useState<Research[]>([])
@@ -55,7 +57,7 @@ export default function Research() {
     <motion.section
       ref={ref}
       id="research"
-      className="w-full"
+      className="w-full px-2 sm:px-4 md:px-8 lg:px-12 xl:px-16"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
@@ -69,6 +71,9 @@ export default function Research() {
       >
         {!isLoading && (
           <div className="relative">
+            {/* Pagination at top */}
+            <div className="research-pagination flex justify-center mb-6 gap-3"></div>
+
             <motion.button
               ref={prevRef}
               aria-label="Previous slide"
@@ -88,17 +93,11 @@ export default function Research() {
               <ChevronRight size={22} />
             </motion.button>
             <Swiper
-              modules={[Navigation, EffectCoverflow]}
+              modules={[Navigation, Pagination, EffectCoverflow]}
               effect="coverflow"
               grabCursor={true}
               centeredSlides={true}
-              slidesPerView={1.3}
-              breakpoints={{
-                640: { slidesPerView: 1.6 },
-                768: { slidesPerView: 2 },
-                1024: { slidesPerView: 2.4 },
-                1280: { slidesPerView: 2.8 },
-              }}
+              slidesPerView="auto"
               slideToClickedSlide={false}
               initialSlide={1}
               navigation={{ prevEl: prevRef.current, nextEl: nextRef.current } as any}
@@ -112,6 +111,11 @@ export default function Research() {
                 swiper.navigation.init()
                 swiper.navigation.update()
               }}
+              pagination={{
+                clickable: true,
+                dynamicBullets: false,
+                el: '.research-pagination',
+              }}
               coverflowEffect={{
                 rotate: 30,
                 stretch: 0,
@@ -122,7 +126,7 @@ export default function Research() {
               className="w-full !pb-6 !pt-2"
             >
               {papers.map((paper, index) => (
-                <SwiperSlide key={index}>
+                <SwiperSlide key={index} className="w-[75vw] sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl">
                   <div className="group backdrop-blur-xl bg-white/5 border border-white/20 rounded-3xl overflow-hidden shadow-2xl min-h-[60vh] sm:min-h-[65vh] md:min-h-[68vh] lg:min-h-[70vh] flex flex-col hover:shadow-cyan-500/30 transition-shadow duration-300">
                     {/* Image */}
                     <div className="relative h-[28vh] sm:h-[30vh] md:h-[34vh] overflow-hidden bg-gradient-to-br from-slate-800/50 to-slate-900/50">
