@@ -2,12 +2,11 @@
 import { useEffect, useState, useRef } from "react"
 import { motion } from "framer-motion"
 import { Swiper, SwiperSlide } from "swiper/react"
-import { Navigation, Pagination, EffectCoverflow } from "swiper/modules"
-import { Calendar, ChevronLeft, ChevronRight, FlaskConical, BookOpen } from "lucide-react"
+import { Pagination, EffectCoverflow } from "swiper/modules"
+import { Calendar, FlaskConical, BookOpen } from "lucide-react"
 import { type Research } from "@/lib/database"
 import Image from "next/image"
 import "swiper/css"
-import "swiper/css/navigation"
 import "swiper/css/pagination"
 import "swiper/css/effect-coverflow"
 import "../carousel-pagination.css"
@@ -15,8 +14,6 @@ import "../carousel-pagination.css"
 export default function Research() {
   const [papers, setPapers] = useState<Research[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const prevRef = useRef<HTMLButtonElement | null>(null)
-  const nextRef = useRef<HTMLButtonElement | null>(null)
   const swiperRef = useRef<any>(null)
 
   useEffect(() => {
@@ -71,42 +68,15 @@ export default function Research() {
           <div className="relative">
             {/* Pagination at top */}
             <div className="research-pagination flex justify-center mb-6 gap-3"></div>
-
-            <motion.button
-              ref={prevRef}
-              aria-label="Previous slide"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              className="hidden sm:flex absolute top-1/2 left-0 md:-left-3 xl:-left-6 z-20 items-center justify-center h-12 w-12 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white shadow-lg hover:shadow-cyan-400/30 transition"
-            >
-              <ChevronLeft size={22} />
-            </motion.button>
-            <motion.button
-              ref={nextRef}
-              aria-label="Next slide"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              className="hidden sm:flex absolute top-1/2 right-0 md:-right-3 xl:-right-6 z-20 items-center justify-center h-12 w-12 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white shadow-lg hover:shadow-purple-400/30 transition"
-            >
-              <ChevronRight size={22} />
-            </motion.button>
             <Swiper
-              modules={[Navigation, Pagination, EffectCoverflow]}
+              modules={[Pagination, EffectCoverflow]}
               effect="coverflow"
               grabCursor={true}
               centeredSlides={true}
               slidesPerView="auto"
               initialSlide={1}
-              navigation={{ prevEl: prevRef.current, nextEl: nextRef.current } as any}
-              onBeforeInit={(swiper) => {
-                const navigation = swiper.params.navigation as any
-                navigation.prevEl = prevRef.current
-                navigation.nextEl = nextRef.current
-              }}
               onInit={(swiper) => {
                 swiperRef.current = swiper
-                swiper.navigation.init()
-                swiper.navigation.update()
               }}
               pagination={{
                 clickable: true,

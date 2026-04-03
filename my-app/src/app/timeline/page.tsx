@@ -10,7 +10,6 @@ interface Memory {
 
 export default function TimelinePage() {
   const [mounted, setMounted] = useState(false)
-  const [activeIndex, setActiveIndex] = useState<number | null>(null)
   const [memories, setMemories] = useState<Memory[]>([])
   const [isLoading, setIsLoading] = useState(true)
 

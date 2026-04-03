@@ -144,7 +144,7 @@ export default function Timeline() {
   }
 
   return (
-    <div className="fixed bottom-8 left-0 right-0 z-50 flex justify-center px-2">
+    <div className="relative z-20 mt-24 flex justify-center px-2">
       <div
         ref={containerRef}
         className="timeline-container relative flex justify-between items-center pointer-events-none w-full max-w-[75vw]"
