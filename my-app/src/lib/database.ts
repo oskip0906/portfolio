@@ -10,7 +10,7 @@ export interface Location {
 export interface Research {
   date: ReactNode
   description: string
-  image: string
+  image?: string
   link: string
   name: string
   focus: string
@@ -20,7 +20,7 @@ export interface Research {
 export interface Project {
   date: ReactNode
   description: string
-  image: string
+  image?: string
   link: string
   name: string
   type: string

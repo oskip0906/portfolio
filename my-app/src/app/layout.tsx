@@ -5,7 +5,6 @@ import { Analytics } from "@vercel/analytics/next"
 import { MusicProvider } from "./contexts/music-context"
 import { BackgroundProvider } from "./contexts/background-context"
 import NavBar from "./components/navbar"
-import ParticleBackground from "./components/particle-background"
 import DynamicBackground from "./components/dynamic-background"
 
 const geistSans = Geist({
@@ -43,7 +42,6 @@ export default function RootLayout({
           <MusicProvider>
             {/* Shared background across all pages */}
             <DynamicBackground />
-            <ParticleBackground />
 
             {/* Fixed Navigation - Always at top */}
             <NavBar />

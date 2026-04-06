@@ -1,8 +1,8 @@
 "use client"
 import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
-import { Sparkles } from "lucide-react"
 import { type Interest } from "../../../lib/database"
+import { Card, CardContent } from "../ui/card"
 
 export default function Interests() {
   const [interests, setInterests] = useState<Interest[]>([])
@@ -18,7 +18,6 @@ export default function Interests() {
         console.error("Error fetching data:", error)
       }
     }
-
     fetchData()
   }, [])
 
@@ -28,23 +27,13 @@ export default function Interests() {
         {interests.map((interest, index) => (
           <motion.div
             key={index}
-            initial={{ opacity: 0, scale: 0.95 } as any}
-            animate={{ opacity: 1, scale: 1 } as any}
-            transition={{
-              delay: index * 0.1,
-              duration: 0.4,
-              ease: [0.25, 0.46, 0.45, 0.94],
-            }}
-            className="group relative"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: index * 0.05, duration: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
           >
-            <div className="relative h-full flex flex-col backdrop-blur-xl bg-white/5 border border-white/20 rounded-2xl p-[2.5vh] sm:p-6 lg:p-[2.8vh] shadow-2xl overflow-hidden transition-all duration-500 min-h-[25vh] sm:min-h-[28vh] md:min-h-[30vh]">
-              <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-
-              <div className="absolute top-4 right-4 opacity-20 group-hover:opacity-40 transition-opacity duration-300">
-                <Sparkles size={24} className="text-cyan-400" />
-              </div>
-
-              <div className="relative z-10 h-full flex flex-col justify-center">
+            <Card className="group relative h-full min-h-[25vh] sm:min-h-[28vh] md:min-h-[30vh] hover:border-white/30 transition-colors duration-300">
+              <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl" />
+              <CardContent className="p-[2.5vh] sm:p-6 lg:p-[2.8vh] h-full flex flex-col justify-center relative z-10">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="text-4xl group-hover:scale-110 transition-transform duration-300">
                     {interest.emote}
@@ -53,12 +42,9 @@ export default function Interests() {
                     {interest.name}
                   </h3>
                 </div>
-
-                <p className="text-gray-300 leading-relaxed">
-                  {interest.description}
-                </p>
-              </div>
-            </div>
+                <p className="text-gray-300 leading-relaxed">{interest.description}</p>
+              </CardContent>
+            </Card>
           </motion.div>
         ))}
       </div>

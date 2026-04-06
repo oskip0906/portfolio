@@ -1,20 +1,13 @@
 "use client"
-import { useEffect, useState, useRef } from "react"
-import { motion } from "framer-motion"
-import { Swiper, SwiperSlide } from "swiper/react"
-import { Pagination, EffectCoverflow } from "swiper/modules"
-import { Calendar, FlaskConical, BookOpen } from "lucide-react"
+import { useEffect, useState, useCallback } from "react"
+import { motion, AnimatePresence } from "framer-motion"
+import { Calendar, FlaskConical, BookOpen, ArrowRight } from "lucide-react"
 import { type Research } from "@/lib/database"
-import Image from "next/image"
-import "swiper/css"
-import "swiper/css/pagination"
-import "swiper/css/effect-coverflow"
-import "../carousel-pagination.css"
 
 export default function Research() {
   const [papers, setPapers] = useState<Research[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const swiperRef = useRef<any>(null)
+  const [current, setCurrent] = useState(0)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,131 +23,180 @@ export default function Research() {
         setIsLoading(false)
       }
     }
-
     fetchData()
   }, [])
 
+  const scrollPrev = useCallback(() => setCurrent((p) => Math.max(0, p - 1)), [])
+  const scrollNext = useCallback(() => setCurrent((p) => Math.min(papers.length - 1, p + 1)), [papers.length])
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (!swiperRef.current) return
-
-      if (e.key === 'ArrowLeft') {
-        swiperRef.current.slidePrev()
-      } else if (e.key === 'ArrowRight') {
-        swiperRef.current.slideNext()
-      }
+      if (e.key === 'ArrowUp') scrollPrev()
+      else if (e.key === 'ArrowDown') scrollNext()
     }
-
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [])
+  }, [scrollPrev, scrollNext])
+
+  if (isLoading) return null
+
+  const paper = papers[current]
 
   return (
-    <motion.section
-      id="research"
-      className="w-full px-2 sm:px-4 md:px-8 lg:px-12 xl:px-16"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
-    >
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: isLoading ? 0 : 1 }}
-        transition={{ duration: 1, ease: [0.25, 0.46, 0.45, 0.94] }}
-        className="relative"
-        style={{ minHeight: "75vh" }}
-      >
-        {!isLoading && (
-          <div className="relative">
-            {/* Pagination at top */}
-            <div className="research-pagination flex justify-center mb-6 gap-3"></div>
-            <Swiper
-              modules={[Pagination, EffectCoverflow]}
-              effect="coverflow"
-              grabCursor={true}
-              centeredSlides={true}
-              slidesPerView="auto"
-              initialSlide={1}
-              onInit={(swiper) => {
-                swiperRef.current = swiper
-              }}
-              pagination={{
-                clickable: true,
-                dynamicBullets: false,
-                el: '.research-pagination',
-              }}
-              coverflowEffect={{
-                rotate: 30,
-                stretch: 0,
-                depth: 100,
-                modifier: 2,
-                slideShadows: false,
-              }}
-              className="w-full !pb-6 !pt-2"
+    <section id="research" className="w-full px-4 sm:px-6 md:px-10">
+      {/* Mobile: stacked cards */}
+      <div className="md:hidden">
+        <div className="space-y-6 pb-2">
+          {papers.map((item, i) => (
+            <div
+              key={`${item.name}-${i}`}
+              className="backdrop-blur-xl bg-white/5 border border-white/20 rounded-3xl overflow-hidden shadow-2xl"
             >
-              {papers.map((paper, index) => (
-                <SwiperSlide key={index} className="w-[75vw] sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl">
-                  <div className="group backdrop-blur-xl bg-white/5 border border-white/20 rounded-3xl overflow-hidden shadow-2xl min-h-[60vh] sm:min-h-[65vh] md:min-h-[68vh] lg:min-h-[70vh] flex flex-col hover:shadow-cyan-500/30 transition-shadow duration-300">
-                    {/* Image */}
-                    <div className="relative h-[28vh] sm:h-[30vh] md:h-[34vh] overflow-hidden bg-gradient-to-br from-slate-800/50 to-slate-900/50">
-                      <Image
-                        src={paper.image}
-                        alt={paper.name}
-                        fill
-                        sizes="(max-width: 768px) 100vw, 400px"
-                        className="object-cover"
-                        priority
-                        loading="eager"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent pointer-events-none"></div>
-                      <div className="absolute top-4 right-4">
-                        <motion.a
-                          href={paper.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          whileHover={{ scale: 1.1, rotate: 5 } as any}
-                          className="flex items-center justify-center w-10 h-10 bg-black/50 backdrop-blur-sm rounded-full border border-white/20 text-white shadow-lg"
-                        >
-                          <BookOpen size={16} />
-                        </motion.a>
+              <div className="h-px w-full bg-gradient-to-r from-purple-500/60 via-cyan-500/40 to-transparent" />
+              <div className="p-5">
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-3xl font-black bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <a
+                    href={item.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-purple-500/10 border border-purple-400/20 text-purple-300 text-sm font-semibold hover:bg-purple-500/20 transition-colors"
+                  >
+                    <BookOpen size={12} />
+                    <span>Read</span>
+                  </a>
+                </div>
+                <h3 className="text-xl font-bold text-white mb-2">{item.name}</h3>
+                <div className="h-px w-10 bg-gradient-to-r from-purple-400 to-cyan-400 mb-3 rounded-full" />
+                <p className="text-gray-300 text-sm leading-relaxed">{item.description}</p>
+                <div className="mt-4 flex flex-col gap-2.5 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
+                  <div className="flex flex-wrap gap-2 min-w-0">
+                    {item.published_to && (
+                      <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/5 border border-white/15 text-xs text-gray-300">
+                        <BookOpen size={10} className="opacity-60 shrink-0" />
+                        <span>{item.published_to}</span>
                       </div>
+                    )}
+                    {item.focus && (
+                      <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-gradient-to-r from-purple-500/10 to-cyan-500/10 border border-purple-400/20 text-xs font-semibold text-purple-300">
+                        <FlaskConical size={10} className="shrink-0" />
+                        <span>{item.focus}</span>
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-1.5 text-gray-400 shrink-0 sm:ml-auto">
+                    <Calendar size={13} className="shrink-0" />
+                    <span className="text-sm">{item.date}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Desktop: sidebar + content */}
+      <div className="hidden md:grid md:grid-cols-[280px_1fr] lg:grid-cols-[320px_1fr] gap-6 items-start">
+        {/* Sidebar */}
+        <div className="flex flex-col gap-1 sticky top-8">
+          {papers.map((p, i) => (
+            <button
+              key={i}
+              onClick={() => setCurrent(i)}
+              className={`group flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all duration-150 ${
+                i === current
+                  ? "bg-white/10 border border-white/20"
+                  : "hover:bg-white/5 border border-transparent"
+              }`}
+            >
+              <span className={`text-xs font-mono font-bold tabular-nums w-6 flex-shrink-0 ${i === current ? "text-purple-400" : "text-white/30 group-hover:text-white/50"}`}>
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <span className={`text-sm font-medium truncate ${i === current ? "text-white" : "text-white/50 group-hover:text-white/80"}`}>
+                {p.name}
+              </span>
+              {i === current && <ArrowRight size={12} className="ml-auto flex-shrink-0 text-purple-400" />}
+            </button>
+          ))}
+        </div>
+
+        {/* Content card */}
+        <div className="relative min-h-[55vh]">
+          <AnimatePresence mode="wait">
+            {paper && (
+              <motion.div
+                key={current}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.15 }}
+                className="relative backdrop-blur-xl bg-white/5 border border-white/15 rounded-3xl overflow-hidden shadow-2xl"
+              >
+                {/* Big watermark number */}
+                <div className="absolute top-0 right-0 leading-none select-none pointer-events-none overflow-hidden rounded-tr-3xl">
+                  <span className="text-[10rem] font-black text-white/[0.03] block">
+                    {String(current + 1).padStart(2, "0")}
+                  </span>
+                </div>
+
+                {/* Top accent bar */}
+                <div className="h-px w-full bg-gradient-to-r from-purple-500/60 via-cyan-500/40 to-transparent" />
+
+                <div className="p-8 lg:p-10">
+                  {/* Number + action row */}
+                  <div className="flex items-center justify-between mb-6">
+                    <span className="text-4xl font-black bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
+                      {String(current + 1).padStart(2, "0")}
+                    </span>
+                    <a
+                      href={paper.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-purple-500/10 border border-purple-400/20 text-purple-300 text-sm font-semibold hover:bg-purple-500/20 transition-colors"
+                    >
+                      <BookOpen size={13} />
+                      Read
+                    </a>
+                  </div>
+
+                  <h3 className="text-3xl lg:text-4xl font-bold text-white mb-4 leading-tight">
+                    {paper.name}
+                  </h3>
+
+                  <div className="h-px w-16 bg-gradient-to-r from-purple-400 to-cyan-400 mb-5 rounded-full" />
+
+                  <p className="text-gray-300 leading-relaxed text-base lg:text-lg">
+                    {paper.description}
+                  </p>
+
+                  <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+                    <div className="flex flex-wrap gap-2 min-w-0">
+                      {paper.published_to && (
+                        <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/15 text-xs font-medium text-gray-300">
+                          <BookOpen size={11} className="opacity-60 shrink-0" />
+                          <span>{paper.published_to}</span>
+                        </div>
+                      )}
+                      {paper.focus && (
+                        <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-purple-500/10 to-cyan-500/10 border border-purple-400/20 text-xs font-semibold tracking-wide text-purple-300">
+                          <FlaskConical size={11} className="opacity-70 shrink-0" />
+                          <span>{paper.focus}</span>
+                        </div>
+                      )}
                     </div>
-
-                    {/* Info */}
-                    <div className="p-6 flex-1 flex flex-col">
-                      <div className="flex items-center gap-2 mb-3">
-                        <Calendar size={16} className="text-gray-400" />
-                        <span className="text-sm text-gray-400 font-medium">{paper.date}</span>
-                      </div>
-
-                      <h3 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent mb-4">
-                        {paper.name}
-                      </h3>
-
-                      <p className="text-gray-300 leading-relaxed flex-1 overflow-hidden">{paper.description}</p>
-
-                      <div className="mt-4 pt-4 border-t border-white/10 flex flex-wrap items-center gap-2">
-                        {paper.published_to && (
-                          <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/15 text-xs font-medium text-gray-300">
-                            <BookOpen size={11} className="opacity-60" />
-                            <span>{paper.published_to}</span>
-                          </div>
-                        )}
-                        {paper.focus && (
-                          <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border border-cyan-400/20 text-xs font-semibold tracking-wide text-cyan-300">
-                            <FlaskConical size={11} className="opacity-70" />
-                            <span>{paper.focus}</span>
-                          </div>
-                        )}
-                      </div>
+                    <div className="flex items-center gap-1.5 text-gray-400 shrink-0 sm:ml-auto">
+                      <Calendar size={15} className="shrink-0" />
+                      <span className="text-sm font-medium">{paper.date}</span>
                     </div>
                   </div>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </div>
-        )}
-      </motion.div>
-    </motion.section>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </div>
+    </section>
   )
 }
