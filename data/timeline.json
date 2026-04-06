@@ -1,0 +1,65 @@
+[
+  {
+    "id": 1,
+    "created_at": "2026-03-26 06:30:40.992918+00",
+    "date": "2005",
+    "title": "Birth",
+    "description": "I was born on September 6, 2005, in Shenzhen, China."
+  },
+  {
+    "id": 3,
+    "created_at": "2026-03-26 06:36:46.060932+00",
+    "date": "2007",
+    "title": "Hometown",
+    "description": "Moved back to Changsha, China, my family's hometown. Major accomplishments duriung this time include learning how to walk and talk."
+  },
+  {
+    "id": 2,
+    "created_at": "2026-03-26 06:35:15.882936+00",
+    "date": "2009",
+    "title": "Kindergarten",
+    "description": "Attended kindergarten in Changsha, at a school that no longer exists and is now rebuilt into a retirement home."
+  },
+  {
+    "id": 4,
+    "created_at": "2026-03-26 06:42:37.68222+00",
+    "date": "2011",
+    "title": "Elementary School",
+    "description": "Was often bullied but still made a lot of good connections during this time. Acquired a variety of new skills including: taekwondo, calligraphy, piano, swimming, etc."
+  },
+  {
+    "id": 5,
+    "created_at": "2026-03-26 06:45:47.17955+00",
+    "date": "2014",
+    "title": "Immigration",
+    "description": "Immigrated to Toronto, Canada with my family. Resided in North York, where I completed my elementary school education. During this period, I spent a lot of time learning English and trying to adapt."
+  },
+  {
+    "id": 6,
+    "created_at": "2026-03-26 06:50:18.044649+00",
+    "date": "2017",
+    "title": "Middle School",
+    "description": "I moved to Richmond Hill for Middle School, there, I met some people that are still friends with me till this day. I also won a lot of math competitions (despite being terrible back in China) and learned to play tennis."
+  },
+  {
+    "id": 7,
+    "created_at": "2026-03-26 06:56:36.312053+00",
+    "date": "2019",
+    "title": "Early High School",
+    "description": "At first, I went to an IB high school, but the academic pressure was too strong for me, and the environment was slightly dangerous, so I transferred back to my old school (which offered grades 1 to 12)."
+  },
+  {
+    "id": 8,
+    "created_at": "2026-03-26 07:00:34.472491+00",
+    "date": "2021",
+    "title": "Late High School",
+    "description": "It was around grade 11 when I started locking in. Not only did my grades improve significantly, I also involved myself in many extracurricular activities, including co-founding the school's coding club, joining the tennis team, and even starting my own nonprofit intiative aimed at providing support for youth newcomers in Ontario."
+  },
+  {
+    "id": 9,
+    "created_at": "2026-03-26 07:07:00.863938+00",
+    "date": "2023",
+    "title": "University",
+    "description": "I was accepted into the Computer Science program at the University of Toronto. My focus as I first headed into uni was to become more independent, so I got a driver's license and a few part-time jobs during the summers. I also made some good friends here while I studied 10 hours a day, and collborated with them on many projects. Later, I was able to secure 3 internships in both ML and software, which I am very grateful for."
+  }
+]

@@ -1,0 +1,26 @@
+[
+  {
+    "id": 2,
+    "created_at": "2026-01-15 17:46:42.636843+00",
+    "type": "linkedin",
+    "value": "https://www.linkedin.com/in/oscar-shenglong-pang"
+  },
+  {
+    "id": 3,
+    "created_at": "2026-01-15 17:46:42.699423+00",
+    "type": "github",
+    "value": "https://github.com/oskip0906"
+  },
+  {
+    "id": 4,
+    "created_at": "2026-01-15 17:46:42.761507+00",
+    "type": "steam",
+    "value": "https://steamcommunity.com/profiles/76561198997562925"
+  },
+  {
+    "id": 5,
+    "created_at": "2026-01-15 17:46:42.82759+00",
+    "type": "instagram",
+    "value": "https://www.instagram.com/oskip123"
+  }
+]

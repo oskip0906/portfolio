@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "created_at": "2026-03-16 03:41:19.671694+00",
+    "date": "Nov 2025 - Feb 2026",
+    "link": "https://openreview.net/forum?id=OQ7cB8ChvF",
+    "name": "H-WM System",
+    "description": "A robotics control system that integrates a high-level logical model for symbolic reasoning with a low-level visual model for perceptual grounding to provide stable, hierarchical guidance for Vision-Language-Action models, enabling robust execution across long-horizon tasks.",
+    "focus": "Robotics World Model",
+    "published_to": "ICLR"
+  },
+  {
+    "id": 3,
+    "created_at": "2026-01-15 15:49:26.830663+00",
+    "date": "Jan 2025 - Apr 2025",
+    "link": "https://aclanthology.org/2025.acl-demo.36",
+    "name": "FORG3D Toolkit",
+    "description": "A customizable 3D rendering tool that generates spatial reasoning data by rendering object pairs with configurable positions, orientations, and camera settings, optionally enhanced with AI-generated backgrounds (with a Github repository and published research paper).",
+    "focus": "Computer Vision",
+    "published_to": "ACL"
+  },
+  {
+    "id": 5,
+    "created_at": "2026-01-15 15:49:26.95559+00",
+    "date": "Jun 2024 - Dec 2024",
+    "link": "https://www.jmir.org/2025/1/e70746",
+    "name": "H5N1 Social Media Analysis",
+    "description": "A comprehensive analysis of social media posts related to H5N1 outbreaks using posts and comments from Reddit communities for various states in the US from early 2022 to mid 2024 (with a Github repository and published research paper).",
+    "focus": "Text Analysis",
+    "published_to": "JMIR"
+  }
+]
