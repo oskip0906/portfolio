@@ -5,8 +5,7 @@ export async function GET() {
   const supabase = getSupabaseServerClient()
 
   if (!supabase) {
-    console.error('Supabase server client not initialized')
-    return NextResponse.json([], { status: 500 })
+    return NextResponse.json([])
   }
 
   try {

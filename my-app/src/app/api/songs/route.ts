@@ -6,10 +6,7 @@ export async function GET() {
     const supabase = getSupabaseServerClient()
 
     if (!supabase) {
-      return NextResponse.json(
-        { error: 'Supabase server client not initialized' },
-        { status: 500 }
-      )
+      return NextResponse.json([])
     }
 
     // List all files in the 'songs' bucket
