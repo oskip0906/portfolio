@@ -1,7 +1,7 @@
 "use client"
 import { useRef, useState, useEffect, useCallback } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { X } from "lucide-react"
+import { X, ChevronLeft, ChevronRight } from "lucide-react"
 import { type Location } from "@/lib/database"
 import Image from "next/image"
 import { useBackground } from "../contexts/background-context"
@@ -16,184 +16,173 @@ function hexToRgb(hex: string): { r: number; g: number; b: number } {
 function PhotoGallery({ location, onClose }: { location: Location; onClose: () => void }) {
   const { baseColor } = useBackground()
   const { r, g, b } = hexToRgb(baseColor)
-  // Create brighter version for glow
   const brightR = Math.min(255, r + 80)
   const brightG = Math.min(255, g + 80)
   const brightB = Math.min(255, b + 80)
   const glowColor = `rgba(${brightR}, ${brightG}, ${brightB}, 0.25)`
-  const glowColorStrong = `rgba(${brightR}, ${brightG}, ${brightB}, 0.4)`
   const accentColor = `rgb(${brightR}, ${brightG}, ${brightB})`
-  const [currentPhoto, setCurrentPhoto] = useState(0)
-  const [isLoading, setIsLoading] = useState(true)
 
-  const nextPhoto = useCallback(() => {
-    setCurrentPhoto((prev) => (prev + 1) % location.photos.length)
-  }, [location.photos.length])
+  const [current, setCurrent] = useState(0)
+  const [allImagesLoaded, setAllImagesLoaded] = useState(false)
 
-  const prevPhoto = useCallback(() => {
-    setCurrentPhoto((prev) => (prev - 1 + location.photos.length) % location.photos.length)
-  }, [location.photos.length])
-
-  // Preload all images when gallery opens
   useEffect(() => {
-    setIsLoading(true)
-    setCurrentPhoto(0)
-
-    let loaded = 0
-    const total = location.photos.length
-
-    location.photos.forEach((src) => {
-      const img = new window.Image()
-      img.onload = () => {
-        loaded++
-        if (loaded >= total) setIsLoading(false)
-      }
-      img.onerror = () => {
-        loaded++
-        if (loaded >= total) setIsLoading(false)
-      }
-      img.src = src
-    })
+    setCurrent(0)
+    setAllImagesLoaded(false)
   }, [location])
 
   useEffect(() => {
+    let cancelled = false
+
+    const preloadAll = async () => {
+      if (location.photos.length === 0) {
+        if (!cancelled) setAllImagesLoaded(true)
+        return
+      }
+
+      await Promise.all(
+        location.photos.map(
+          (photo) =>
+            new Promise<void>((resolve) => {
+              const img = new window.Image()
+              img.src = photo
+              if (img.complete) {
+                resolve()
+                return
+              }
+              img.onload = () => resolve()
+              img.onerror = () => resolve()
+            })
+        )
+      )
+
+      if (!cancelled) setAllImagesLoaded(true)
+    }
+
+    preloadAll()
+    return () => {
+      cancelled = true
+    }
+  }, [location])
+
+  const scrollPrev = useCallback(() => setCurrent((p) => (p - 1 + location.photos.length) % location.photos.length), [location.photos.length])
+  const scrollNext = useCallback(() => setCurrent((p) => (p + 1) % location.photos.length), [location.photos.length])
+
+  useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        onClose()
-      } else if (event.key === "ArrowLeft") {
-        prevPhoto()
-      } else if (event.key === "ArrowRight") {
-        nextPhoto()
+      if (event.key === "Escape") onClose()
+      else if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
+        event.preventDefault()
+        scrollPrev()
+      } else if (event.key === "ArrowRight" || event.key === "ArrowDown") {
+        event.preventDefault()
+        scrollNext()
       }
     }
-
     window.addEventListener("keydown", handleKeyDown)
+    return () => window.removeEventListener("keydown", handleKeyDown)
+  }, [onClose, scrollPrev, scrollNext])
 
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown)
-    }
-  }, [onClose, prevPhoto, nextPhoto])
-
-  // Lock body scroll while gallery is open
   useEffect(() => {
     document.body.classList.add('scroll-locked')
-    return () => {
-      document.body.classList.remove('scroll-locked')
-    }
+    return () => document.body.classList.remove('scroll-locked')
   }, [])
 
   return (
-    <motion.div
-      initial={{ opacity: 0 } as any}
-      animate={{ opacity: 1 } as any}
-      exit={{ opacity: 0 } as any}
-      transition={{ duration: 1, ease: "easeInOut" }}
-      className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+    <div
+      className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4"
       onClick={onClose}
     >
-      <motion.div
-        initial={{ scale: 0.9, opacity: 0 } as any}
-        animate={{ scale: 1, opacity: 1 } as any}
-        exit={{ scale: 0.9, opacity: 0 } as any}
-        transition={{ duration: 0.5, ease: "easeInOut" }}
-        className="relative w-full max-w-sm sm:max-w-lg md:max-w-xl lg:max-w-2xl h-[50vh] md:h-[60vh] flex flex-col backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-xl shadow-xl overflow-hidden"
-        style={{ boxShadow: `0 0 25px ${glowColor}` }}
+      <div
+        className="relative w-full max-w-sm sm:max-w-lg md:max-w-2xl backdrop-blur-xl bg-white/8 border border-white/20 rounded-2xl shadow-2xl overflow-hidden"
+        style={{ boxShadow: `0 0 30px ${glowColor}` }}
         onClick={(e) => e.stopPropagation()}
       >
-        {isLoading ? (
-          <div className="flex items-center justify-center flex-1">
-            <div className="text-center">
-              <div className="animate-spin rounded-full h-10 w-10 border-b-2 mx-auto mb-3" style={{ borderColor: accentColor }}></div>
-              <p className="text-sm text-white/70">Loading photos...</p>
-            </div>
+        {/* Header */}
+        <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
+          <h3 className="text-lg font-semibold text-white">{location.name}</h3>
+          <div className="flex items-center gap-3">
+            <span className="text-sm text-white/50">{current + 1} / {location.photos.length}</span>
+            <button
+              onClick={onClose}
+              className="p-1.5 rounded-lg hover:bg-white/20 text-white transition-colors"
+            >
+              <X size={18} />
+            </button>
           </div>
-        ) : (
-          <>
-            {/* Header */}
-            <div className="flex-shrink-0 flex items-center justify-between px-4 py-3 backdrop-blur-sm border-b border-white/10">
-              <h3 className="text-lg font-semibold text-white">{location.name}</h3>
-              <button
-                onClick={onClose}
-                className="p-2 rounded-lg hover:bg-white/20 text-white hover:text-gray-200 transition-colors"
-              >
-                <X size={20} />
-              </button>
-            </div>
+        </div>
 
-            {/* Photo Display */}
-            <div className="flex-1 flex flex-col overflow-hidden p-3 gap-2 min-h-0">
-              <div className="flex-1 flex items-center justify-center gap-4 min-h-0">
-                {location.photos.length > 1 && (
-                  <button
-                    onClick={prevPhoto}
-                    className="flex-shrink-0 text-white p-2 rounded-full transition-all hover:scale-110"
-                    style={{ color: accentColor }}
-                  >
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
-                    </svg>
-                  </button>
-                )}
-                <div className="relative flex-1 h-full bg-slate-800 rounded-lg overflow-hidden">
-                  {location.photos.map((photo, index) => (
-                    <Image
-                      key={index}
-                      src={photo || "/placeholder.svg"}
-                      alt={`${location.name} - Photo ${index + 1}`}
-                      fill
-                      className={`object-contain ${index === currentPhoto ? 'opacity-100' : 'opacity-0 absolute'}`}
-                      priority
-                      loading="eager"
-                    />
-                  ))}
-                  <div className="absolute bottom-2 right-2 bg-black/60 text-white px-2 py-0.5 rounded-full text-xs z-10">
-                    {currentPhoto + 1} / {location.photos.length}
-                  </div>
-                </div>
-                {location.photos.length > 1 && (
-                  <button
-                    onClick={nextPhoto}
-                    className="flex-shrink-0 text-white p-2 rounded-full transition-all hover:scale-110"
-                    style={{ color: accentColor }}
-                  >
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z" />
-                    </svg>
-                  </button>
-                )}
-              </div>
-
-              {/* Thumbnail Navigation */}
-              {location.photos.length > 1 && (
-                <div className="flex-shrink-0 flex gap-1.5 justify-center overflow-x-auto">
-                  {location.photos.map((photo, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setCurrentPhoto(index)}
-                      className="relative flex-shrink-0 w-10 h-10 rounded overflow-hidden border-2 transition-all"
-                      style={{
-                        borderColor: currentPhoto === index ? accentColor : 'rgba(255,255,255,0.2)',
-                        boxShadow: currentPhoto === index ? `0 0 10px ${glowColor}` : 'none'
-                      }}
-                    >
-                      <Image
-                        src={photo}
-                        alt={`${location.name} photo ${index + 1}`}
-                        fill
-                        sizes="40px"
-                        className="object-cover"
-                        priority
-                        loading="eager"
-                      />
-                    </button>
-                  ))}
+        {/* Gallery */}
+        <div className="relative p-4">
+          <div className="rounded-2xl border border-white/20 bg-black/35 p-2 shadow-[0_10px_30px_rgba(0,0,0,0.35)]">
+            <div className="relative w-full h-[26vh] sm:h-[34vh] bg-black/45 rounded-xl overflow-hidden">
+              {!allImagesLoaded && (
+                <div className="absolute inset-0 flex items-center justify-center z-10">
+                  <div
+                    className="w-8 h-8 rounded-full border-2 border-t-transparent animate-spin"
+                    style={{ borderColor: `${accentColor} transparent transparent transparent` }}
+                  />
                 </div>
               )}
+              {allImagesLoaded && (
+                <AnimatePresence mode="sync" initial={false}>
+                  <motion.div
+                    key={current}
+                    className="absolute inset-0"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.28, ease: "easeInOut" }}
+                  >
+                    <Image
+                      src={location.photos[current]}
+                      alt={`${location.name} - ${current + 1}`}
+                      fill
+                      sizes="(max-width: 640px) 68vw, (max-width: 1024px) 52vw, 460px"
+                      className="object-contain"
+                      quality={35}
+                      priority={current === 0}
+                    />
+                  </motion.div>
+                </AnimatePresence>
+              )}
             </div>
-          </>
+          </div>
+
+          {location.photos.length > 1 && (
+            <>
+              <button
+                onClick={scrollPrev}
+                className="absolute left-6 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full flex items-center justify-center bg-black/50 backdrop-blur-sm border border-white/20 ring-1 ring-white/30 text-white hover:bg-black/70 transition-colors z-10"
+                style={{ color: accentColor, boxShadow: `0 0 12px ${glowColor}` }}
+              >
+                <ChevronLeft size={18} />
+              </button>
+              <button
+                onClick={scrollNext}
+                className="absolute right-6 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full flex items-center justify-center bg-black/50 backdrop-blur-sm border border-white/20 ring-1 ring-white/30 text-white hover:bg-black/70 transition-colors z-10"
+                style={{ color: accentColor, boxShadow: `0 0 12px ${glowColor}` }}
+              >
+                <ChevronRight size={18} />
+              </button>
+            </>
+          )}
+        </div>
+
+        {/* Dot indicators */}
+        {location.photos.length > 1 && (
+          <div className="flex justify-center gap-1.5 pb-4">
+            {location.photos.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setCurrent(i)}
+                className={`w-1.5 h-1.5 rounded-full transition-all duration-150 ${i === current ? "scale-150" : "bg-white/30"}`}
+                style={i === current ? { backgroundColor: accentColor } : {}}
+              />
+            ))}
+          </div>
         )}
-      </motion.div>
-    </motion.div>
+      </div>
+    </div>
   )
 }
 
@@ -212,22 +201,16 @@ export default function ExpandedMap({ isOpen, onClose }: ExpandedMapProps) {
   const map = useRef<any>(null)
   const markers = useRef<any[]>([])
 
-  // Lazy load mapbox-gl
   const loadMapbox = useCallback(async () => {
     if (mapboxLoaded || isMapboxLoading) return
-
     setIsMapboxLoading(true)
-    
     try {
-      // Load CSS first
       if (!document.querySelector('link[href*="mapbox-gl.css"]')) {
         const link = document.createElement('link')
         link.rel = 'stylesheet'
         link.href = 'https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.css'
         document.head.appendChild(link)
       }
-
-      // Dynamically import mapbox-gl
       const mapboxModule = await import('mapbox-gl')
       setMapboxgl(mapboxModule.default)
       setMapboxLoaded(true)
@@ -242,19 +225,15 @@ export default function ExpandedMap({ isOpen, onClose }: ExpandedMapProps) {
     const fetchData = async () => {
       try {
         const response = await fetch('/api/locations')
-        if (!response.ok) {
-          throw new Error('Failed to fetch locations')
-        }
+        if (!response.ok) throw new Error('Failed to fetch locations')
         const data = await response.json()
         setLocations(data)
       } catch (error) {
         console.error('Failed to load locations:', error)
       }
     }
-
     fetchData()
   }, [])
-
 
   const createMarkerElement = useCallback((location: Location) => {
     const markerElement = document.createElement("div")
@@ -271,75 +250,43 @@ export default function ExpandedMap({ isOpen, onClose }: ExpandedMapProps) {
         </div>
       </div>
     `
-
     markerElement.addEventListener("click", (e) => {
       e.stopPropagation()
       setSelectedLocation(location)
-
       if (map.current) {
-        map.current.flyTo({
-          center: location.coordinates,
-          duration: 2000,
-        })
+        map.current.flyTo({ center: location.coordinates, duration: 2000 })
       }
     })
-
     return markerElement
   }, [])
 
   const addMarkers = useCallback(() => {
     if (!map.current || locations.length === 0 || !mapboxgl) return
-
-    // Clear existing markers
     markers.current.forEach((marker) => marker.remove())
     markers.current = []
-
-    // Add markers for each location
     locations.forEach((location) => {
       const markerElement = createMarkerElement(location)
-      const marker = new mapboxgl.Marker({
-        element: markerElement,
-        anchor: "bottom",
-      })
+      const marker = new mapboxgl.Marker({ element: markerElement, anchor: "bottom" })
         .setLngLat(location.coordinates)
         .addTo(map.current!)
-
       markers.current.push(marker)
     })
   }, [locations, mapboxgl, createMarkerElement])
 
-
-  // Load mapbox when modal opens
   useEffect(() => {
-    if (isOpen && !mapboxLoaded && !isMapboxLoading) {
-      loadMapbox()
-    }
+    if (isOpen && !mapboxLoaded && !isMapboxLoading) loadMapbox()
   }, [isOpen, loadMapbox, mapboxLoaded, isMapboxLoading])
 
   useEffect(() => {
     if (!isOpen || !mapContainer.current || map.current || !mapboxgl) return
-
     const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN
-    
     if (!mapboxToken) {
-      console.warn('Mapbox access token not found. Please set NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN in your environment variables.')
-      // Show a message in the map container
       if (mapContainer.current) {
-        mapContainer.current.innerHTML = `
-          <div class="flex items-center justify-center h-full bg-gray-900 text-white">
-            <div class="text-center">
-              <p class="text-lg mb-2">Map unavailable</p>
-              <p class="text-sm text-gray-400">Mapbox token not configured</p>
-            </div>
-          </div>
-        `
+        mapContainer.current.innerHTML = `<div class="flex items-center justify-center h-full bg-gray-900 text-white"><div class="text-center"><p class="text-lg mb-2">Map unavailable</p><p class="text-sm text-gray-400">Mapbox token not configured</p></div></div>`
       }
       return
     }
-
     mapboxgl.accessToken = mapboxToken
-
-    // Initialize map with error handling
     try {
       map.current = new mapboxgl.Map({
         container: mapContainer.current,
@@ -352,46 +299,20 @@ export default function ExpandedMap({ isOpen, onClose }: ExpandedMapProps) {
       })
     } catch (error) {
       console.error('Failed to initialize map:', error)
-      // Show error message in container
-      if (mapContainer.current) {
-        mapContainer.current.innerHTML = `
-          <div class="flex items-center justify-center h-full bg-gray-900 text-white">
-            <div class="text-center">
-              <p class="text-lg mb-2">Map failed to load</p>
-              <p class="text-sm text-gray-400">Check console for details</p>
-            </div>
-          </div>
-        `
-      }
       return
     }
-
-    // Add navigation controls
-    // Position based on screen size
     const isMobile = window.innerWidth < 640
     const navControl = new mapboxgl.NavigationControl()
     map.current.addControl(navControl, 'top-right')
-
-    // Add custom positioning for mobile via CSS
     if (isMobile) {
       setTimeout(() => {
         const controlContainer = mapContainer.current?.querySelector('.mapboxgl-ctrl-top-right')
-        if (controlContainer) {
-          (controlContainer as HTMLElement).style.top = '5rem'
-        }
+        if (controlContainer) (controlContainer as HTMLElement).style.top = '5rem'
       }, 100)
     }
-
-    // Disable keyboard interactions
     map.current.keyboard.disable()
-
-    // Handle map resize
-    const resizeObserver = new ResizeObserver(() => {
-      map.current?.resize()
-    })
+    const resizeObserver = new ResizeObserver(() => { map.current?.resize() })
     resizeObserver.observe(mapContainer.current)
-
-    // Cleanup function
     return () => {
       resizeObserver.disconnect()
       if (map.current) {
@@ -405,29 +326,16 @@ export default function ExpandedMap({ isOpen, onClose }: ExpandedMapProps) {
 
   useEffect(() => {
     if (!map.current || locations.length === 0) return
-
     const mapInstance = map.current
-
-    if (mapInstance.loaded()) {
-      addMarkers()
-    } else {
-      mapInstance.on("load", addMarkers)
-    }
-
-    return () => {
-      if (mapInstance) {
-        mapInstance.off("load", addMarkers)
-      }
-    }
+    if (mapInstance.loaded()) addMarkers()
+    else mapInstance.on("load", addMarkers)
+    return () => { if (mapInstance) mapInstance.off("load", addMarkers) }
   }, [locations, mapboxgl, addMarkers])
 
-  // Lock body scroll when modal is open
   useEffect(() => {
     if (isOpen) {
       document.body.classList.add('scroll-locked')
-      return () => {
-        document.body.classList.remove('scroll-locked')
-      }
+      return () => document.body.classList.remove('scroll-locked')
     }
   }, [isOpen])
 
@@ -435,23 +343,21 @@ export default function ExpandedMap({ isOpen, onClose }: ExpandedMapProps) {
 
   return (
     <motion.div
-      initial={{ opacity: 0 } as any}
-      animate={{ opacity: 1 } as any}
-      exit={{ opacity: 0 } as any}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
       className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[10000] flex items-center justify-center p-0"
     >
       <motion.div
-        initial={{ scale: 0.9, opacity: 0 } as any}
-        animate={{ scale: 1, opacity: 1 } as any}
-        exit={{ scale: 0.9, opacity: 0 } as any}
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.9, opacity: 0 }}
         transition={{ duration: 0.3 }}
         className="relative w-full h-full overflow-hidden"
       >
-        {/* Map Container */}
         <div className="relative w-full h-full">
           <div ref={mapContainer} className="w-full h-full">
-            {/* Loading state */}
             {isMapboxLoading && (
               <div className="flex items-center justify-center h-full bg-gray-900 text-white">
                 <div className="text-center">
@@ -467,9 +373,9 @@ export default function ExpandedMap({ isOpen, onClose }: ExpandedMapProps) {
 
       <AnimatePresence>
         {selectedLocation && (
-          <PhotoGallery 
-            location={selectedLocation} 
-            onClose={() => setSelectedLocation(null)} 
+          <PhotoGallery
+            location={selectedLocation}
+            onClose={() => setSelectedLocation(null)}
           />
         )}
       </AnimatePresence>

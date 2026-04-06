@@ -1,121 +1,99 @@
 "use client"
 import type React from "react"
 import { useEffect, useState } from "react"
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import type { Experience } from "../../../lib/database"
 import Image from "next/image"
+import { Card, CardContent } from "../ui/card"
 
 interface ExperienceCardProps {
   experience: Experience
   index: number
-  isInView: boolean
 }
 
-const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, index, isInView }) => {
+const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, index }) => {
   const [showDetails, setShowDetails] = useState(false)
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.95 } as any}
-      animate={isInView ? { opacity: 1, scale: 1 } : ({ opacity: 0, scale: 0.95 } as any)}
-      transition={{
-        delay: index * 0.1,
-        duration: 0.4,
-        ease: [0.25, 0.46, 0.45, 0.94],
-      }}
-      className="group relative cursor-pointer"
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ delay: index * 0.05, duration: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
+      className="cursor-pointer"
       onClick={() => setShowDetails((prev) => !prev)}
-      style={{
-        perspective: "1000px",
-        WebkitPerspective: "1000px",
-      } as React.CSSProperties}
     >
-      <motion.div
-        animate={{ rotateY: showDetails ? 180 : 0 } as any}
-        transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
-        style={{
-          transformStyle: "preserve-3d",
-          WebkitTransformStyle: "preserve-3d",
-          position: "relative",
-        } as React.CSSProperties}
-        className="w-full"
-      >
-        {/* Front side */}
-        <div
-          className="w-full backdrop-blur-xl bg-white/5 border border-white/20 rounded-2xl p-12 shadow-2xl overflow-hidden min-h-[33vh] flex items-center justify-center"
-          style={{
-            backfaceVisibility: "hidden",
-            WebkitBackfaceVisibility: "hidden",
-            transform: "rotateY(0deg)",
-            position: "relative",
-          } as React.CSSProperties}
-        >
-          <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+      <Card className="relative min-h-[33vh] group hover:border-white/30 transition-colors duration-300">
+        <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl" />
 
-          <div className="w-full flex flex-col">
-            <div className="flex items-start justify-between mb-4">
-              <div className="flex-1">
-                <h3 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent mb-2">
-                  {experience.company}
-                </h3>
-                <p className="text-base md:text-lg text-gray-200 font-medium mb-2">{experience.title}</p>
-                <p className="text-sm text-gray-400 font-medium">{experience.date}</p>
-              </div>
-
-              <a
-                href={experience.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={(e) => e.stopPropagation()}
-                className="flex-shrink-0 ml-4"
-              >
-                <motion.div
-                  whileHover={{ scale: 1.06 } as any}
-                  className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-white/20 shadow-lg"
-                >
-                  <Image
-                    src={experience.image || "/placeholder.svg"}
-                    alt={experience.company}
-                    fill
-                    sizes="64px"
-                    className="object-cover"
-                    quality={80}
-                    priority
-                    loading="eager"
-                  />
-                </motion.div>
-              </a>
-            </div>
-
-            <div className="flex items-center justify-start mt-auto">
+        <CardContent className="p-8 h-full">
+          <AnimatePresence mode="wait">
+            {!showDetails ? (
               <motion.div
-                whileHover={{ scale: 1.03 } as any}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 rounded-full border border-white/20 text-sm text-gray-200"
+                key="front"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.12 }}
+                className="flex flex-col h-full"
               >
-                <span>👀</span>
-                View details
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex-1">
+                    <h3 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent mb-2">
+                      {experience.company}
+                    </h3>
+                    <p className="text-base md:text-lg text-gray-200 font-medium mb-2">{experience.title}</p>
+                    <p className="text-sm text-gray-400 font-medium">{experience.date}</p>
+                  </div>
+
+                  <a
+                    href={experience.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    className="flex-shrink-0 ml-4"
+                  >
+                    <motion.div
+                      whileHover={{ scale: 1.06 }}
+                      className="relative w-14 h-14 rounded-full overflow-hidden border-2 border-white/20 shadow-lg"
+                    >
+                      <Image
+                        src={experience.image || "/placeholder.svg"}
+                        alt={experience.company}
+                        fill
+                        sizes="56px"
+                        className="object-cover"
+                        quality={60}
+                        loading="lazy"
+                      />
+                    </motion.div>
+                  </a>
+                </div>
+
+                <div className="flex items-center mt-auto">
+                  <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 rounded-full border border-white/20 text-sm text-gray-200">
+                    <span>👀</span>
+                    View details
+                  </div>
+                </div>
               </motion.div>
-            </div>
-          </div>
-        </div>
-
-        {/* Back side */}
-        <div
-          className="absolute inset-0 top-0 left-0 w-full backdrop-blur-xl bg-white/5 border border-white/20 rounded-2xl p-6 shadow-2xl overflow-hidden min-h-[33vh] flex items-center justify-center"
-          style={{
-            backfaceVisibility: "hidden",
-            WebkitBackfaceVisibility: "hidden",
-            transform: "rotateY(180deg)",
-            WebkitTransform: "rotateY(180deg)",
-          } as React.CSSProperties}
-        >
-          <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-cyan-500/5"></div>
-
-          <div className="overflow-y-auto max-h-full w-full px-2 relative z-10">
-            <p className="text-gray-200 leading-relaxed text-left">{experience.description}</p>
-          </div>
-        </div>
-      </motion.div>
+            ) : (
+              <motion.div
+                key="back"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.12 }}
+                className="flex flex-col h-full"
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-cyan-500/5 rounded-2xl" />
+                <div className="relative z-10 overflow-y-auto">
+                  <p className="text-gray-200 leading-relaxed">{experience.description}</p>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </CardContent>
+      </Card>
     </motion.div>
   )
 }
@@ -134,7 +112,6 @@ export default function Experiences() {
         console.error("Error fetching data:", error)
       }
     }
-
     fetchData()
   }, [])
 
@@ -142,7 +119,7 @@ export default function Experiences() {
     <section id="experiences" className="w-full mx-auto px-4">
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
         {experiences.map((experience, index) => (
-          <ExperienceCard key={index} experience={experience} index={index} isInView={true} />
+          <ExperienceCard key={index} experience={experience} index={index} />
         ))}
       </div>
     </section>

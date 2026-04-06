@@ -11,7 +11,6 @@ interface Memory {
 export default function Timeline() {
   const [mounted, setMounted] = useState(false)
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
   const [memories, setMemories] = useState<Memory[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [screenWidth, setScreenWidth] = useState(0)
@@ -133,7 +132,7 @@ export default function Timeline() {
       window.cancelAnimationFrame(frame)
       observer.disconnect()
     }
-  }, [calculateGeometry, nodeCount, activeIndex, hoveredIndex])
+  }, [calculateGeometry, nodeCount, activeIndex])
 
   if (!mounted || isLoading) {
     return null
@@ -170,7 +169,7 @@ export default function Timeline() {
         {Array.from({ length: nodeCount }).map((_, i) => {
           const color = colors[i % colors.length]
           const colorSolid = colorsSolid[i % colorsSolid.length]
-          const isActive = activeIndex === i || hoveredIndex === i
+          const isActive = activeIndex === i
 
           // Calculate bubble position to keep it on screen
           const bubbleWidth = 210
@@ -270,8 +269,6 @@ export default function Timeline() {
                   boxShadow: `0 0 10px ${color}, 0 0 20px ${color}`,
                 }}
                 onClick={() => handleDotClick(i)}
-                onMouseEnter={() => setHoveredIndex(i)}
-                onMouseLeave={() => setHoveredIndex(null)}
                 initial={{ scale: 0, opacity: 0 }}
                 animate={{
                   scale: isActive ? 1.5 : 1,
