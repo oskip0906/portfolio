@@ -1,26 +1,11 @@
 import { NextResponse } from 'next/server'
-import { getSupabaseServerClient } from '@/lib/supabase'
+import { readPortfolioJsonFile, sortTimelineByDateAsc } from '@/lib/portfolio-data'
 
 export async function GET() {
-  const supabase = getSupabaseServerClient()
-
-  if (!supabase) {
-    console.error('Supabase server client not initialized')
-    return NextResponse.json([], { status: 500 })
-  }
-
   try {
-    const { data, error } = await supabase
-      .from('timeline')
-      .select('*')
-      .order('date', { ascending: true })
-
-    if (error) {
-      console.error('Error fetching timeline:', error)
-      return NextResponse.json([], { status: 500 })
-    }
-
-    return NextResponse.json(data || [])
+    const data = await readPortfolioJsonFile<{ date: string }[]>('timeline.json')
+    const sorted = sortTimelineByDateAsc(data || [])
+    return NextResponse.json(sorted)
   } catch (error) {
     console.error('Error fetching timeline:', error)
     return NextResponse.json([], { status: 500 })
