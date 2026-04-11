@@ -153,16 +153,9 @@ export default function Projects() {
                 <div className="p-8 lg:p-10">
                   {/* Number + action row */}
                   <div className="flex items-center justify-between mb-6">
-                    <div className="flex items-center gap-4">
-                      <span className="text-5xl font-black bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
-                        {String(current + 1).padStart(2, "0")}
-                      </span>
-                      <div className="h-12 w-px bg-gradient-to-b from-cyan-400/50 to-transparent" />
-                      <div className="flex flex-col">
-                        <span className="text-xs uppercase tracking-wider text-gray-500 font-medium">Project</span>
-                        <span className="text-sm text-gray-400">{projects.length} Total</span>
-                      </div>
-                    </div>
+                    <span className="text-5xl font-black bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+                      {String(current + 1).padStart(2, "0")}
+                    </span>
                     <a
                       href={project.link}
                       target="_blank"
