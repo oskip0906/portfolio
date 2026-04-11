@@ -2,7 +2,6 @@ import { existsSync } from 'fs'
 import { readFile } from 'fs/promises'
 import path from 'path'
 
-/** Repo-root `../data` (current layout); else `my-app/data` when bundled without parent folder. */
 export function getPortfolioDataDir(): string {
   const repoSibling = path.join(process.cwd(), '..', 'data')
   const inApp = path.join(process.cwd(), 'data')

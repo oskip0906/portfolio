@@ -6,21 +6,10 @@ import { useMusic } from "../contexts/music-context"
 const SpotifyPlayer = memo(() => {
   const { isPlaying, currentSong, togglePlayPause, changeSong } = useMusic()
 
-  // Load the first song on mount
   useEffect(() => {
-    const loadSong = async () => {
-      try {
-        const response = await fetch('/api/songs')
-        if (!response.ok) return
-        const songs = await response.json()
-        if (songs.length > 0 && currentSong === null) {
-          changeSong(songs[0].path)
-        }
-      } catch (error) {
-        console.error('Error loading song:', error)
-      }
+    if (currentSong === null) {
+      changeSong('/api/audio')
     }
-    loadSong()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

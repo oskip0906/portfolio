@@ -1,5 +1,4 @@
 "use client"
-import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
 import { FaGithub, FaLinkedinIn, FaInstagram, FaSteam, FaGlobe } from "react-icons/fa"
 import { type IconType } from "react-icons"
@@ -14,23 +13,7 @@ function getContactIcon(type: string): IconType {
   return FaGlobe
 }
 
-export default function Contact() {
-  const [contacts, setContacts] = useState<Contact[]>([])
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('/api/contacts')
-        if (!response.ok) throw new Error('Failed to fetch contacts')
-        const data = await response.json()
-        setContacts(data)
-      } catch (error) {
-        console.error("Error fetching data:", error)
-      }
-    }
-
-    fetchData()
-  }, [])
+export default function Contact({ contacts }: { contacts: Contact[] }) {
 
   return (
     <section id="contact" className="w-full pt-1 pb-0">
@@ -80,6 +63,7 @@ export default function Contact() {
           )
         })}
       </div>
+      <p className="text-center text-sm text-gray-400 mt-4">Discord: oskip123</p>
     </section>
   )
 }

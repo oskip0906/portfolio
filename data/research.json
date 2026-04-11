@@ -7,7 +7,8 @@
     "name": "H-WM System",
     "description": "A robotics control system that integrates a high-level logical model for symbolic reasoning with a low-level visual model for perceptual grounding to provide stable, hierarchical guidance for Vision-Language-Action models, enabling robust execution across long-horizon tasks.",
     "focus": "Robotics World Model",
-    "published_to": "ICLR"
+    "published_to": "ICLR",
+    "abstract": "World models are becoming central to robotic planning and control as they enable prediction of future state transitions. Existing approaches often emphasize video generation or natural-language prediction, which are difficult to directly ground in robot actions and suffer from compounding errors over long horizons. Traditional task and motion planning relies on symbolic-logic world models, such as planning domains, that are robot-executable and robust for long-horizon reasoning, but typically operate independently of visual perception, preventing synchronized symbolic and perceptual state prediction. We propose a Hierarchical World Model (H-WM) that jointly predicts logical and visual state transitions within a unified bilevel framework."
   },
   {
     "id": 3,
@@ -17,7 +18,8 @@
     "name": "FORG3D Toolkit",
     "description": "A customizable 3D rendering tool that generates spatial reasoning data by rendering object pairs with configurable positions, orientations, and camera settings, optionally enhanced with AI-generated backgrounds (with a Github repository and published research paper).",
     "focus": "Computer Vision",
-    "published_to": "ACL"
+    "published_to": "ACL",
+    "abstract": "We introduce FORG3D, a 3D rendering toolkit developed with Blender and Python, which synthesizes vision-language data for two primary purposes: (1) supporting human cognitive experiments that require fine-grained control over material and (2) analyzing and improving the visual reasoning capabilities of large vision-language models. The toolkit provides flexible and precise control over object placement, orientation, inter-object distances, and camera configurations while automatically generating detailed spatial metadata. Additionally, it includes a built-in feature for integrating AI-generated backgrounds, enhancing the realism of synthetic scenes."
   },
   {
     "id": 5,
@@ -27,6 +29,7 @@
     "name": "H5N1 Social Media Analysis",
     "description": "A comprehensive analysis of social media posts related to H5N1 outbreaks using posts and comments from Reddit communities for various states in the US from early 2022 to mid 2024 (with a Github repository and published research paper).",
     "focus": "Text Analysis",
-    "published_to": "JMIR"
+    "published_to": "JMIR",
+    "abstract": "The H5N1 avian influenza A virus represents a serious threat to both animal and human health, with the potential to escalate into a global pandemic. Effective monitoring of social media during H5N1 avian influenza outbreaks could potentially offer critical insights to guide public health strategies. Social media platforms like Reddit, with their diverse and region-specific communities, provide a rich source of data that can reveal collective attitudes, concerns, and behavioral trends in real time."
   }
 ]

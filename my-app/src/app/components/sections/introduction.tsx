@@ -1,14 +1,11 @@
 "use client"
-import { useEffect, useState, useCallback, memo, type FormEvent } from "react"
+import { useState, useCallback, memo, type FormEvent } from "react"
 import { Typewriter } from "react-simple-typewriter"
-import { type Intro as IntroType } from "../../../lib/database"
-import Image from "next/image"
+import { type Intro as IntroType, type Contact as ContactType } from "../../../lib/database"
 import { motion } from "framer-motion"
 import { ExternalLink } from "lucide-react"
 import SpotifyPlayer from "../spotify"
 import Contact from "./contact"
-import { useBackground } from "../../contexts/background-context"
-import LoadingSpinner from "../loading-spinner"
 
 const cardVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -23,36 +20,12 @@ const cardVariants = {
   }),
 }
 
-const Introduction = memo(() => {
-  const { isLoaded } = useBackground()
-  const [intro, setIntro] = useState<IntroType | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+const Introduction = memo(({ intro, contacts }: { intro: IntroType; contacts: ContactType[] }) => {
   const [senderName, setSenderName] = useState("")
   const [senderEmail, setSenderEmail] = useState("")
   const [message, setMessage] = useState("")
   const [isSending, setIsSending] = useState(false)
   const [sendStatus, setSendStatus] = useState<string | null>(null)
-
-  const fetchData = useCallback(async () => {
-    try {
-      setIsLoading(true)
-      setError(null)
-      const response = await fetch('/api/intro')
-      if (!response.ok) throw new Error('Failed to fetch intro')
-      const data = await response.json()
-      setIntro(data)
-    } catch (error) {
-      console.error("Error fetching data:", error)
-      setError(error instanceof Error ? error.message : "Failed to load data")
-    } finally {
-      setIsLoading(false)
-    }
-  }, [])
-
-  useEffect(() => {
-    fetchData()
-  }, [fetchData])
 
   const handleSendMessage = useCallback(async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -86,30 +59,6 @@ const Introduction = memo(() => {
     }
   }, [message])
 
-  if (error) {
-    return (
-      <div id="introduction" className="w-full mx-auto px-4">
-        <div className="text-center text-red-400">
-          <p>Error loading content: {error}</p>
-          <button
-            onClick={fetchData}
-            className="mt-4 px-4 py-2 bg-cyan-500 text-white rounded-lg hover:bg-cyan-600 transition-colors"
-          >
-            Retry
-          </button>
-        </div>
-      </div>
-    )
-  }
-
-  if (!isLoaded) {
-    return <div id="introduction" className="w-full mx-auto px-2 sm:px-3 min-h-[50vh]" />
-  }
-
-  if (isLoading || !intro) {
-    return <LoadingSpinner />
-  }
-
   return (
     <div id="introduction" className="w-full mx-auto px-2 sm:px-3">
       <div className="grid grid-cols-1 md:grid-cols-12 gap-4 sm:gap-5">
@@ -133,14 +82,14 @@ const Introduction = memo(() => {
                 }}
                 aria-label="Visit University of Toronto website"
               >
-                <Image
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
                   src={intro.image}
                   alt="Profile"
-                  fill
-                  sizes="(max-width: 640px) 12vw, (max-width: 768px) 13vw, 14vw"
-                  className="object-cover"
-                  priority
-                  quality={90}
+                  loading="eager"
+                  fetchPriority="high"
+                  decoding="sync"
+                  className="absolute inset-0 h-full w-full object-cover"
                 />
               </a>
             </div>
@@ -253,7 +202,7 @@ const Introduction = memo(() => {
           animate="visible"
           custom={0.3}
         >
-          <Contact />
+          <Contact contacts={contacts} />
         </motion.div>
       </div>
     </div>

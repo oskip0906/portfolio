@@ -2,16 +2,11 @@
 import { motion, AnimatePresence } from "framer-motion"
 import { useState, useEffect, useRef, useCallback, useLayoutEffect } from "react"
 
-interface Memory {
-  title: string
-  date: string
-  description: string
-}
+import { type Memory } from "@/lib/database"
 
-export default function Timeline() {
+export default function Timeline({ memories }: { memories: Memory[] }) {
   const [mounted, setMounted] = useState(false)
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
-  const [memories, setMemories] = useState<Memory[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [screenWidth, setScreenWidth] = useState(0)
   const [lineInsets, setLineInsets] = useState({ left: 0, right: 0 })
@@ -21,30 +16,13 @@ export default function Timeline() {
 
   useEffect(() => {
     setMounted(true)
-    fetchTimeline()
+    setIsLoading(false)
 
-    // Track screen width
-    const handleResize = () => {
-      setScreenWidth(window.innerWidth)
-    }
-
+    const handleResize = () => setScreenWidth(window.innerWidth)
     handleResize()
     window.addEventListener('resize', handleResize)
-
     return () => window.removeEventListener('resize', handleResize)
   }, [])
-
-  const fetchTimeline = async () => {
-    try {
-      const response = await fetch('/api/timeline')
-      const data = await response.json()
-      setMemories(data)
-    } catch (error) {
-      console.error('Error fetching timeline:', error)
-    } finally {
-      setIsLoading(false)
-    }
-  }
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
