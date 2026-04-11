@@ -1,30 +1,46 @@
 "use client"
 import { useEffect, useState, useCallback } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { ExternalLink, Calendar, Tag, ArrowRight, Code2, Layers, Sparkles, Zap, ChevronRight } from "lucide-react"
+import { ExternalLink, Calendar, Tag, ArrowRight, Sparkles, ChevronRight, Code2 } from "lucide-react"
 import { type Project } from "@/lib/database"
 
-// Generate consistent pseudo-random values for each project
-function getProjectFeatures(index: number) {
-  const features = [
-    ["Responsive Design", "API Integration", "Real-time Updates"],
-    ["Authentication", "Database", "Cloud Hosting"],
-    ["Mobile First", "Performance", "Accessibility"],
-    ["Animations", "Dark Mode", "SEO Optimized"],
-    ["Microservices", "CI/CD", "Testing"],
-  ]
-  return features[index % features.length]
+// Tech stack per project name
+const PROJECT_TECH: Record<string, string[]> = {
+  "Equicourt": ["Next.js", "TypeScript", "Python", "FastAPI", "OpenAI", "Supabase"],
+  "UofT ClubHub": ["Next.js", "TypeScript", "Supabase", "PostgreSQL", "Python", "OpenAI"],
+  "PseudoGrader": ["React", "Node.js", "Python", "OpenAI", "PDF.js"],
+  "Basic Neural Network": ["Python", "NumPy", "MNIST"],
+  "Scriptorium": ["Next.js", "TypeScript", "PostgreSQL", "Prisma", "Docker"],
+  "WelcoMate (UofT W3B Davinci Competition B2B 1st Place Winner)": ["React", "Node.js", "OpenAI", "Supabase"],
+  "Little Learners": ["React", "TypeScript", "OpenAI", "Node.js"],
+  "Toronto Asian Art Museum Explorer": ["Android", "Java", "SQLite", "iText"],
+  "League of Legends Statistics Analyzer": ["Python", "scikit-learn", "React", "Flask", "Riot API"],
+  "MealSimple (Uoft EWB Hackathon 1st Place Winner)": ["JavaScript", "HTML/CSS", "Google Maps API", "ChatGPT API"],
+  "Daily World Diary": ["Python", "ChatGPT API", "NewsAPI"],
+  "Broke Besties": ["Next.js", "TypeScript", "OpenAI", "Supabase", "PostgreSQL"],
 }
 
-function getProjectStats(index: number) {
-  const stats = [
-    { lines: "2.5K+", files: "45", commits: "120+" },
-    { lines: "5K+", files: "78", commits: "200+" },
-    { lines: "3.2K+", files: "52", commits: "85+" },
-    { lines: "8K+", files: "95", commits: "350+" },
-    { lines: "1.8K+", files: "32", commits: "65+" },
-  ]
-  return stats[index % stats.length]
+const PROJECT_FEATURES: Record<string, string[]> = {
+  "Equicourt": ["Multi-LLM RAG System", "Speech Recognition", "PDF Parsing", "Canadian Law DB"],
+  "UofT ClubHub": ["Club Search", "Instagram Scraper", "AI Chatbot", "Exec Dashboard"],
+  "PseudoGrader": ["AI Logic Checks", "Code Translation", "Test Case Evaluation", "PDF/Image Upload"],
+  "Basic Neural Network": ["95% MNIST Accuracy", "Custom Hyperparams", "Built from Scratch"],
+  "Scriptorium": ["Multi-language Execution", "Blog System", "Code Templates", "Docker Sandbox"],
+  "WelcoMate (UofT W3B Davinci Competition B2B 1st Place Winner)": ["AI Trip Planner", "PMS & CRM", "Guest Check-in", "Service Booking"],
+  "Little Learners": ["Learning Roadmap", "Mini-games", "AI Books", "Rewards System"],
+  "Toronto Asian Art Museum Explorer": ["Artifact Search", "Admin Tools", "PDF Reports", "Database"],
+  "League of Legends Statistics Analyzer": ["100K Data Entries", "75%+ Accuracy ML", "Riot API", "Player Stats"],
+  "MealSimple (Uoft EWB Hackathon 1st Place Winner)": ["Food Bank Locator", "Recipe Filter", "AI Custom Recipes", "Maps API"],
+  "Daily World Diary": ["Daily News Fetch", "First-person Narrative", "Cited Sources"],
+  "Broke Besties": ["Receipt Scanning", "Expense Splitting", "Group Management", "AI Chat"],
+}
+
+function getProjectTech(name: string): string[] {
+  return PROJECT_TECH[name] ?? ["JavaScript", "HTML/CSS"]
+}
+
+function getProjectFeatures(name: string): string[] {
+  return PROJECT_FEATURES[name] ?? ["Web Application", "Responsive Design", "API Integration"]
 }
 
 export default function Projects() {
@@ -64,8 +80,8 @@ export default function Projects() {
   if (isLoading) return null
 
   const project = projects[current]
-  const features = getProjectFeatures(current)
-  const stats = getProjectStats(current)
+  const techStack = project ? getProjectTech(project.name) : []
+  const features = project ? getProjectFeatures(project.name) : []
 
   return (
     <section id="projects" className="w-full px-4 sm:px-6 md:px-10">
@@ -173,41 +189,25 @@ export default function Projects() {
                     {project.description}
                   </p>
 
-                  {/* Stats Grid */}
-                  <div className="grid grid-cols-3 gap-4 mb-8">
-                    <motion.div 
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.1 }}
-                      className="relative p-4 rounded-2xl bg-gradient-to-br from-cyan-500/10 to-transparent border border-cyan-500/20 overflow-hidden group"
-                    >
-                      <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                      <Code2 size={18} className="text-cyan-400 mb-2" />
-                      <div className="text-2xl font-bold text-white">{stats.lines}</div>
-                      <div className="text-xs text-gray-400 uppercase tracking-wider">Lines of Code</div>
-                    </motion.div>
-                    <motion.div 
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.15 }}
-                      className="relative p-4 rounded-2xl bg-gradient-to-br from-purple-500/10 to-transparent border border-purple-500/20 overflow-hidden group"
-                    >
-                      <div className="absolute inset-0 bg-gradient-to-br from-purple-400/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                      <Layers size={18} className="text-purple-400 mb-2" />
-                      <div className="text-2xl font-bold text-white">{stats.files}</div>
-                      <div className="text-xs text-gray-400 uppercase tracking-wider">Files</div>
-                    </motion.div>
-                    <motion.div 
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.2 }}
-                      className="relative p-4 rounded-2xl bg-gradient-to-br from-pink-500/10 to-transparent border border-pink-500/20 overflow-hidden group"
-                    >
-                      <div className="absolute inset-0 bg-gradient-to-br from-pink-400/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                      <Zap size={18} className="text-pink-400 mb-2" />
-                      <div className="text-2xl font-bold text-white">{stats.commits}</div>
-                      <div className="text-xs text-gray-400 uppercase tracking-wider">Commits</div>
-                    </motion.div>
+                  {/* Tech Stack */}
+                  <div className="mb-8">
+                    <div className="flex items-center gap-2 mb-4">
+                      <Code2 size={14} className="text-cyan-400" />
+                      <span className="text-sm font-semibold text-gray-300 uppercase tracking-wider">Tech Stack</span>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {techStack.map((tech, i) => (
+                        <motion.span
+                          key={tech}
+                          initial={{ opacity: 0, scale: 0.9 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ delay: 0.05 + i * 0.04 }}
+                          className="px-3 py-1.5 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-sm text-cyan-300 font-medium cursor-default"
+                        >
+                          {tech}
+                        </motion.span>
+                      ))}
+                    </div>
                   </div>
 
                   {/* Features Section */}
@@ -250,7 +250,6 @@ export default function Projects() {
 
                     {/* Progress indicator */}
                     <div className="flex items-center gap-3">
-                      <span className="text-xs text-gray-500 uppercase tracking-wider">Progress</span>
                       <div className="flex-1 h-1.5 bg-white/5 rounded-full overflow-hidden">
                         <motion.div 
                           className="h-full bg-gradient-to-r from-cyan-400 to-purple-400 rounded-full"
@@ -277,9 +276,9 @@ function MobileCard({ item, index, linkIcon }: {
   index: number
   linkIcon: React.ReactNode
 }) {
-  const features = getProjectFeatures(index)
-  const stats = getProjectStats(index)
-  
+  const techStack = getProjectTech(item.name)
+  const features = getProjectFeatures(item.name)
+
   return (
     <div className="backdrop-blur-xl bg-white/5 border border-white/20 rounded-3xl overflow-hidden shadow-2xl">
       <div className="h-1 w-full bg-gradient-to-r from-cyan-500/60 via-purple-500/40 to-transparent" />
@@ -310,22 +309,18 @@ function MobileCard({ item, index, linkIcon }: {
         </div>
         <p className="text-gray-300 text-sm leading-relaxed mb-5">{item.description}</p>
 
-        {/* Stats Row */}
-        <div className="grid grid-cols-3 gap-2 mb-5">
-          <div className="p-3 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-center">
-            <Code2 size={14} className="text-cyan-400 mx-auto mb-1" />
-            <div className="text-lg font-bold text-white">{stats.lines}</div>
-            <div className="text-[10px] text-gray-400 uppercase">Lines</div>
+        {/* Tech Stack */}
+        <div className="mb-4">
+          <div className="flex items-center gap-1.5 mb-2">
+            <Code2 size={12} className="text-cyan-400" />
+            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Tech Stack</span>
           </div>
-          <div className="p-3 rounded-xl bg-purple-500/10 border border-purple-500/20 text-center">
-            <Layers size={14} className="text-purple-400 mx-auto mb-1" />
-            <div className="text-lg font-bold text-white">{stats.files}</div>
-            <div className="text-[10px] text-gray-400 uppercase">Files</div>
-          </div>
-          <div className="p-3 rounded-xl bg-pink-500/10 border border-pink-500/20 text-center">
-            <Zap size={14} className="text-pink-400 mx-auto mb-1" />
-            <div className="text-lg font-bold text-white">{stats.commits}</div>
-            <div className="text-[10px] text-gray-400 uppercase">Commits</div>
+          <div className="flex flex-wrap gap-1.5">
+            {techStack.map((tech) => (
+              <span key={tech} className="px-2.5 py-1 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-xs text-cyan-300 font-medium">
+                {tech}
+              </span>
+            ))}
           </div>
         </div>
 

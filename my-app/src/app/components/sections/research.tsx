@@ -1,41 +1,37 @@
 "use client"
 import { useEffect, useState, useCallback } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Calendar, FlaskConical, BookOpen, ArrowRight, Quote, Lightbulb, Target, TrendingUp, ChevronRight, FileText, Users } from "lucide-react"
+import { Calendar, FlaskConical, BookOpen, ArrowRight, Quote, Lightbulb, Target, ChevronRight, Code2 } from "lucide-react"
 import { type Research } from "@/lib/database"
 
-// Generate research-specific data for each paper
-function getResearchMethodology(index: number) {
-  const methods = [
-    ["Literature Review", "Quantitative Analysis", "Experiments"],
-    ["Case Study", "Data Mining", "Statistical Modeling"],
-    ["Qualitative Research", "Surveys", "Interviews"],
-    ["Mixed Methods", "Meta-Analysis", "Simulation"],
-    ["Field Study", "Comparative Analysis", "Prototyping"],
-  ]
-  return methods[index % methods.length]
+// Tech stack per research paper
+const RESEARCH_TECH: Record<string, string[]> = {
+  "H-WM System": ["Python", "PyTorch", "ROS2", "Vision-Language Models", "Symbolic AI"],
+  "FORG3D Toolkit": ["Python", "Blender", "PyTorch", "Stable Diffusion", "OpenCV"],
+  "H5N1 Social Media Analysis": ["Python", "PRAW", "NLTK", "scikit-learn", "Pandas"],
 }
 
-function getResearchImpact(index: number) {
-  const impacts = [
-    { citations: "25+", reads: "1.2K", downloads: "450" },
-    { citations: "42+", reads: "2.8K", downloads: "890" },
-    { citations: "18+", reads: "950", downloads: "320" },
-    { citations: "65+", reads: "4.5K", downloads: "1.5K" },
-    { citations: "12+", reads: "680", downloads: "210" },
-  ]
-  return impacts[index % impacts.length]
+const RESEARCH_FINDINGS: Record<string, string[]> = {
+  "H-WM System": [
+    "Hierarchical guidance enables stable long-horizon task execution",
+    "Integrates symbolic reasoning with perceptual grounding for VLA models",
+  ],
+  "FORG3D Toolkit": [
+    "Configurable 3D rendering pipeline for spatial reasoning datasets",
+    "AI-generated backgrounds enhance realism of training data",
+  ],
+  "H5N1 Social Media Analysis": [
+    "Identified sentiment trends across US states during H5N1 outbreaks",
+    "Reddit data reveals public concern patterns correlated with outbreak events",
+  ],
 }
 
-function getKeyFindings(index: number) {
-  const findings = [
-    ["Novel approach demonstrated 40% improvement", "Framework applicable to multiple domains"],
-    ["Significant correlation found between variables", "Results validated across datasets"],
-    ["Proposed model outperforms existing methods", "Scalable to enterprise applications"],
-    ["New insights into user behavior patterns", "Actionable recommendations provided"],
-    ["Theory successfully tested in practice", "Methodology replicable for future research"],
-  ]
-  return findings[index % findings.length]
+function getResearchTech(name: string): string[] {
+  return RESEARCH_TECH[name] ?? ["Python", "Research Tools"]
+}
+
+function getKeyFindings(name: string): string[] {
+  return RESEARCH_FINDINGS[name] ?? ["Contributed novel insights to the field", "Results published in peer-reviewed venue"]
 }
 
 export default function Research() {
@@ -75,9 +71,8 @@ export default function Research() {
   if (isLoading) return null
 
   const paper = papers[current]
-  const methodology = getResearchMethodology(current)
-  const impact = getResearchImpact(current)
-  const findings = getKeyFindings(current)
+  const techStack = paper ? getResearchTech(paper.name) : []
+  const findings = paper ? getKeyFindings(paper.name) : []
 
   return (
     <section id="research" className="w-full px-4 sm:px-6 md:px-10">
@@ -180,41 +175,25 @@ export default function Research() {
                     {paper.description}
                   </p>
 
-                  {/* Impact Stats Grid */}
-                  <div className="grid grid-cols-3 gap-4 mb-8">
-                    <motion.div 
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.1 }}
-                      className="relative p-4 rounded-2xl bg-gradient-to-br from-purple-500/10 to-transparent border border-purple-500/20 overflow-hidden group"
-                    >
-                      <div className="absolute inset-0 bg-gradient-to-br from-purple-400/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                      <TrendingUp size={18} className="text-purple-400 mb-2" />
-                      <div className="text-2xl font-bold text-white">{impact.citations}</div>
-                      <div className="text-xs text-gray-400 uppercase tracking-wider">Citations</div>
-                    </motion.div>
-                    <motion.div 
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.15 }}
-                      className="relative p-4 rounded-2xl bg-gradient-to-br from-cyan-500/10 to-transparent border border-cyan-500/20 overflow-hidden group"
-                    >
-                      <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                      <Users size={18} className="text-cyan-400 mb-2" />
-                      <div className="text-2xl font-bold text-white">{impact.reads}</div>
-                      <div className="text-xs text-gray-400 uppercase tracking-wider">Reads</div>
-                    </motion.div>
-                    <motion.div 
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.2 }}
-                      className="relative p-4 rounded-2xl bg-gradient-to-br from-pink-500/10 to-transparent border border-pink-500/20 overflow-hidden group"
-                    >
-                      <div className="absolute inset-0 bg-gradient-to-br from-pink-400/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                      <FileText size={18} className="text-pink-400 mb-2" />
-                      <div className="text-2xl font-bold text-white">{impact.downloads}</div>
-                      <div className="text-xs text-gray-400 uppercase tracking-wider">Downloads</div>
-                    </motion.div>
+                  {/* Tech Stack */}
+                  <div className="mb-8">
+                    <div className="flex items-center gap-2 mb-4">
+                      <Code2 size={14} className="text-purple-400" />
+                      <span className="text-sm font-semibold text-gray-300 uppercase tracking-wider">Tech Stack</span>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {techStack.map((tech, i) => (
+                        <motion.span
+                          key={tech}
+                          initial={{ opacity: 0, scale: 0.9 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ delay: 0.05 + i * 0.04 }}
+                          className="px-3 py-1.5 rounded-lg bg-purple-500/10 border border-purple-500/20 text-sm text-purple-300 font-medium cursor-default"
+                        >
+                          {tech}
+                        </motion.span>
+                      ))}
+                    </div>
                   </div>
 
                   {/* Key Findings */}
@@ -234,27 +213,6 @@ export default function Research() {
                         >
                           <Target size={14} className="text-purple-400 mt-0.5 shrink-0" />
                           <span className="text-sm text-gray-300">{finding}</span>
-                        </motion.div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Methodology Tags */}
-                  <div className="mb-8">
-                    <div className="flex items-center gap-2 mb-4">
-                      <FlaskConical size={14} className="text-cyan-400" />
-                      <span className="text-sm font-semibold text-gray-300 uppercase tracking-wider">Methodology</span>
-                    </div>
-                    <div className="flex flex-wrap gap-2">
-                      {methodology.map((method, i) => (
-                        <motion.div
-                          key={method}
-                          initial={{ opacity: 0, scale: 0.9 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          transition={{ delay: 0.1 + i * 0.05 }}
-                          className="px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-sm text-gray-300 hover:bg-white/10 hover:border-white/20 transition-all cursor-default"
-                        >
-                          {method}
                         </motion.div>
                       ))}
                     </div>
@@ -285,7 +243,6 @@ export default function Research() {
 
                     {/* Progress indicator */}
                     <div className="flex items-center gap-3">
-                      <span className="text-xs text-gray-500 uppercase tracking-wider">Progress</span>
                       <div className="flex-1 h-1.5 bg-white/5 rounded-full overflow-hidden">
                         <motion.div 
                           className="h-full bg-gradient-to-r from-purple-400 to-cyan-400 rounded-full"
@@ -308,9 +265,8 @@ export default function Research() {
 }
 
 function MobileResearchCard({ item, index }: { item: Research; index: number }) {
-  const methodology = getResearchMethodology(index)
-  const impact = getResearchImpact(index)
-  const findings = getKeyFindings(index)
+  const techStack = getResearchTech(item.name)
+  const findings = getKeyFindings(item.name)
 
   return (
     <div className="backdrop-blur-xl bg-white/5 border border-white/20 rounded-3xl overflow-hidden shadow-2xl">
@@ -342,22 +298,18 @@ function MobileResearchCard({ item, index }: { item: Research; index: number }) 
         </div>
         <p className="text-gray-300 text-sm leading-relaxed mb-5">{item.description}</p>
 
-        {/* Impact Stats Row */}
-        <div className="grid grid-cols-3 gap-2 mb-5">
-          <div className="p-3 rounded-xl bg-purple-500/10 border border-purple-500/20 text-center">
-            <TrendingUp size={14} className="text-purple-400 mx-auto mb-1" />
-            <div className="text-lg font-bold text-white">{impact.citations}</div>
-            <div className="text-[10px] text-gray-400 uppercase">Citations</div>
+        {/* Tech Stack */}
+        <div className="mb-4">
+          <div className="flex items-center gap-1.5 mb-2">
+            <Code2 size={12} className="text-purple-400" />
+            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Tech Stack</span>
           </div>
-          <div className="p-3 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-center">
-            <Users size={14} className="text-cyan-400 mx-auto mb-1" />
-            <div className="text-lg font-bold text-white">{impact.reads}</div>
-            <div className="text-[10px] text-gray-400 uppercase">Reads</div>
-          </div>
-          <div className="p-3 rounded-xl bg-pink-500/10 border border-pink-500/20 text-center">
-            <FileText size={14} className="text-pink-400 mx-auto mb-1" />
-            <div className="text-lg font-bold text-white">{impact.downloads}</div>
-            <div className="text-[10px] text-gray-400 uppercase">Downloads</div>
+          <div className="flex flex-wrap gap-1.5">
+            {techStack.map((tech) => (
+              <span key={tech} className="px-2.5 py-1 rounded-lg bg-purple-500/10 border border-purple-500/20 text-xs text-purple-300 font-medium">
+                {tech}
+              </span>
+            ))}
           </div>
         </div>
 
@@ -367,15 +319,6 @@ function MobileResearchCard({ item, index }: { item: Research; index: number }) 
             <Lightbulb size={12} className="text-purple-400 mt-0.5 shrink-0" />
             <span className="text-xs text-gray-300">{findings[0]}</span>
           </div>
-        </div>
-
-        {/* Methodology Tags */}
-        <div className="flex flex-wrap gap-1.5 mb-5">
-          {methodology.map((method) => (
-            <span key={method} className="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-xs text-gray-300">
-              {method}
-            </span>
-          ))}
         </div>
 
         {/* Footer */}
