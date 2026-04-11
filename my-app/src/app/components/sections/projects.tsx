@@ -220,15 +220,13 @@ export default function Projects() {
 
                   {/* Bottom metadata bar */}
                   <div className="flex flex-col gap-4 pt-6 border-t border-white/10">
-                    <div className="flex items-center justify-between">
-                      <div className="flex flex-wrap gap-2 min-w-0">
-                        {project.type && (
-                          <div className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-gradient-to-r from-cyan-500/15 to-purple-500/15 border border-cyan-400/30 text-sm font-semibold tracking-wide text-cyan-300">
-                            <Tag size={12} className="opacity-70 shrink-0" />
-                            <span>{project.type}</span>
-                          </div>
-                        )}
-                      </div>
+                    <div className="flex flex-wrap items-center gap-3">
+                      {project.type && (
+                        <div className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-gradient-to-r from-cyan-500/15 to-purple-500/15 border border-cyan-400/30 text-sm font-semibold tracking-wide text-cyan-300">
+                          <Tag size={12} className="opacity-70 shrink-0" />
+                          <span>{project.type}</span>
+                        </div>
+                      )}
                       <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-gray-400">
                         <Calendar size={14} className="shrink-0" />
                         <span className="text-sm font-medium">{project.date}</span>
