@@ -3,7 +3,6 @@ import { useRef, useState, useEffect, useCallback } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { X, ChevronLeft, ChevronRight } from "lucide-react"
 import { type Location } from "@/lib/database"
-import Image from "next/image"
 import { useBackground } from "../contexts/background-context"
 
 function hexToRgb(hex: string): { r: number; g: number; b: number } {
@@ -133,14 +132,11 @@ function PhotoGallery({ location, onClose }: { location: Location; onClose: () =
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.28, ease: "easeInOut" }}
                   >
-                    <Image
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
                       src={location.photos[current]}
                       alt={`${location.name} - ${current + 1}`}
-                      fill
-                      sizes="(max-width: 640px) 68vw, (max-width: 1024px) 52vw, 460px"
-                      className="object-contain"
-                      quality={35}
-                      priority={current === 0}
+                      className="absolute inset-0 w-full h-full object-contain"
                     />
                   </motion.div>
                 </AnimatePresence>

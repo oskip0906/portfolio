@@ -1,12 +1,7 @@
 "use client"
 import { motion, AnimatePresence } from "framer-motion"
 import { useState, useEffect } from "react"
-
-interface Memory {
-  title: string
-  date: string
-  description: string
-}
+import { type Memory } from "@/lib/database"
 
 export default function TimelinePage() {
   const [mounted, setMounted] = useState(false)

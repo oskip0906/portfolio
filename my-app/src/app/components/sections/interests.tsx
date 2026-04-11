@@ -1,25 +1,9 @@
 "use client"
-import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
 import { type Interest } from "../../../lib/database"
 import { Card, CardContent } from "../ui/card"
 
-export default function Interests() {
-  const [interests, setInterests] = useState<Interest[]>([])
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('/api/interests')
-        if (!response.ok) throw new Error('Failed to fetch interests')
-        const data = await response.json()
-        setInterests(data)
-      } catch (error) {
-        console.error("Error fetching data:", error)
-      }
-    }
-    fetchData()
-  }, [])
+export default function Interests({ interests }: { interests: Interest[] }) {
 
   return (
     <section id="interests" className="w-full mx-auto px-4">
@@ -35,7 +19,7 @@ export default function Interests() {
               <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl" />
               <CardContent className="p-[2.5vh] sm:p-6 lg:p-[2.8vh] h-full flex flex-col justify-center relative z-10">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="text-4xl group-hover:scale-110 transition-transform duration-300">
+                  <div className="text-4xl">
                     {interest.emote}
                   </div>
                   <h3 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">

@@ -1,6 +1,5 @@
 import { ReactNode } from 'react'
 
-// Type definitions for specific content types
 export interface Location {
   name: string
   coordinates: [number, number]
@@ -14,6 +13,8 @@ export interface Research {
   name: string
   focus: string
   published_to: string
+  abstract: string
+  findings: string[]
 }
 
 export interface Project {
@@ -22,6 +23,8 @@ export interface Project {
   link: string
   name: string
   type: string
+  tech: string[]
+  features: string[]
 }
 
 export interface Experience {
@@ -52,4 +55,10 @@ export interface Intro {
   image: string
   email?: string | null
   resume?: string | null
+}
+
+export interface Memory {
+  title: string
+  date: string
+  description: string
 }
