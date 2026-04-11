@@ -196,16 +196,13 @@ export default function Projects() {
                       <span className="text-sm font-semibold text-gray-300 uppercase tracking-wider">Tech Stack</span>
                     </div>
                     <div className="flex flex-wrap gap-2">
-                      {techStack.map((tech, i) => (
-                        <motion.span
+                      {techStack.map((tech) => (
+                        <span
                           key={tech}
-                          initial={{ opacity: 0, scale: 0.9 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          transition={{ delay: 0.05 + i * 0.04 }}
                           className="px-3 py-1.5 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-sm text-cyan-300 font-medium cursor-default"
                         >
                           {tech}
-                        </motion.span>
+                        </span>
                       ))}
                     </div>
                   </div>
@@ -217,16 +214,13 @@ export default function Projects() {
                       <span className="text-sm font-semibold text-gray-300 uppercase tracking-wider">Key Features</span>
                     </div>
                     <div className="flex flex-wrap gap-2">
-                      {features.map((feature, i) => (
-                        <motion.div
+                      {features.map((feature) => (
+                        <div
                           key={feature}
-                          initial={{ opacity: 0, scale: 0.9 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          transition={{ delay: 0.1 + i * 0.05 }}
                           className="px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-sm text-gray-300 hover:bg-white/10 hover:border-white/20 transition-all cursor-default"
                         >
                           {feature}
-                        </motion.div>
+                        </div>
                       ))}
                     </div>
                   </div>

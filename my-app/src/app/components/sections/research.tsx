@@ -182,16 +182,13 @@ export default function Research() {
                       <span className="text-sm font-semibold text-gray-300 uppercase tracking-wider">Tech Stack</span>
                     </div>
                     <div className="flex flex-wrap gap-2">
-                      {techStack.map((tech, i) => (
-                        <motion.span
+                      {techStack.map((tech) => (
+                        <span
                           key={tech}
-                          initial={{ opacity: 0, scale: 0.9 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          transition={{ delay: 0.05 + i * 0.04 }}
                           className="px-3 py-1.5 rounded-lg bg-purple-500/10 border border-purple-500/20 text-sm text-purple-300 font-medium cursor-default"
                         >
                           {tech}
-                        </motion.span>
+                        </span>
                       ))}
                     </div>
                   </div>
@@ -204,16 +201,13 @@ export default function Research() {
                     </div>
                     <div className="space-y-2">
                       {findings.map((finding, i) => (
-                        <motion.div
+                        <div
                           key={i}
-                          initial={{ opacity: 0, x: -10 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: 0.15 + i * 0.05 }}
                           className="flex items-start gap-3 p-3 rounded-xl bg-white/5 border border-white/10"
                         >
                           <Target size={14} className="text-purple-400 mt-0.5 shrink-0" />
                           <span className="text-sm text-gray-300">{finding}</span>
-                        </motion.div>
+                        </div>
                       ))}
                     </div>
                   </div>
