@@ -236,7 +236,7 @@ export default function Research() {
                     </div>
 
                     {/* Progress indicator */}
-                    <div className="flex items-center gap-3">
+                    <div className="hidden md:flex items-center gap-3">
                       <div className="flex-1 h-1.5 bg-white/5 rounded-full overflow-hidden">
                         <motion.div 
                           className="h-full bg-gradient-to-r from-purple-400 to-cyan-400 rounded-full"
