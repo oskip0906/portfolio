@@ -120,7 +120,9 @@ export default function Projects({ projects }: { projects: Project[] }) {
                   </a>
                 </div>
 
-                <h3 className="text-3xl lg:text-4xl font-bold text-white mb-3 leading-tight">{project.name}</h3>
+                <h3 className="text-3xl lg:text-4xl font-bold text-white mb-3 leading-tight">
+                  {project.emote && <span className="mr-3">{project.emote}</span>}{project.name}
+                </h3>
 
                 <div className="flex items-center gap-3 mb-6">
                   <div className="h-px flex-1 max-w-24 bg-gradient-to-r from-cyan-400 to-purple-400 rounded-full" />
@@ -193,7 +195,9 @@ function MobileProjectCard({ item, index, accent, accentLight }: {
         </span>
       }
     >
-      <h3 className="text-xl font-bold text-white mb-2">{item.name}</h3>
+      <h3 className="text-xl font-bold text-white mb-2">
+        {item.emote && <span className="mr-2">{item.emote}</span>}{item.name}
+      </h3>
       <div className="flex items-center gap-2 mb-3">
         <div className="h-px w-10 bg-gradient-to-r from-cyan-400 to-purple-400 rounded-full" />
         <Sparkles size={10} className="text-cyan-400/60" />

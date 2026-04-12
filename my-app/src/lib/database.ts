@@ -11,6 +11,7 @@ export interface Research {
   description: string
   link: string
   name: string
+  emote: string
   focus: string
   published_to: string
   abstract: string
@@ -22,6 +23,7 @@ export interface Project {
   description: string
   link: string
   name: string
+  emote: string
   type: string
   tech: string[]
   features: string[]

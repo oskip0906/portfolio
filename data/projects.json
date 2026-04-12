@@ -5,6 +5,7 @@
     "date": "June 2025 - June 2025",
     "link": "https://audio-verdict-forge.lovable.app/",
     "name": "Equicourt",
+    "emote": "⚖️",
     "description": "An AI-powered micro-litigation platform that resolves petty disputes by analyzing evidence from text, PDFs, images, and live speech via speech recognition, then applies Canadian law through a RAG-enabled multi-LLM system to deliver grounded verdicts.",
     "type": "Hackathon Project",
     "tech": ["Next.js", "TypeScript", "Web Speech API", "FastAPI", "Supabase", "Gemini"]
@@ -15,6 +16,7 @@
     "date": "June 2025 - Present",
     "link": "https://www.uoftclubhub.ca/",
     "name": "UofT ClubHub",
+    "emote": "🎓",
     "description": "A platform created to enhance student engagement and simplify access to clubs, making it easier for students to stay involved in campus life - featuring clubs/posts search functionalities, management system for club executives, automatic Instagram scraper, and AI chatbot.",
     "type": "Deployed Website",
     "tech": ["Next.js", "TypeScript", "Firebase", "Google Vertex AI", "Python", "Gemini", "Github Actions"]
@@ -25,6 +27,7 @@
     "date": "Mar 2025 - Mar 2025",
     "link": "https://devpost.com/software/pseudograder",
     "name": "PseudoGrader",
+    "emote": "📝",
     "description": "A website that validates and tests pseudocode from text, images, or PDFs, using AI-generated logic checks, code translation, and test case evaluation, streamlining feedback for students and educators.",
     "type": "Hackathon Project",
     "tech": ["React", "TypeScript", "Python", "FastAPI", "Gemini", "Google Vision AI"]
@@ -35,16 +38,18 @@
     "date": "Dec 2024 - Dec 2024",
     "link": "https://github.com/oskip0906/Basic_Neural_Network",
     "name": "Basic Neural Network",
+    "emote": "🧠",
     "description": "A minimalistic and customizable neural network built from scratch using Python and NumPy that achieved 95% accuracy on the MNIST dataset with custom hyperparameters.",
     "type": "Personal Project",
     "tech": ["Python", "NumPy"]
   },
   {
     "id": 7,
-    "created_at": "2026-01-15 15:49:27.084631+00",
+    "created_at": "2026-01-15 15:49:27.084617+00",
     "date": "Oct 2024 - Dec 2024",
     "link": "https://github.com/oskip0906/Scriptorium",
     "name": "Scriptorium",
+    "emote": "💻",
     "description": "An interactive web app that allows users to write, execute, and save code in various programming languages and create and comment on blog posts based on these code templates.",
     "type": "School Project",
     "tech": ["Next.js", "TypeScript", "SQLite", "Prisma", "Docker"]
@@ -54,27 +59,30 @@
     "created_at": "2026-01-15 15:49:27.148783+00",
     "date": "Oct 2024 - Oct 2024",
     "link": "https://github.com/oskip0906/WelcoMate",
-    "name": "WelcoMate (UofT W3B Davinci Competition B2B 1st Place Winner)",
-    "description": "A website offering an all-in-one hotel PMS and CRM system with an AI-powered trip planner, where each guest can check-in, book services, and get personalized trip plans.",
+    "name": "WelcoMate",
+    "emote": "🏨",
+    "description": "A website offering an all-in-one hotel PMS and CRM system with an AI-powered trip planner, where each guest can check-in, book services, and get personalized trip plans. (UofT W3B Davinci Competition B2B 1st Place Winner)",
     "type": "Hackathon Project",
     "tech": ["Next.js", "TypeScript", "Prisma", "SQLite", "Hugging Face", "Gemini", "Python"]
   },
   {
     "id": 9,
-    "created_at": "2026-01-15 15:49:27.213419+00",
+    "created_at": "2026-01-15 15:49:27.213429+00",
     "date": "Oct 2024 - Oct 2024",
     "link": "https://devpost.com/software/little-learners",
     "name": "Little Learners",
+    "emote": "📚",
     "description": "An educational web app designed for youth with learning disabilities, combining a structured English learning roadmap, engaging multi-sensory mini-games, rewards, and personalized AI-generated books.",
     "type": "Hackathon Project",
     "tech": ["React", "TypeScript", "GPT", "Whisper", "Dall-E"]
   },
   {
     "id": 10,
-    "created_at": "2026-01-15 15:49:27.286185+00",
+    "created_at": "2026-01-15 15:49:27.286195+00",
     "date": "Jul 2024 - Aug 2024",
     "link": "https://github.com/marc-issism/TAAMproject",
     "name": "Toronto Asian Art Museum Explorer",
+    "emote": "🏛️",
     "description": "An Android app that showcases museum artifacts from a database, with searching and filtering features, administration tools (addition and removal of items), and PDF report generation.",
     "type": "School Project",
     "tech": ["Android", "Java", "Firebase", "JUnit"]
@@ -85,6 +93,7 @@
     "date": "Jun 2024 - Jul 2024",
     "link": "https://github.com/orgs/no-ff/repositories",
     "name": "League of Legends Statistics Analyzer",
+    "emote": "🎮",
     "description": "Collected 100k data entries from relevant websites and the Riot API on team compositions and other statistics, built a machine-learning model with over 75% accuracy, and developed a website for the model and display of player statistics.",
     "type": "Personal Project",
     "tech": ["Next.js", "TypeScript", "Django", "Python", "scikit-learn", "Riot API"]
@@ -94,8 +103,9 @@
     "created_at": "2026-01-15 15:49:27.433425+00",
     "date": "May 2024 - May 2024",
     "link": "https://patzhang0214.github.io/mealsimple-Moral-Code-Hackathon/",
-    "name": "MealSimple (Uoft EWB Hackathon 1st Place Winner)",
-    "description": "A website that uses the Google Maps API to locate food banks, a recipes API to filter recipes by ingredients, and the ChatGPT API to generate custom recipes based on user preferences.",
+    "name": "MealSimple",
+    "emote": "🍽️",
+    "description": "A website that uses the Google Maps API to locate food banks, a recipes API to filter recipes by ingredients, and the ChatGPT API to generate custom recipes based on user preferences. (Uoft EWB Hackathon 1st Place Winner)",
     "type": "Hackathon Project",
     "tech": ["JavaScript", "HTML/CSS", "Google Maps", "GPT"]
   },
@@ -105,6 +115,7 @@
     "date": "Sep 2023 - Sep 2023",
     "link": "https://github.com/oskip0906/Daily-World-Diary",
     "name": "Daily World Diary",
+    "emote": "🌍",
     "description": "Based on popular news stories of the day, using the ChatGPT API, generates a 'world diary' written in first person with captivating text and cited sources.",
     "type": "Personal Project",
     "tech": ["Python", "GPT", "BeautifulSoup"]
@@ -115,6 +126,7 @@
     "date": "November 2025 - Present",
     "link": "https://brokebesties.ca/",
     "name": "Broke Besties",
+    "emote": "💸",
     "description": "A web application that uses AI-powered receipt scanning and natural language interactions to help users accurately track, split, and manage shared expenses and debts with friends and groups.",
     "type": "Deployed Website",
     "tech": ["Next.js", "TypeScript", "Prisma", "Supabase", "Gemini", "LangGraph"]

@@ -18,13 +18,13 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, index }) =>
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ delay: index * 0.05, duration: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
-      className="h-full cursor-pointer"
+      className="cursor-pointer"
       onClick={() => setShowDetails((prev) => !prev)}
     >
-      <Card className="relative min-h-[33vh] h-full flex flex-col group hover:border-white/30 transition-colors duration-300">
+      <Card className="relative h-[33vh] flex flex-col group hover:border-white/30 transition-colors duration-300">
         <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl" />
 
-        <CardContent className="p-8 flex-1 flex flex-col">
+        <CardContent className="p-8 flex-1 flex flex-col min-h-0">
           <AnimatePresence mode="wait">
             {!showDetails ? (
               <motion.div
@@ -73,7 +73,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, index }) =>
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.12 }}
-                className="flex items-center justify-center h-full"
+                className="flex items-start justify-center h-full overflow-y-auto"
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-cyan-500/5 rounded-2xl" />
                 <p className="relative z-10 text-gray-200 leading-relaxed text-center">{experience.description}</p>
