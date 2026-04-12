@@ -98,7 +98,9 @@ export default function Research({ papers }: { papers: Research[] }) {
                   </a>
                 </div>
 
-                <h3 className="text-3xl lg:text-4xl font-bold text-white mb-3 leading-tight">{paper.name}</h3>
+                <h3 className="text-3xl lg:text-4xl font-bold text-white mb-3 leading-tight">
+                  {paper.emote && <span className="mr-3">{paper.emote}</span>}{paper.name}
+                </h3>
 
                 <div className="flex items-center gap-3 mb-6">
                   <div className="h-px flex-1 max-w-24 bg-gradient-to-r from-purple-400 to-cyan-400 rounded-full" />
@@ -171,7 +173,9 @@ function MobileResearchCard({ item, index, accent, accentLight }: {
         </span>
       }
     >
-      <h3 className="text-xl font-bold text-white mb-2">{item.name}</h3>
+      <h3 className="text-xl font-bold text-white mb-2">
+        {item.emote && <span className="mr-2">{item.emote}</span>}{item.name}
+      </h3>
       <div className="flex items-center gap-2 mb-3">
         <div className="h-px w-10 bg-gradient-to-r from-purple-400 to-cyan-400 rounded-full" />
         <Quote size={10} className="text-purple-400/60" />

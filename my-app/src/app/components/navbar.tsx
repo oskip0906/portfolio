@@ -2,7 +2,7 @@
 import React, { useState, useCallback, memo, useEffect } from "react"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
-import { Home, Briefcase, FolderOpen, Heart, Images, Menu, X, FlaskConical } from "lucide-react"
+import { Home, Briefcase, FolderOpen, Heart, Images, Menu, X, FlaskConical, Clock } from "lucide-react"
 import { AnimatePresence, motion } from "framer-motion"
 import ColorPicker from "./color-picker"
 import SpotifyPlayer from "./spotify-player"
@@ -13,6 +13,7 @@ const navItems = [
   { href: '/projects', label: 'Projects', icon: FolderOpen },
   { href: '/research', label: 'Research', icon: FlaskConical },
   { href: '/interests', label: 'Interests', icon: Heart },
+  { href: '/timeline', label: 'Timeline', icon: Clock },
   { href: '/globe', label: 'Photos', icon: Images },
 ]
 
@@ -20,7 +21,6 @@ const NavBar = memo(() => {
   const [menuOpen, setMenuOpen] = useState(false)
   const pathname = usePathname()
   const router = useRouter()
-  const currentItemIndex = navItems.findIndex(item => item.href === pathname)
 
   const toggleMenu = useCallback(() => setMenuOpen(prev => !prev), [])
   const closeMenu = useCallback(() => setMenuOpen(false), [])
@@ -39,7 +39,7 @@ const NavBar = memo(() => {
         return
       }
 
-      if (!["1", "2", "3", "4", "5", "6"].includes(event.key)) return
+      if (!["1", "2", "3", "4", "5", "6", "7"].includes(event.key)) return
 
       const index = Number(event.key) - 1
       const destination = navItems[index]?.href
@@ -83,7 +83,7 @@ const NavBar = memo(() => {
                   }`}
                 >
                   <Icon size={16} />
-                  <span className="text-sm font-medium whitespace-nowrap">{item.label} [{index + 1}]</span>
+                  <span className="text-sm font-medium whitespace-nowrap">{item.label}</span>
                 </div>
               </Link>
             )
@@ -118,7 +118,7 @@ const NavBar = memo(() => {
                 <>
                   <Icon size={18} />
                   <span className="text-sm font-medium">
-                    {(currentItem?.label || "Home")} [{(currentItemIndex >= 0 ? currentItemIndex : 0) + 1}]
+                    {currentItem?.label || "Home"}
                   </span>
                 </>
               )
@@ -188,7 +188,7 @@ const NavBar = memo(() => {
                               isActive ? 'text-white' : 'text-gray-300'
                             }`}
                           >
-                            {item.label} [{index + 1}]
+                            {item.label}
                           </span>
                         </div>
                       </Link>
