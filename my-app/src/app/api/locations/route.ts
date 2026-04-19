@@ -1,87 +1,50 @@
 import { NextResponse } from 'next/server'
-import { getSupabaseServerClient } from '@/lib/supabase'
+import fs from 'fs'
+import path from 'path'
+import { getPublicPhotosDir } from '@/lib/portfolio-data'
 
 export async function GET() {
-  const supabase = getSupabaseServerClient()
-
-  if (!supabase) {
-    return NextResponse.json([])
-  }
-
   try {
-    // Fetch location metadata from the locations table
-    const { data: locations, error: locationsError } = await supabase.storage
-      .from('photos')
-      .list('', { limit: 100 })
-
-    if (locationsError) {
-      console.error('Error fetching locations:', locationsError)
-      return NextResponse.json([], { status: 500 })
-    }
-
-    if (!locations || locations.length === 0) {
+    const photosDir = getPublicPhotosDir()
+    if (!fs.existsSync(photosDir)) {
+      console.warn('Locations API: photos directory not found at', photosDir)
       return NextResponse.json([])
     }
 
-    // For each location, fetch photos and coordinates from the storage bucket
-    const locationsWithPhotos = await Promise.all(
-      locations.map(async (location) => {
-        const { data: files, error: storageError } = await supabase
-          .storage
-          .from('photos')
-          .list(location.name, {
-            limit: 100,
-            offset: 0,
-            sortBy: { column: 'name', order: 'asc' }
-          })
+    const locationNames = fs
+      .readdirSync(photosDir, { withFileTypes: true })
+      .filter(entry => entry.isDirectory())
+      .map(entry => entry.name)
 
-        if (storageError) {
-          console.error(`Error fetching photos for ${location.name}:`, storageError)
-          return { name: location.name, coordinates: [0, 0], photos: [] }
+    const locations = locationNames.map(name => {
+      const locationDir = path.join(photosDir, name)
+
+      // Read coordinates
+      let coordinates: [number, number] = [0, 0]
+      try {
+        const coordsText = fs.readFileSync(path.join(locationDir, 'coords.txt'), 'utf-8').trim()
+        const parsed = JSON.parse(coordsText)
+        if (Array.isArray(parsed) && parsed.length === 2) {
+          // coords.txt is [lat, lon], Mapbox needs [lon, lat]
+          coordinates = [parsed[1], parsed[0]]
         }
+      } catch {
+        console.warn(`No coords.txt found for ${name}`)
+      }
 
-        // Get public URLs for all photos (exclude coords.txt and placeholder files)
-        const photos = files
-          ?.filter(file => !file.name.includes('.emptyFolderPlaceholder') && file.name !== 'coords.txt')
-          .map(file => {
-            const { data } = supabase
-              .storage
-              .from('photos')
-              .getPublicUrl(`${location.name}/${file.name}`)
-            return data.publicUrl
-          }) || []
+      // List photos
+      const photos = fs
+        .readdirSync(locationDir)
+        .filter(file => /\.(jpg|jpeg|png|webp|avif)$/i.test(file))
+        .sort()
+        .map(file => `/photos/${name}/${file}`)
 
-        // Fetch coordinates from coords.txt file
-        let coordinates: [number, number] = [0, 0]
-        try {
-          const { data: coordsData, error: coordsError } = await supabase
-            .storage
-            .from('photos')
-            .download(`${location.name}/coords.txt`)
+      return { name, coordinates, photos }
+    })
 
-          if (!coordsError && coordsData) {
-            const coordsText = await coordsData.text()
-            // Parse the coordinates from format
-            const parsed = JSON.parse(coordsText.trim())
-            if (Array.isArray(parsed) && parsed.length === 2) {
-              coordinates = [parsed[1], parsed[0]]
-            }
-
-            console.log(`Coordinates for ${location.name}:`, coordinates)
-          } else {
-            console.warn(`No coords.txt found for ${location.name}`)
-          }
-        } catch (error) {
-          console.error(`Error parsing coords for ${location.name}:`, error)
-        }
-
-        return { name: location.name, coordinates, photos }
-      })
-    )
-
-    return NextResponse.json(locationsWithPhotos)
+    return NextResponse.json(locations)
   } catch (error) {
-    console.error('Error fetching locations:', error)
+    console.error('Error reading locations:', error)
     return NextResponse.json([], { status: 500 })
   }
 }

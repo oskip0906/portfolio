@@ -1,5 +1,5 @@
 "use client"
-import { useState, useCallback, memo, type FormEvent } from "react"
+import { memo } from "react"
 import { Typewriter } from "react-simple-typewriter"
 import { type Intro as IntroType, type Contact as ContactType } from "../../../lib/database"
 import { motion } from "framer-motion"
@@ -21,44 +21,6 @@ const cardVariants = {
 }
 
 const Introduction = memo(({ intro, contacts }: { intro: IntroType; contacts: ContactType[] }) => {
-  const [senderName, setSenderName] = useState("")
-  const [senderEmail, setSenderEmail] = useState("")
-  const [message, setMessage] = useState("")
-  const [isSending, setIsSending] = useState(false)
-  const [sendStatus, setSendStatus] = useState<string | null>(null)
-
-  const handleSendMessage = useCallback(async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    if (!message.trim()) return
-
-    setIsSending(true)
-    setSendStatus(null)
-
-    try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          message: message.trim(),
-          senderName: senderName.trim() || undefined,
-          senderEmail: senderEmail.trim() || undefined,
-        }),
-      })
-
-      if (!response.ok) throw new Error("Failed to send message")
-
-      setMessage("")
-      setSenderName("")
-      setSenderEmail("")
-      setSendStatus("Message sent successfully!")
-    } catch (sendError) {
-      console.error("Failed to send message:", sendError)
-      setSendStatus("Failed to send. Please try again.")
-    } finally {
-      setIsSending(false)
-    }
-  }, [message])
-
   return (
     <div id="introduction" className="w-full mx-auto px-2 sm:px-3">
       <div className="grid grid-cols-1 md:grid-cols-12 gap-4 sm:gap-5">
@@ -137,6 +99,10 @@ const Introduction = memo(({ intro, contacts }: { intro: IntroType; contacts: Co
               delaySpeed={1000}
             />
           </div>
+
+          <div className="mt-8 pt-6 border-t border-white/15">
+            <Contact contacts={contacts} />
+          </div>
         </motion.div>
 
         <motion.div
@@ -146,63 +112,7 @@ const Introduction = memo(({ intro, contacts }: { intro: IntroType; contacts: Co
           animate="visible"
           custom={0.1}
         >
-          <h2 className="text-xl font-semibold text-white mb-3 text-center">Send Me a Message</h2>
-          <form onSubmit={handleSendMessage} className="flex flex-col gap-2.5">
-            <div className="flex flex-col gap-2.5">
-              <input
-                type="text"
-                name="senderName"
-                value={senderName}
-                onChange={(e) => setSenderName(e.target.value)}
-                placeholder="Name (optional)"
-                className="h-11 px-4 rounded-xl bg-white/5 border border-white/20 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-400/60 text-sm"
-              />
-              <input
-                type="email"
-                name="senderEmail"
-                value={senderEmail}
-                onChange={(e) => setSenderEmail(e.target.value)}
-                placeholder="Email (optional)"
-                className="h-11 px-4 rounded-xl bg-white/5 border border-white/20 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-400/60 text-sm"
-              />
-            </div>
-            <textarea
-              name="message"
-              required
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              placeholder="Your message or feedback..."
-              className="h-22 px-4 py-3 rounded-xl bg-white/5 border border-white/20 text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-400/60 text-sm resize-none align-top"
-            />
-            <button
-              type="submit"
-              disabled={isSending || !message.trim()}
-              className="h-11 px-5 rounded-xl bg-gradient-to-r from-cyan-500/70 to-purple-500/70 hover:from-cyan-400/80 hover:to-purple-400/80 text-white font-medium transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
-            >
-              {isSending ? "Sending..." : "Send"}
-            </button>
-          </form>
-          {sendStatus && <p className="mt-2 text-sm text-gray-300 text-center">{sendStatus}</p>}
-        </motion.div>
-
-        <motion.div
-          className="md:col-span-6 backdrop-blur-xl bg-white/5 border border-white/20 rounded-2xl sm:rounded-3xl p-3.5 sm:p-4 md:p-5 shadow-2xl flex flex-col justify-center"
-          variants={cardVariants}
-          initial="hidden"
-          animate="visible"
-          custom={0.2}
-        >
           <SpotifyPlayer />
-        </motion.div>
-
-        <motion.div
-          className="md:col-span-6 backdrop-blur-xl bg-white/5 border border-white/20 rounded-2xl sm:rounded-3xl p-3.5 sm:p-4 md:p-5 shadow-2xl flex flex-col justify-center"
-          variants={cardVariants}
-          initial="hidden"
-          animate="visible"
-          custom={0.3}
-        >
-          <Contact contacts={contacts} />
         </motion.div>
       </div>
     </div>
