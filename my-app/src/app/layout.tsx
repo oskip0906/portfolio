@@ -4,8 +4,7 @@ import "./globals.css";
 import { Analytics } from "@vercel/analytics/next"
 import { MusicProvider } from "./contexts/music-context"
 import { BackgroundProvider } from "./contexts/background-context"
-import NavBar from "./components/navbar"
-import DynamicBackground from "./components/dynamic-background"
+import AppShell from "./components/app-shell"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,19 +39,7 @@ export default function RootLayout({
       >
         <BackgroundProvider>
           <MusicProvider>
-            {/* Shared background across all pages */}
-            <DynamicBackground />
-
-            {/* Fixed Navigation - Always at top */}
-            <NavBar />
-
-            {/* Scrollable Page Content with padding for fixed navbar */}
-            <main className="relative z-10 pt-10 md:pt-20 min-h-screen flex justify-center overflow-y-auto">
-              <div className="w-[90vw] pb-16">
-                {children}
-              </div>
-            </main>
-
+            <AppShell>{children}</AppShell>
             <Analytics />
           </MusicProvider>
         </BackgroundProvider>

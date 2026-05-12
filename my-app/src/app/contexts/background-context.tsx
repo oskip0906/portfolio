@@ -1,5 +1,6 @@
 "use client"
 import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from "react"
+import { hexToHsl } from "@/lib/utils"
 
 interface BackgroundContextType {
   baseColor: string
@@ -7,6 +8,16 @@ interface BackgroundContextType {
   resetColor: () => void
   gradientStyle: string
   bottomColor: string
+  roomTheme: {
+    wallTint: string
+    floorTint: string
+    emissiveAccent: string
+    fogColor: string
+    uiAccent: string
+    uiAccentSoft: string
+    metalTint: string
+    shadowColor: string
+  }
   isLoaded: boolean
 }
 
@@ -15,42 +26,39 @@ const STORAGE_KEY = 'portfolio-background-color'
 
 const BackgroundContext = createContext<BackgroundContextType | undefined>(undefined)
 
-// Convert hex to HSL
-function hexToHsl(hex: string): { h: number; s: number; l: number } {
-  const r = parseInt(hex.slice(1, 3), 16) / 255
-  const g = parseInt(hex.slice(3, 5), 16) / 255
-  const b = parseInt(hex.slice(5, 7), 16) / 255
-
-  const max = Math.max(r, g, b)
-  const min = Math.min(r, g, b)
-  let h = 0
-  let s = 0
-  const l = (max + min) / 2
-
-  if (max !== min) {
-    const d = max - min
-    s = l > 0.5 ? d / (2 - max - min) : d / (max + min)
-    switch (max) {
-      case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break
-      case g: h = ((b - r) / d + 2) / 6; break
-      case b: h = ((r - g) / d + 4) / 6; break
-    }
-  }
-
-  return { h: h * 360, s: s * 100, l: l * 100 }
-}
-
 // Generate gradient and colors from a single color
-function generateBackgroundStyles(hex: string): { gradientStyle: string; bottomColor: string } {
-  const { h, s } = hexToHsl(hex)
+function generateBackgroundStyles(hex: string): {
+  gradientStyle: string
+  bottomColor: string
+  roomTheme: BackgroundContextType["roomTheme"]
+} {
+  const { h, s, l } = hexToHsl(hex)
   // Dark top, vibrant middle (user color), dark bottom
   const darkColor = `hsl(${h}, ${Math.min(s, 30)}%, 8%)`
   const midColor = `hsl(${h}, ${s}%, 25%)`
   const bottomColor = `hsl(${h}, ${Math.min(s, 20)}%, 6%)`
+  const wallTint = `hsl(${h}, ${Math.max(14, Math.min(s * 0.55, 28))}%, 17%)`
+  const floorTint = `hsl(${h}, ${Math.max(10, Math.min(s * 0.45, 22))}%, 10%)`
+  const emissiveAccent = `hsl(${h}, ${Math.min(90, s + 14)}%, ${Math.max(58, l * 0.92)}%)`
+  const fogColor = `hsl(${h}, ${Math.max(12, Math.min(s * 0.4, 22))}%, 11%)`
+  const uiAccent = `hsl(${h}, ${Math.min(90, s + 12)}%, 72%)`
+  const uiAccentSoft = `hsla(${h}, ${Math.min(84, s + 6)}%, 72%, 0.18)`
+  const metalTint = `hsl(${h}, ${Math.max(8, Math.min(s * 0.35, 18))}%, 56%)`
+  const shadowColor = `hsla(${h}, ${Math.max(10, Math.min(s * 0.55, 26))}%, 6%, 0.55)`
 
   return {
     gradientStyle: `linear-gradient(to bottom right, ${darkColor}, ${midColor}, ${bottomColor})`,
-    bottomColor
+    bottomColor,
+    roomTheme: {
+      wallTint,
+      floorTint,
+      emissiveAccent,
+      fogColor,
+      uiAccent,
+      uiAccentSoft,
+      metalTint,
+      shadowColor,
+    }
   }
 }
 
@@ -82,10 +90,10 @@ export function BackgroundProvider({ children }: { children: ReactNode }) {
     setBaseColorState(DEFAULT_COLOR)
   }, [])
 
-  const { gradientStyle, bottomColor } = generateBackgroundStyles(baseColor)
+  const { gradientStyle, bottomColor, roomTheme } = generateBackgroundStyles(baseColor)
 
   return (
-    <BackgroundContext.Provider value={{ baseColor, setBaseColor, resetColor, gradientStyle, bottomColor, isLoaded: mounted }}>
+    <BackgroundContext.Provider value={{ baseColor, setBaseColor, resetColor, gradientStyle, bottomColor, roomTheme, isLoaded: mounted }}>
       {children}
     </BackgroundContext.Provider>
   )

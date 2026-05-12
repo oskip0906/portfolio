@@ -55,7 +55,6 @@ export interface Intro {
   title: string
   bio: string
   image: string
-  email?: string | null
   resume?: string | null
 }
 

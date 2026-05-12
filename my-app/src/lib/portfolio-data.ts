@@ -10,6 +10,10 @@ export function getPortfolioDataDir(): string {
   return repoSibling
 }
 
+export function getPublicPhotosDir(): string {
+  return path.join(process.cwd(), 'public', 'photos')
+}
+
 export async function readPortfolioJsonFile<T>(filename: string): Promise<T> {
   const filePath = path.join(getPortfolioDataDir(), filename)
   const raw = await readFile(filePath, 'utf-8')

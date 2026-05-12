@@ -1,18 +1,42 @@
-import { readPortfolioJsonFile } from "@/lib/portfolio-data"
-import { type Intro, type Contact } from "@/lib/database"
-import Introduction from "./components/sections/introduction"
+import { readPortfolioJsonFile, sortByContentDateDesc, sortTimelineByDateAsc } from "@/lib/portfolio-data"
+import type {
+  Contact,
+  Experience,
+  Intro,
+  Interest,
+  Memory,
+  Project,
+  Research,
+} from "@/lib/database"
+import RoomExperience from "./components/room/room-experience"
+import { buildRoomPayload } from "./components/room/room-manifest"
 
 export default async function Home() {
-  const [intro, contacts] = await Promise.all([
+  const [intro, contacts, rawExperiences, rawProjects, research, interests, rawTimeline] = await Promise.all([
     readPortfolioJsonFile<Intro>("intro.json"),
     readPortfolioJsonFile<Contact[]>("contacts.json"),
+    readPortfolioJsonFile<(Experience & { date: string })[]>("experiences.json"),
+    readPortfolioJsonFile<(Project & { date: string })[]>("projects.json"),
+    readPortfolioJsonFile<Research[]>("research.json"),
+    readPortfolioJsonFile<Interest[]>("interests.json"),
+    readPortfolioJsonFile<Memory[]>("timeline.json"),
   ])
+  const experiences = sortByContentDateDesc(rawExperiences)
+  const projects = sortByContentDateDesc(rawProjects)
+  const timeline = sortTimelineByDateAsc(rawTimeline)
+  const payload = buildRoomPayload({
+    intro,
+    contacts,
+    experiences,
+    projects,
+    research,
+    interests,
+    timeline,
+  })
 
   return (
-    <div className="w-full pb-4 pt-12 md:pt-10">
-      <div className="flex justify-center">
-        <Introduction intro={intro} contacts={contacts} />
-      </div>
+    <div className="w-full">
+      <RoomExperience payload={payload} />
     </div>
   )
 }

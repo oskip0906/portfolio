@@ -7,7 +7,7 @@
     "title": "AI Engineering Intern",
     "company": "Huawei Canada",
     "description": "@ Noah's Ark Lab - Built VLA models for robotic task execution, combining LLM-based planning with fine-tuned low-level control policies to for household tasks through advanced simulation environments.",
-    "image": "/huawei.jpg"
+    "image": "/logos/huawei.jpg"
   },
   {
     "id": 2,
@@ -17,7 +17,7 @@
     "title": "Software Developer Intern",
     "company": "RBC",
     "description": "Developed scalable applications for the Contact Center Technology team, focusing on enhancing a data dashboard and the Interactive Voice Assistant platform. Optimized backend performance, implemented real-time data streaming, and resolved security vulnerabilities.",
-    "image": "/rbc.jpg"
+    "image": "/logos/rbc.jpg"
   },
   {
     "id": 3,
@@ -27,7 +27,7 @@
     "title": "Research Intern",
     "company": "Vector Institute",
     "description": "Engineered a flexible 3D rendering toolkit to generate datasets for training and evaluating vision-language models on spatial reasoning, first-authored a research paper published in ACL 2025, and released the toolkit publicly.",
-    "image": "/vector.jpg"
+    "image": "/logos/vector.jpg"
   },
   {
     "id": 4,
@@ -37,7 +37,7 @@
     "title": "Machine Learning Researcher",
     "company": "AIMM Lab (UofT)",
     "description": "Researched social media discussions on diseases using data collection tools and machine learning models for sentiment analysis and topic modeling at the Artificial Intelligence and Mathematical Modeling Lab. First-authored a research paper published in JMIR.",
-    "image": "/aimmlab.png"
+    "image": "/logos/aimmlab.png"
   },
   {
     "id": 5,
@@ -47,7 +47,7 @@
     "title": "Freelance AI Trainer",
     "company": "Data Annotation",
     "description": "Worked on paid tasks including prompt engineering and model evaluation to train and improve AI models.",
-    "image": "/dataannotation.jpg"
+    "image": "/logos/dataannotation.jpg"
   },
   {
     "id": 6,
@@ -57,6 +57,6 @@
     "title": "Baker & Barista",
     "company": "Hazukido",
     "description": "Worked at the Don Mills Hazukido Store; responsible for baking pastries, preparing drinks, handling cash, and providing customer service.",
-    "image": "/hazukido.jpg"
+    "image": "/logos/hazukido.jpg"
   }
 ]
