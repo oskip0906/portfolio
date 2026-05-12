@@ -17,11 +17,15 @@ interface BackgroundContextType {
     uiAccentSoft: string
     metalTint: string
     shadowColor: string
+    roomFloorColor: string
+    roomFloorDarkColor: string
+    roomPillarColor: string
+    roomPillarAccentColor: string
   }
   isLoaded: boolean
 }
 
-const DEFAULT_COLOR = '#eee9f1ff'
+const DEFAULT_COLOR = '#2d6a2d'
 const STORAGE_KEY = 'portfolio-background-color'
 
 const BackgroundContext = createContext<BackgroundContextType | undefined>(undefined)
@@ -45,6 +49,10 @@ function generateBackgroundStyles(hex: string): {
   const uiAccentSoft = `hsla(${h}, ${Math.min(84, s + 6)}%, 72%, 0.18)`
   const metalTint = `hsl(${h}, ${Math.max(8, Math.min(s * 0.35, 18))}%, 56%)`
   const shadowColor = `hsla(${h}, ${Math.max(10, Math.min(s * 0.55, 26))}%, 6%, 0.55)`
+  const roomFloorColor = `hsl(${h}, ${Math.min(55, Math.max(30, s * 0.75))}%, 38%)`
+  const roomFloorDarkColor = `hsl(${h}, ${Math.min(50, Math.max(25, s * 0.7))}%, 28%)`
+  const roomPillarColor = `hsl(${h}, ${Math.min(45, Math.max(20, s * 0.6))}%, 62%)`
+  const roomPillarAccentColor = `hsl(${h}, ${Math.min(55, Math.max(28, s * 0.68))}%, 46%)`
 
   return {
     gradientStyle: `linear-gradient(to bottom right, ${darkColor}, ${midColor}, ${bottomColor})`,
@@ -58,6 +66,10 @@ function generateBackgroundStyles(hex: string): {
       uiAccentSoft,
       metalTint,
       shadowColor,
+      roomFloorColor,
+      roomFloorDarkColor,
+      roomPillarColor,
+      roomPillarAccentColor,
     }
   }
 }

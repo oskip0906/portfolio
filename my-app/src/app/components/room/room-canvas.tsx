@@ -17,25 +17,27 @@ export default function RoomCanvas({
   hoveredId,
   onFocusChange,
   onHoverChange,
+  onReady,
 }: {
   payload: RoomHomePayload
   focusedId: RoomObjectId | null
   hoveredId: RoomObjectId | null
   onFocusChange: (id: RoomObjectId | null) => void
   onHoverChange: (id: RoomObjectId | null) => void
+  onReady?: () => void
 }) {
   const containerRef = useRef<HTMLDivElement>(null)
   // theta = horizontal azimuth, phi = vertical elevation, radius = distance from centre
   // theta: 0 → camera sits on the +Z axis, looking straight at the front banner
-  const orbitRef = useRef({ theta: 0, phi: 0.1, radius: 10 })
+  const orbitRef = useRef({ theta: 0, phi: 0.1, radius: 16 })
   const dragRef = useRef({ active: false, lastX: 0, lastY: 0 })
 
   // Responsive default zoom
   useEffect(() => {
     const w = window.innerWidth
-    if (w < 640) orbitRef.current.radius = 18       // mobile — step back to see banner
-    else if (w < 1024) orbitRef.current.radius = 13 // tablet
-    else orbitRef.current.radius = 10               // desktop — tight on the banner
+    if (w < 640) orbitRef.current.radius = 26       // mobile
+    else if (w < 1024) orbitRef.current.radius = 20 // tablet
+    else orbitRef.current.radius = 16               // desktop
   }, [])
 
   const primaryIds = useMemo(
@@ -147,7 +149,7 @@ export default function RoomCanvas({
       <Canvas
         dpr={1}
         gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
-        camera={{ position: [0, 3.5, 10.0], fov: 62, near: 0.1, far: 200 }}
+        camera={{ position: [0, 4.0, 16.0], fov: 62, near: 0.1, far: 200 }}
         onPointerMissed={() => onHoverChange(null)}
       >
         <Suspense fallback={null}>
@@ -155,6 +157,7 @@ export default function RoomCanvas({
             payload={payload}
             focusedId={focusedId}
             orbitRef={orbitRef}
+            onReady={onReady}
           />
           <RoomScene
             payload={payload}
@@ -173,10 +176,12 @@ function CameraController({
   payload,
   focusedId,
   orbitRef,
+  onReady,
 }: {
   payload: RoomHomePayload
   focusedId: RoomObjectId | null
   orbitRef: React.MutableRefObject<{ theta: number; phi: number; radius: number }>
+  onReady?: () => void
 }) {
   const { camera } = useThree()
   const lookTargetRef = useRef(ORBIT_LOOKAT.clone())
@@ -186,6 +191,7 @@ function CameraController({
   )
   const desiredPos = useRef(new THREE.Vector3())
   const desiredLook = useRef(new THREE.Vector3())
+  const readyFiredRef = useRef(false)
 
   useFrame((_, delta) => {
     if (focusedId) {
@@ -206,7 +212,13 @@ function CameraController({
     const easing = 1 - Math.exp(-delta * 3.2)
     camera.position.lerp(desiredPos.current, easing)
     lookTargetRef.current.lerp(desiredLook.current, easing)
+    camera.up.set(0, 1, 0)
     camera.lookAt(lookTargetRef.current)
+
+    if (!readyFiredRef.current) {
+      readyFiredRef.current = true
+      onReady?.()
+    }
   })
 
   return null

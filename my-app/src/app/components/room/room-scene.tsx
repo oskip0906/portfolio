@@ -69,8 +69,11 @@ export default function RoomScene({
 /* ─── Tea Shop Room ──────────────────────────────────────────── */
 
 function TeaShopRoom() {
-  const FLOOR = "#C49A52"
-  const FLOOR_DARK = "#A07A38"
+  const { roomTheme } = useBackground()
+  const FLOOR = roomTheme.roomFloorColor
+  const FLOOR_DARK = roomTheme.roomFloorDarkColor
+  const PILLAR_SHAFT = roomTheme.roomPillarColor
+  const PILLAR_ACCENT = roomTheme.roomPillarAccentColor
   const COUNTER_WOOD = "#3A220E"
   const COUNTER_TOP = "#5A3418"
   const TABLE_WOOD = "#8A5C28"
@@ -79,20 +82,20 @@ function TeaShopRoom() {
   return (
     <group>
       {/* Floor */}
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]}>
-        <planeGeometry args={[18, 16]} />
-        <meshStandardMaterial color={FLOOR} roughness={0.82} metalness={0.04} side={THREE.DoubleSide} />
+      <mesh position={[0, -0.2, 0]}>
+        <boxGeometry args={[18, 0.4, 16]} />
+        <meshStandardMaterial color={PILLAR_SHAFT} roughness={0.82} metalness={0.04} />
       </mesh>
       {/* Floor accent stripe */}
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.002, 0]}>
-        <planeGeometry args={[0.08, 16]} />
-        <meshStandardMaterial color={FLOOR_DARK} roughness={0.9} side={THREE.DoubleSide} />
+      <mesh position={[0, 0.002, 0]}>
+        <boxGeometry args={[0.08, 0.01, 16]} />
+        <meshStandardMaterial color={PILLAR_ACCENT} roughness={0.9} />
       </mesh>
 
       {/* Ceiling */}
-      <mesh rotation={[Math.PI / 2, 0, 0]} position={[0, 6, 0]}>
-        <planeGeometry args={[18, 16]} />
-        <meshStandardMaterial color="#EEE4CC" roughness={0.9} side={THREE.DoubleSide} />
+      <mesh position={[0, 6.2, 0]}>
+        <boxGeometry args={[18, 0.4, 16]} />
+        <meshStandardMaterial color={PILLAR_SHAFT} roughness={0.9} />
       </mesh>
 
       {/* ── Corner pillars ── */}
@@ -101,17 +104,17 @@ function TeaShopRoom() {
           {/* Base */}
           <mesh position={[0, 0.12, 0]}>
             <boxGeometry args={[0.55, 0.24, 0.55]} />
-            <meshStandardMaterial color="#C8A870" roughness={0.6} metalness={0.08} />
+            <meshStandardMaterial color={PILLAR_ACCENT} roughness={0.6} metalness={0.08} />
           </mesh>
           {/* Shaft */}
           <mesh position={[0, 3.12, 0]}>
             <cylinderGeometry args={[0.18, 0.21, 5.76, 14]} />
-            <meshStandardMaterial color="#DDD0B0" roughness={0.55} metalness={0.05} />
+            <meshStandardMaterial color={PILLAR_SHAFT} roughness={0.55} metalness={0.05} />
           </mesh>
           {/* Capital */}
           <mesh position={[0, 6.0, 0]}>
             <boxGeometry args={[0.52, 0.24, 0.52]} />
-            <meshStandardMaterial color="#C8A870" roughness={0.6} metalness={0.08} />
+            <meshStandardMaterial color={PILLAR_ACCENT} roughness={0.6} metalness={0.08} />
           </mesh>
         </group>
       ))}

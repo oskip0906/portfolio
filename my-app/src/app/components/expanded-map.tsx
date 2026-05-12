@@ -353,6 +353,15 @@ export default function ExpandedMap({ isOpen, onClose }: ExpandedMapProps) {
         className="relative w-full h-full overflow-hidden"
       >
         <div className="relative w-full h-full">
+          {/* Back button */}
+          <button
+            onClick={onClose}
+            className="absolute top-4 left-4 z-[100] flex items-center gap-1.5 px-3 py-2 rounded-lg bg-black/60 backdrop-blur-sm text-white text-sm font-medium hover:bg-black/80 transition-colors"
+          >
+            <ChevronLeft size={16} />
+            Back
+          </button>
+
           <div ref={mapContainer} className="w-full h-full">
             {isMapboxLoading && (
               <div className="flex items-center justify-center h-full bg-gray-900 text-white">
