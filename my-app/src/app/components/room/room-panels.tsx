@@ -5,7 +5,7 @@ import Link from "next/link"
 import { ExternalLink, MoveUpRight, BookOpen, ChevronLeft, ChevronRight } from "lucide-react"
 import { Typewriter } from "react-simple-typewriter"
 import type { RoomHomePayload, RoomObjectId } from "./room-manifest"
-import Contact from "../sections/contact"
+import Contact from "../ui/contact"
 import ContactMessageForm from "../contact-message-form"
 
 interface PanelProps {
@@ -150,16 +150,16 @@ function ExperienceCard({
         <img
           src={exp.image || "/placeholder.svg"}
           alt={exp.company}
-          className="w-12 h-12 rounded-full object-cover border border-white/10"
+          className="w-14 h-14 rounded-full object-cover border border-white/10"
           loading="lazy"
           onError={(e) => { (e.target as HTMLImageElement).src = "/placeholder.svg" }}
         />
         <div className="text-center">
-          <p className="font-semibold text-sm text-white">{exp.company}</p>
-          <p className="text-xs text-white mt-0.5">{exp.title}</p>
-          <p className="text-[10px] text-white mt-1.5">{exp.date as string}</p>
+          <p className="font-black text-large text-white leading-tight">{exp.company}</p>
+          <p className="text-sm text-white/80 mt-1">{exp.title}</p>
+          <p className="text-xs text-white/50 mt-1">{exp.date as string}</p>
         </div>
-        <p className="text-[9px] uppercase tracking-[0.22em] text-white">tap to read</p>
+        <p className="text-xs uppercase tracking-[0.22em] text-white/40">tap to read</p>
       </div>
 
       {/* Back */}
@@ -174,10 +174,10 @@ function ExperienceCard({
           border: `1px solid ${accentColor}32`,
         }}
       >
-        <p className="text-xs font-semibold text-white flex-shrink-0">
+        <p className="text-sm font-bold text-white flex-shrink-0">
           {exp.company} · {exp.title}
         </p>
-        <p className="text-[12px] leading-[1.6] text-white flex-1 overflow-y-auto">
+        <p className="text-sm leading-[1.7] text-white/80 flex-1 overflow-y-auto">
           {exp.description}
         </p>
         {exp.link && (
@@ -295,7 +295,7 @@ function ProjectDetail({
             href={project.link}
             target="_blank"
             rel="noopener noreferrer"
-            className="ml-auto inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-xs font-medium text-white transition-all hover:brightness-110"
+            className="ml-auto inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-medium text-white transition-all hover:brightness-110"
             style={{ background: accentColor }}
           >
             Open project <MoveUpRight size={11} />
@@ -394,7 +394,7 @@ function ResearchDetail({
             href={paper.link}
             target="_blank"
             rel="noopener noreferrer"
-            className="ml-auto inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-xs font-medium text-white transition-all hover:brightness-110"
+            className="ml-auto inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-medium text-white transition-all hover:brightness-110"
             style={{ background: accentColor }}
           >
             Read paper <BookOpen size={11} />
@@ -409,17 +409,17 @@ function ResearchDetail({
 
 function InterestsPanel({ payload, accentColor }: PanelProps) {
   return (
-    <div className="py-4 grid grid-cols-2 sm:grid-cols-3 gap-3">
+    <div className="py-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
       {payload.interests.map((interest, i) => (
         <div
           key={i}
           className="rounded-2xl border border-white/8 bg-white/[0.03] p-4 flex flex-col gap-2.5 transition-all duration-300 hover:border-white/14 hover:bg-white/[0.05]"
         >
-          <span className="text-3xl leading-none">{interest.emote}</span>
-          <p className="font-semibold text-sm" style={{ color: accentColor }}>
+          <span className="text-4xl leading-none">{interest.emote}</span>
+          <p className="font-black text-large leading-tight" style={{ color: accentColor }}>
             {interest.name}
           </p>
-          <p className="text-xs text-white leading-[1.6]">{interest.description}</p>
+          <p className="text-sm text-white/80 leading-[1.6]">{interest.description}</p>
         </div>
       ))}
     </div>

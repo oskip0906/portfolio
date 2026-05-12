@@ -27,7 +27,7 @@ export default function ColorPicker({
         className={cn(
           "rounded-full text-white transition-transform hover:scale-110",
           isHud
-            ? "flex h-11 w-11 items-center justify-center border border-white/15 bg-white/[0.08] shadow-[0_14px_34px_rgba(0,0,0,0.28)] backdrop-blur-xl"
+            ? "flex h-11 w-11 items-center justify-center border border-white/10 bg-black/80 shadow-[0_14px_34px_rgba(0,0,0,0.28)] backdrop-blur-xl"
             : "p-2 bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500"
         )}
         style={isHud ? {

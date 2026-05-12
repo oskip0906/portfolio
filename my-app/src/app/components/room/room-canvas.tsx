@@ -6,10 +6,10 @@ import * as THREE from "three"
 import RoomScene from "./room-scene"
 import type { RoomHomePayload, RoomObjectId } from "./room-manifest"
 
-const ORBIT_CENTER_Y = 1.0
-const ORBIT_LOOKAT = new THREE.Vector3(0, 3.0, 0)
+const ORBIT_CENTER_Y = 2.5
+const ORBIT_LOOKAT = new THREE.Vector3(0, 2.5, 0)
 const RADIUS_MIN = 3
-const RADIUS_MAX = 18
+const RADIUS_MAX = 80
 
 export default function RoomCanvas({
   payload,
@@ -26,8 +26,17 @@ export default function RoomCanvas({
 }) {
   const containerRef = useRef<HTMLDivElement>(null)
   // theta = horizontal azimuth, phi = vertical elevation, radius = distance from centre
-  const orbitRef = useRef({ theta: 0, phi: 0.15, radius: 18 })
+  // theta: 0 → camera sits on the +Z axis, looking straight at the front banner
+  const orbitRef = useRef({ theta: 0, phi: 0.1, radius: 10 })
   const dragRef = useRef({ active: false, lastX: 0, lastY: 0 })
+
+  // Responsive default zoom
+  useEffect(() => {
+    const w = window.innerWidth
+    if (w < 640) orbitRef.current.radius = 18       // mobile — step back to see banner
+    else if (w < 1024) orbitRef.current.radius = 13 // tablet
+    else orbitRef.current.radius = 10               // desktop — tight on the banner
+  }, [])
 
   const primaryIds = useMemo(
     () => payload.objects.map((o) => o.id),
@@ -138,7 +147,7 @@ export default function RoomCanvas({
       <Canvas
         dpr={1}
         gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
-        camera={{ position: [12.2, 6.0, 12.2], fov: 62, near: 0.1, far: 60 }}
+        camera={{ position: [0, 3.5, 10.0], fov: 62, near: 0.1, far: 200 }}
         onPointerMissed={() => onHoverChange(null)}
       >
         <Suspense fallback={null}>
