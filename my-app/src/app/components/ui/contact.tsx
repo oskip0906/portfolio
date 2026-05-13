@@ -73,12 +73,12 @@ export default function Contact({ contacts, variant = "default" }: ContactProps)
                 target={isEmail ? undefined : "_blank"}
                 rel={isEmail ? undefined : "noopener noreferrer"}
                 aria-label={contact.type}
-                className="group w-16 h-16 bg-white/5 border border-cyan-400/40 rounded-2xl p-2 flex items-center justify-center transition-all duration-300 hover:bg-white/10 hover:border-purple-400/50 hover:-translate-y-0.5"
+                className="group w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 bg-white/5 border border-cyan-400/40 rounded-xl sm:rounded-2xl p-1.5 sm:p-2 flex items-center justify-center transition-all duration-300 hover:bg-white/10 hover:border-purple-400/50 hover:-translate-y-0.5"
                 style={{
                   boxShadow: "0 0 8px rgba(34, 211, 238, 0.16), 0 0 16px rgba(139, 92, 246, 0.1), 0 0 24px rgba(236, 72, 153, 0.08)"
                 }}
               >
-                <span className="text-[28px] text-white/90 leading-none drop-shadow-[0_0_6px_rgba(34,211,238,0.28)] group-hover:drop-shadow-[0_0_10px_rgba(139,92,246,0.36)] transition-all duration-300">
+                <span className="text-lg sm:text-2xl md:text-[28px] text-white/90 leading-none drop-shadow-[0_0_6px_rgba(34,211,238,0.28)] group-hover:drop-shadow-[0_0_10px_rgba(139,92,246,0.36)] transition-all duration-300">
                   <Icon />
                 </span>
               </a>

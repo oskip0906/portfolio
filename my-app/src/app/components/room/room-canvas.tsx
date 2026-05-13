@@ -9,7 +9,16 @@ import type { RoomHomePayload, RoomObjectId } from "./room-manifest"
 const ORBIT_CENTER_Y = 2.5
 const ORBIT_LOOKAT = new THREE.Vector3(0, 2.5, 0)
 const RADIUS_MIN = 3
-const RADIUS_MAX = 80
+const RADIUS_MAX = 9.0
+// Room bounds — keep camera inside the box (walls at ±10.5 x, ±9.8 z, ceiling at 6.2)
+const ROOM_X = 10.0
+const ROOM_Z = 9.3
+const MAX_CAMERA_Y = 5.6
+const MIN_CAMERA_Y = 0.5
+
+function clampedMaxPhi(radius: number) {
+  return Math.asin(Math.min(0.999, (MAX_CAMERA_Y - ORBIT_CENTER_Y) / radius))
+}
 
 export default function RoomCanvas({
   payload,
@@ -28,16 +37,17 @@ export default function RoomCanvas({
 }) {
   const containerRef = useRef<HTMLDivElement>(null)
   // theta = horizontal azimuth, phi = vertical elevation, radius = distance from centre
-  // theta: 0 → camera sits on the +Z axis, looking straight at the front banner
-  const orbitRef = useRef({ theta: 0, phi: 0.1, radius: 16 })
+  // theta: 0 → camera sits on the +Z axis; positive = clockwise from above
+  // Start slightly right and elevated for a warm, inviting entrance view
+  const orbitRef = useRef({ theta: 0.35, phi: 0.28, radius: 8.2 })
   const dragRef = useRef({ active: false, lastX: 0, lastY: 0 })
 
-  // Responsive default zoom
+  // Responsive default zoom — start inside the room
   useEffect(() => {
     const w = window.innerWidth
-    if (w < 640) orbitRef.current.radius = 26       // mobile
-    else if (w < 1024) orbitRef.current.radius = 20 // tablet
-    else orbitRef.current.radius = 16               // desktop
+    if (w < 640) orbitRef.current.radius = 8.8        // mobile — slightly further back
+    else if (w < 1024) orbitRef.current.radius = 8.4 // tablet
+    else orbitRef.current.radius = 8.2               // desktop
   }, [])
 
   const primaryIds = useMemo(
@@ -73,6 +83,7 @@ export default function RoomCanvas({
         RADIUS_MIN,
         RADIUS_MAX
       )
+      orbitRef.current.phi = Math.min(orbitRef.current.phi, clampedMaxPhi(orbitRef.current.radius))
     }
     el.addEventListener("wheel", onWheel, { passive: false })
     return () => el.removeEventListener("wheel", onWheel)
@@ -102,6 +113,7 @@ export default function RoomCanvas({
         RADIUS_MIN,
         RADIUS_MAX
       )
+      orbitRef.current.phi = Math.min(orbitRef.current.phi, clampedMaxPhi(orbitRef.current.radius))
       lastDist = dist
     }
 
@@ -134,7 +146,7 @@ export default function RoomCanvas({
         orbitRef.current.phi = THREE.MathUtils.clamp(
           orbitRef.current.phi - deltaY * 0.003,
           -0.15,
-          1.35
+          clampedMaxPhi(orbitRef.current.radius)
         )
       }}
       onPointerUp={() => {
@@ -149,7 +161,7 @@ export default function RoomCanvas({
       <Canvas
         dpr={1}
         gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
-        camera={{ position: [0, 4.0, 16.0], fov: 62, near: 0.1, far: 200 }}
+        camera={{ position: [2.8, 4.2, 7.6], fov: 58, near: 0.1, far: 200 }}
         onPointerMissed={() => onHoverChange(null)}
       >
         <Suspense fallback={null}>
@@ -208,6 +220,11 @@ function CameraController({
       )
       desiredLook.current.copy(ORBIT_LOOKAT)
     }
+
+    // Clamp camera inside room walls
+    desiredPos.current.x = THREE.MathUtils.clamp(desiredPos.current.x, -ROOM_X, ROOM_X)
+    desiredPos.current.y = THREE.MathUtils.clamp(desiredPos.current.y, MIN_CAMERA_Y, MAX_CAMERA_Y)
+    desiredPos.current.z = THREE.MathUtils.clamp(desiredPos.current.z, -ROOM_Z, ROOM_Z)
 
     const easing = 1 - Math.exp(-delta * 3.2)
     camera.position.lerp(desiredPos.current, easing)

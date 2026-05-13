@@ -61,9 +61,8 @@ export default function RoomOverlay({
             className="absolute inset-0 flex items-center justify-center p-6 pointer-events-none"
           >
             <div
-              className="pointer-events-auto flex flex-col rounded-[24px] border border-white/10 overflow-hidden w-[92vw] md:w-[60%]"
+              className="pointer-events-auto flex flex-col rounded-[24px] border border-white/10 overflow-hidden w-[92vw] md:w-[60%] h-[75vh]"
               style={{
-                height: "75vh",
                 background: "rgba(9, 6, 3, 0.98)",
               }}
               onClick={(e) => e.stopPropagation()}
