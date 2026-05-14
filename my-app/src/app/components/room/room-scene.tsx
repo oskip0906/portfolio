@@ -78,7 +78,7 @@ export default function RoomScene({
 /* ─── Tea Shop Room ──────────────────────────────────────────── */
 
 function TeaShopRoom() {
-  const { roomTheme } = useBackground()
+  const { roomTheme, wallColor, ceilingColor, floorColor } = useBackground()
   const FLOOR = roomTheme.roomFloorColor
   const FLOOR_DARK = roomTheme.roomFloorDarkColor
   const PILLAR = roomTheme.roomPillarColor
@@ -95,9 +95,11 @@ function TeaShopRoom() {
   const BEAM_COLOR = "#6A4420"
   const WAINSCOT_PANEL = "#E8D8C4"
   const WAINSCOT_RAIL = "#C0A888"
-  const WALL_UPPER = "#F0E8DA"
-  const PLANK_A = "#D4C0A4"
-  const PLANK_B = "#C8B494"
+  const WALL_UPPER = wallColor
+  const CEILING_COLOR = ceilingColor
+  const PLANK_A = floorColor
+  // derive a slightly darker plank variant by blending toward dark
+  const PLANK_B = floorColor
   const PENDANT_SHADE = "#1A1A1A"
   const PENDANT_BRASS = "#B8944C"
   const CHALKBOARD_FRAME = "#5A3C1E"
@@ -134,7 +136,7 @@ function TeaShopRoom() {
          ═══════════════════════════════════════════════ */}
       <mesh position={[0, 6.2, 0]}>
         <boxGeometry args={[22, 0.15, 20]} />
-        <meshStandardMaterial color={WALL_UPPER} roughness={0.92} />
+        <meshStandardMaterial color={CEILING_COLOR} roughness={0.92} />
       </mesh>
       {/* Ceiling beams running front-to-back */}
       {([-4.5, 0, 4.5] as number[]).map((x) => (

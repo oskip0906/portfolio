@@ -22,11 +22,29 @@ interface BackgroundContextType {
     roomPillarColor: string
     roomPillarAccentColor: string
   }
+  // Room surface overrides
+  wallColor: string
+  setWallColor: (color: string) => void
+  resetWallColor: () => void
+  ceilingColor: string
+  setCeilingColor: (color: string) => void
+  resetCeilingColor: () => void
+  floorColor: string
+  setFloorColor: (color: string) => void
+  resetFloorColor: () => void
   isLoaded: boolean
 }
 
 const DEFAULT_COLOR = '#2d6a2d'
 const STORAGE_KEY = 'portfolio-background-color'
+
+// Room surface defaults (matching hardcoded values in room-scene.tsx)
+const DEFAULT_WALL_COLOR    = '#F0E8DA'
+const DEFAULT_CEILING_COLOR = '#F0E8DA'
+const DEFAULT_FLOOR_COLOR   = '#D4C0A4'
+const STORAGE_WALL_KEY    = 'portfolio-room-wall-color'
+const STORAGE_CEILING_KEY = 'portfolio-room-ceiling-color'
+const STORAGE_FLOOR_KEY   = 'portfolio-room-floor-color'
 
 const BackgroundContext = createContext<BackgroundContextType | undefined>(undefined)
 
@@ -76,36 +94,61 @@ function generateBackgroundStyles(hex: string): {
 
 export function BackgroundProvider({ children }: { children: ReactNode }) {
   const [baseColor, setBaseColorState] = useState(DEFAULT_COLOR)
+  const [wallColor, setWallColorState] = useState(DEFAULT_WALL_COLOR)
+  const [ceilingColor, setCeilingColorState] = useState(DEFAULT_CEILING_COLOR)
+  const [floorColor, setFloorColorState] = useState(DEFAULT_FLOOR_COLOR)
   const [mounted, setMounted] = useState(false)
 
-  // Load saved color from localStorage
+  // Load saved colors from localStorage
   useEffect(() => {
     setMounted(true)
     const saved = localStorage.getItem(STORAGE_KEY)
-    if (saved) {
-      setBaseColorState(saved)
-    }
+    if (saved) setBaseColorState(saved)
+    const savedWall = localStorage.getItem(STORAGE_WALL_KEY)
+    if (savedWall) setWallColorState(savedWall)
+    const savedCeiling = localStorage.getItem(STORAGE_CEILING_KEY)
+    if (savedCeiling) setCeilingColorState(savedCeiling)
+    const savedFloor = localStorage.getItem(STORAGE_FLOOR_KEY)
+    if (savedFloor) setFloorColorState(savedFloor)
   }, [])
 
-  // Save color to localStorage when it changes
+  // Persist colors to localStorage
   useEffect(() => {
-    if (mounted) {
-      localStorage.setItem(STORAGE_KEY, baseColor)
-    }
+    if (mounted) localStorage.setItem(STORAGE_KEY, baseColor)
   }, [baseColor, mounted])
+  useEffect(() => {
+    if (mounted) localStorage.setItem(STORAGE_WALL_KEY, wallColor)
+  }, [wallColor, mounted])
+  useEffect(() => {
+    if (mounted) localStorage.setItem(STORAGE_CEILING_KEY, ceilingColor)
+  }, [ceilingColor, mounted])
+  useEffect(() => {
+    if (mounted) localStorage.setItem(STORAGE_FLOOR_KEY, floorColor)
+  }, [floorColor, mounted])
 
-  const setBaseColor = useCallback((color: string) => {
-    setBaseColorState(color)
-  }, [])
+  const setBaseColor = useCallback((color: string) => { setBaseColorState(color) }, [])
+  const resetColor = useCallback(() => { setBaseColorState(DEFAULT_COLOR) }, [])
 
-  const resetColor = useCallback(() => {
-    setBaseColorState(DEFAULT_COLOR)
-  }, [])
+  const setWallColor = useCallback((color: string) => { setWallColorState(color) }, [])
+  const resetWallColor = useCallback(() => { setWallColorState(DEFAULT_WALL_COLOR) }, [])
+
+  const setCeilingColor = useCallback((color: string) => { setCeilingColorState(color) }, [])
+  const resetCeilingColor = useCallback(() => { setCeilingColorState(DEFAULT_CEILING_COLOR) }, [])
+
+  const setFloorColor = useCallback((color: string) => { setFloorColorState(color) }, [])
+  const resetFloorColor = useCallback(() => { setFloorColorState(DEFAULT_FLOOR_COLOR) }, [])
 
   const { gradientStyle, bottomColor, roomTheme } = generateBackgroundStyles(baseColor)
 
   return (
-    <BackgroundContext.Provider value={{ baseColor, setBaseColor, resetColor, gradientStyle, bottomColor, roomTheme, isLoaded: mounted }}>
+    <BackgroundContext.Provider value={{
+      baseColor, setBaseColor, resetColor,
+      gradientStyle, bottomColor, roomTheme,
+      wallColor, setWallColor, resetWallColor,
+      ceilingColor, setCeilingColor, resetCeilingColor,
+      floorColor, setFloorColor, resetFloorColor,
+      isLoaded: mounted,
+    }}>
       {children}
     </BackgroundContext.Provider>
   )

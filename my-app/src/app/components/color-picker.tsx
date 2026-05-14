@@ -6,14 +6,40 @@ import { motion, AnimatePresence } from "framer-motion"
 import { useBackground } from "../contexts/background-context"
 import { cn } from "@/lib/utils"
 
+type Tab = "walls" | "ceiling" | "floor" | "lighting"
+
+const TABS: { id: Tab; label: string }[] = [
+  { id: "walls",   label: "Walls"   },
+  { id: "ceiling", label: "Ceiling" },
+  { id: "floor",   label: "Floor"   },
+  { id: "lighting",label: "Lighting"},
+]
+
 export default function ColorPicker({
   variant = "nav",
 }: {
   variant?: "nav" | "hud"
 }) {
-  const { baseColor, setBaseColor, resetColor, roomTheme } = useBackground()
+  const {
+    baseColor,    setBaseColor,    resetColor,
+    wallColor,    setWallColor,    resetWallColor,
+    ceilingColor, setCeilingColor, resetCeilingColor,
+    floorColor,   setFloorColor,   resetFloorColor,
+    roomTheme,
+  } = useBackground()
+
   const [isOpen, setIsOpen] = useState(false)
+  const [activeTab, setActiveTab] = useState<Tab>("walls")
   const isHud = variant === "hud"
+
+  const tabConfig: Record<Tab, { color: string; onChange: (c: string) => void; onReset: () => void }> = {
+    walls:   { color: wallColor,    onChange: setWallColor,    onReset: resetWallColor    },
+    ceiling: { color: ceilingColor, onChange: setCeilingColor, onReset: resetCeilingColor },
+    floor:   { color: floorColor,   onChange: setFloorColor,   onReset: resetFloorColor   },
+    lighting:{ color: baseColor,    onChange: setBaseColor,    onReset: resetColor         },
+  }
+
+  const current = tabConfig[activeTab]
 
   return (
     <div
@@ -33,13 +59,13 @@ export default function ColorPicker({
         style={isHud ? {
           boxShadow: `0 18px 40px ${roomTheme.shadowColor}, inset 0 1px 0 rgba(255,255,255,0.12)`,
         } : undefined}
-        title="Adjust room lighting"
-        aria-label="Adjust room lighting"
+        title="Customise room"
+        aria-label="Customise room"
       >
         <Palette size={isHud ? 16 : 18} style={isHud ? { color: roomTheme.uiAccent } : undefined} />
       </button>
 
-      {/* Color Wheel Dropdown */}
+      {/* Dropdown */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -48,27 +74,46 @@ export default function ColorPicker({
             exit={{ opacity: 0, y: -8, scale: 0.9 }}
             transition={{ duration: 0.2 }}
             className={cn(
-              "absolute top-full mt-3 p-4 rounded-xl backdrop-blur-xl border border-white/20 shadow-2xl z-[10000]",
+              "absolute top-full mt-3 rounded-xl backdrop-blur-xl border border-white/20 shadow-2xl z-[10000] overflow-hidden",
               isHud ? "right-0" : "left-1/2 -translate-x-1/2"
             )}
-            style={{
-              background: "rgba(20, 20, 30, 0.68)"
-            }}
+            style={{ background: "rgba(20, 20, 30, 0.80)", width: 232 }}
           >
-            <HexColorPicker
-              color={baseColor}
-              onChange={setBaseColor}
-              style={{ width: '200px', height: '200px' }}
-            />
-            <div className="mt-3 flex items-center justify-between">
-              <span className="text-sm font-mono text-white/70">{baseColor}</span>
-              <button
-                onClick={resetColor}
-                className="p-1.5 rounded-md hover:bg-white/10 text-gray-400 hover:text-white transition-colors"
-                title="Reset to default"
-              >
-                <RotateCcw size={14} />
-              </button>
+            {/* Tab bar */}
+            <div className="flex border-b border-white/10">
+              {TABS.map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={cn(
+                    "flex-1 py-2 text-[10px] font-medium uppercase tracking-widest transition-colors",
+                    activeTab === tab.id
+                      ? "text-white border-b-2 border-white/60 -mb-px"
+                      : "text-white/40 hover:text-white/70"
+                  )}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Picker body */}
+            <div className="p-4">
+              <HexColorPicker
+                color={current.color}
+                onChange={current.onChange}
+                style={{ width: "100%", height: 180 }}
+              />
+              <div className="mt-3 flex items-center justify-between">
+                <span className="text-[11px] font-mono text-white/60">{current.color}</span>
+                <button
+                  onClick={current.onReset}
+                  className="p-1.5 rounded-md hover:bg-white/10 text-white/40 hover:text-white transition-colors"
+                  title="Reset to default"
+                >
+                  <RotateCcw size={13} />
+                </button>
+              </div>
             </div>
           </motion.div>
         )}
