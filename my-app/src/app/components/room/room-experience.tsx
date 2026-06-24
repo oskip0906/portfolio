@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react"
 import dynamic from "next/dynamic"
 import RoomFallback from "./room-fallback"
+import RoomOnboarding from "./room-onboarding"
 import RoomOverlay from "./room-overlay"
 import type { RoomHomePayload, RoomObjectId } from "./room-manifest"
 
@@ -105,6 +106,7 @@ export default function RoomExperience({ payload }: { payload: RoomHomePayload }
           onFocusChange={setFocusedId}
           onReset={() => setFocusedId(null)}
         />
+        {visible && <RoomOnboarding hidden={Boolean(focusedId)} />}
       </div>
     </>
   )

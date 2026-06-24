@@ -22,7 +22,6 @@ export function SectionPanel({ id, payload, accentColor }: PanelProps & { id: Ro
     case "projects":     return <ProjectsPanel payload={payload} accentColor={accentColor} />
     case "research":     return <ResearchPanel payload={payload} accentColor={accentColor} />
     case "interests":    return <InterestsPanel payload={payload} accentColor={accentColor} />
-    case "timeline":     return <TimelinePanel payload={payload} accentColor={accentColor} />
     case "contact":      return <ContactPanel accentColor={accentColor} />
     case "photos":       return <PhotosPanel accentColor={accentColor} />
     default:             return null
@@ -422,55 +421,6 @@ function InterestsPanel({ payload, accentColor }: PanelProps) {
           <p className="text-sm text-white/80 leading-[1.6]">{interest.description}</p>
         </div>
       ))}
-    </div>
-  )
-}
-
-// ─── Timeline ─────────────────────────────────────────────────────────────────
-
-const TIMELINE_PALETTES = [
-  { dot: "#60A5FA", bg: "rgba(96,165,250,0.07)", border: "rgba(96,165,250,0.22)" },
-  { dot: "#A78BFA", bg: "rgba(167,139,250,0.07)", border: "rgba(167,139,250,0.22)" },
-  { dot: "#F472B6", bg: "rgba(244,114,182,0.07)", border: "rgba(244,114,182,0.22)" },
-]
-
-function TimelinePanel({ payload }: PanelProps) {
-  return (
-    <div className="py-4 relative">
-      {/* Vertical spine */}
-      <div className="absolute top-4 bottom-4 bg-white/6" style={{ left: "19px", width: "1px" }} />
-
-      <div className="flex flex-col gap-5">
-        {payload.timeline.map((item, i) => {
-          const p = TIMELINE_PALETTES[i % TIMELINE_PALETTES.length]
-          return (
-            <div key={i} className="flex gap-4 items-start">
-              {/* Node */}
-              <div
-                className="flex-shrink-0 w-[38px] h-[38px] rounded-full flex items-center justify-center border z-10"
-                style={{ background: p.bg, borderColor: p.border }}
-              >
-                <div className="w-2.5 h-2.5 rounded-full" style={{ background: p.dot }} />
-              </div>
-
-              {/* Card */}
-              <div
-                className="flex-1 rounded-2xl border p-4 -mt-0.5"
-                style={{ background: p.bg, borderColor: p.border }}
-              >
-                <p
-                  className="text-[10px] uppercase tracking-[0.24em] mb-1.5 font-medium"
-                  style={{ color: p.dot }}
-                >
-                  {item.date}
-                </p>
-                <p className="text-sm font-semibold text-white mb-1">{item.title}</p>
-                <p className="text-sm text-white leading-[1.6]">{item.description}</p>
-              </div>
-            </div>
-          )
-        })}
-      </div>
     </div>
   )
 }

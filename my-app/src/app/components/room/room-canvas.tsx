@@ -42,6 +42,13 @@ export default function RoomCanvas({
   const orbitRef = useRef({ theta: 0.35, phi: 0.28, radius: 8.2 })
   const dragRef = useRef({ active: false, lastX: 0, lastY: 0 })
 
+  // Reflect hover state on the cursor so it's obvious cups are clickable
+  useEffect(() => {
+    const el = containerRef.current
+    if (!el || dragRef.current.active) return
+    el.style.cursor = hoveredId ? "pointer" : "grab"
+  }, [hoveredId])
+
   // Responsive default zoom — start inside the room
   useEffect(() => {
     const w = window.innerWidth
@@ -151,11 +158,11 @@ export default function RoomCanvas({
       }}
       onPointerUp={() => {
         dragRef.current.active = false
-        if (containerRef.current) containerRef.current.style.cursor = "grab"
+        if (containerRef.current) containerRef.current.style.cursor = hoveredId ? "pointer" : "grab"
       }}
       onPointerLeave={() => {
         dragRef.current.active = false
-        if (containerRef.current) containerRef.current.style.cursor = "grab"
+        if (containerRef.current) containerRef.current.style.cursor = hoveredId ? "pointer" : "grab"
       }}
     >
       <Canvas

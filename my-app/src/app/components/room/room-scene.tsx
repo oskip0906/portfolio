@@ -2,7 +2,7 @@
 
 import { useMemo, useRef } from "react"
 import { useFrame } from "@react-three/fiber"
-import { Text } from "@react-three/drei"
+import { Billboard, Text } from "@react-three/drei"
 import * as THREE from "three"
 import { useBackground } from "@/app/contexts/background-context"
 import type { Group } from "three"
@@ -743,29 +743,31 @@ function CupShell({
       >
         {children}
 
-        {/* Label above cup */}
-        <Text
-          position={[0, 2.6, 0]}
-          fontSize={0.22}
-          color={labelColor}
-          anchorX="center"
-          anchorY="middle"
-          outlineWidth={0.014}
-          outlineColor="rgba(0,0,0,0.5)"
-        >
-          {object.label}
-        </Text>
-        <Text
-          position={[0, 2.34, 0]}
-          fontSize={0.1}
-          color="rgba(255,255,255,0.42)"
-          anchorX="center"
-          anchorY="middle"
-          outlineWidth={0.008}
-          outlineColor="rgba(0,0,0,0.3)"
-        >
-          {object.subtitle}
-        </Text>
+        {/* Label above cup — only surfaces on hover/focus so the cups read clean by default */}
+        {(hovered || active) && (
+          <Billboard position={[0, 2.55, 0]}>
+            <mesh position={[0, 0, -0.01]}>
+              <planeGeometry args={[1.7, 0.4]} />
+              <meshBasicMaterial
+                color="#000000"
+                transparent
+                opacity={active ? 0.42 : 0.26}
+                depthWrite={false}
+              />
+            </mesh>
+            <Text
+              position={[0, 0, 0]}
+              fontSize={active ? 0.26 : 0.22}
+              color={labelColor}
+              anchorX="center"
+              anchorY="middle"
+              outlineWidth={0.016}
+              outlineColor="rgba(0,0,0,0.6)"
+            >
+              {object.label}
+            </Text>
+          </Billboard>
+        )}
       </group>
 
       {/* Floor ring indicator — double ring for depth */}
