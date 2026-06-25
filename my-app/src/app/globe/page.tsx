@@ -9,7 +9,7 @@ export default function GlobePage() {
     <div className="w-full flex justify-center">
       <ExpandedMap
         isOpen={true}
-        onClose={() => router.push("/")}
+        onClose={() => router.back()}
       />
     </div>
   )
