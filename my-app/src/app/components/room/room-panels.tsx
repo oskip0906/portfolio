@@ -48,7 +48,7 @@ function IntroPanel({ payload, accentColor }: PanelProps) {
       {/* Profile image */}
       <div
         className="w-32 h-32 rounded-full overflow-hidden border border-white/12 flex-shrink-0"
-        style={{ boxShadow: `0 0 56px ${accentColor}45` }}
+        style={{ boxShadow: `0 0 24px ${accentColor}28` }}
       >
         <img
           src={intro.image || "/placeholder.svg"}

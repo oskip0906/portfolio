@@ -4,8 +4,8 @@ import { useState, useCallback, type FormEvent } from "react"
 
 type Props = {
   className?: string
-  /** Tighter copy and spacing for the room overlay modal. */
-  variant?: "default" | "modal"
+  /** "modal": tighter copy/spacing for the room overlay. "plain": light, minimal styling for the static resume page. */
+  variant?: "default" | "modal" | "plain"
   accentColor?: string
 }
 
@@ -15,6 +15,7 @@ export default function ContactMessageForm({
   accentColor,
 }: Props) {
   const modal = variant === "modal"
+  const plain = variant === "plain"
   const [senderName, setSenderName] = useState("")
   const [senderEmail, setSenderEmail] = useState("")
   const [message, setMessage] = useState("")
@@ -55,6 +56,50 @@ export default function ContactMessageForm({
     },
     [message],
   )
+
+  if (plain) {
+    return (
+      <div className={className}>
+        <form onSubmit={handleSendMessage} className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <input
+              type="text"
+              name="senderName"
+              value={senderName}
+              onChange={(e) => setSenderName(e.target.value)}
+              placeholder="Name (optional)"
+              className="h-10 flex-1 rounded-md border border-gray-300 bg-white px-3 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-400"
+            />
+            <input
+              type="email"
+              name="senderEmail"
+              value={senderEmail}
+              onChange={(e) => setSenderEmail(e.target.value)}
+              placeholder="Email (optional)"
+              className="h-10 flex-1 rounded-md border border-gray-300 bg-white px-3 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-400"
+            />
+          </div>
+          <textarea
+            name="message"
+            required
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            placeholder="Your message…"
+            rows={4}
+            className="min-h-[100px] resize-y rounded-md border border-gray-300 bg-white px-3 py-2 align-top text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-400"
+          />
+          <button
+            type="submit"
+            disabled={isSending || !message.trim()}
+            className="h-10 self-start rounded-md bg-gray-900 px-5 text-sm font-medium text-white transition-colors hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {isSending ? "Sending…" : "Send"}
+          </button>
+        </form>
+        {sendStatus && <p className="mt-3 text-sm text-gray-600">{sendStatus}</p>}
+      </div>
+    )
+  }
 
   return (
     <div className={className}>

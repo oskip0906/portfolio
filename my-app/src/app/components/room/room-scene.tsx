@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo, useRef } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { useFrame } from "@react-three/fiber"
 import { Billboard, Text } from "@react-three/drei"
 import * as THREE from "three"
@@ -24,6 +24,14 @@ export default function RoomScene({
   onHoverChange,
 }: RoomSceneProps) {
   const { roomTheme } = useBackground()
+
+  // Show every cup's label for a few seconds on first load so visitors immediately
+  // know what each cup is, then let them fade away — labels no longer appear on hover.
+  const [introLabelsVisible, setIntroLabelsVisible] = useState(true)
+  useEffect(() => {
+    const timer = setTimeout(() => setIntroLabelsVisible(false), 4500)
+    return () => clearTimeout(timer)
+  }, [])
 
   const handleObjectClick = (object: RoomObjectManifest) => {
     onFocusChange(object.id)
@@ -59,6 +67,7 @@ export default function RoomScene({
             object={object}
             active={isActive}
             hovered={isHovered}
+            showIntroLabel={introLabelsVisible}
             onFocus={() => handleObjectClick(object)}
             onHoverChange={onHoverChange}
             roomTheme={roomTheme}
@@ -710,6 +719,7 @@ function CupShell({
   object,
   active,
   hovered,
+  showIntroLabel,
   onFocus,
   onHoverChange,
   roomTheme,
@@ -718,6 +728,7 @@ function CupShell({
   object: RoomObjectManifest
   active: boolean
   hovered: boolean
+  showIntroLabel: boolean
   onFocus: () => void
   onHoverChange: (id: RoomObjectId | null) => void
   roomTheme: { uiAccent: string; emissiveAccent: string }
@@ -726,6 +737,7 @@ function CupShell({
   const groupRef = useRef<Group>(null)
   const scaleVec = useRef(new THREE.Vector3(1, 1, 1))
   const labelColor = active ? object.color : "rgba(255,255,255,0.85)"
+  const showLabel = active || showIntroLabel
 
   useFrame(() => {
     if (!groupRef.current) return
@@ -743,8 +755,8 @@ function CupShell({
       >
         {children}
 
-        {/* Label above cup — only surfaces on hover/focus so the cups read clean by default */}
-        {(hovered || active) && (
+        {/* Label above cup — shown for everyone on first load, then on focus only (no longer on hover) */}
+        {showLabel && (
           <Billboard position={[0, 2.55, 0]}>
             <mesh position={[0, 0, -0.01]}>
               <planeGeometry args={[1.7, 0.4]} />
