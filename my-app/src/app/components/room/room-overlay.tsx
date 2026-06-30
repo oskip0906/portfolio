@@ -63,10 +63,7 @@ export default function RoomOverlay({
             className="absolute inset-0 flex items-center justify-center p-6 pointer-events-none"
           >
             <div
-              className="pointer-events-auto flex flex-col rounded-[24px] border border-white/15 overflow-hidden w-[92vw] md:w-[75vw] h-[78vh] backdrop-blur-2xl shadow-[0_16px_40px_rgba(0,0,0,0.28)]"
-              style={{
-                background: "rgba(18, 13, 9, 0.5)",
-              }}
+              className="pointer-events-auto flex flex-col overflow-hidden w-[92vw] md:w-[75vw] h-[78vh]"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Accent stripe */}

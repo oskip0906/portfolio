@@ -26,14 +26,12 @@ const NAV_ITEMS = [
   { id: "experience", label: "Experience" },
   { id: "projects", label: "Projects" },
   { id: "research", label: "Research" },
-  { id: "interests", label: "Interests" },
-  { id: "photos", label: "Photos" },
   { id: "contact", label: "Contact" },
 ]
 
 export default async function ResumePage() {
   const payload = await getRoomPayload()
-  const { intro, contacts, experiences, projects, research, interests } = payload
+  const { intro, contacts, experiences, projects, research } = payload
   const linkableContacts = contacts.filter((c) => c.type.toLowerCase() !== "discord")
   const discord = contacts.find((c) => c.type.toLowerCase() === "discord")
 
@@ -104,7 +102,7 @@ export default async function ResumePage() {
 
           <section id="experience" className="border-t border-gray-200 py-10">
             <h2 className="border-b border-gray-200 pb-2 text-base font-semibold text-gray-900">Experience</h2>
-            <div className="mt-4 flex flex-col gap-6">
+            <div className="mt-4 grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
               {experiences.map((exp, i) => (
                 <div key={i}>
                   <div className="flex flex-wrap items-baseline justify-between gap-2">
@@ -131,7 +129,7 @@ export default async function ResumePage() {
 
           <section id="projects" className="border-t border-gray-200 py-10">
             <h2 className="border-b border-gray-200 pb-2 text-base font-semibold text-gray-900">Projects</h2>
-            <div className="mt-4 flex flex-col gap-6">
+            <div className="mt-4 grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
               {projects.map((project, i) => (
                 <div key={i}>
                   <div className="flex flex-wrap items-baseline justify-between gap-2">
@@ -208,37 +206,21 @@ export default async function ResumePage() {
             </div>
           </section>
 
-          <section id="interests" className="border-t border-gray-200 py-10">
-            <h2 className="border-b border-gray-200 pb-2 text-base font-semibold text-gray-900">Interests</h2>
-            <div className="mt-4 flex flex-col gap-2">
-              {interests.map((interest, i) => (
-                <p key={i} className="text-sm leading-6 text-gray-700">
-                  <span className="font-medium text-gray-900">{interest.emote} {interest.name}</span>
-                  {" — "}
-                  {interest.description}
-                </p>
-              ))}
-            </div>
-          </section>
-
-          <section id="photos" className="border-t border-gray-200 py-10">
-            <h2 className="border-b border-gray-200 pb-2 text-base font-semibold text-gray-900">Photos</h2>
-            <p className="mt-4 text-sm leading-6 text-gray-700">
-              A travel and photo archive presented as an interactive globe — explore moments by
-              location.
-            </p>
-            <Link href="/globe" className="mt-2 inline-block text-sm text-blue-700 hover:underline">
-              View photo gallery →
-            </Link>
-          </section>
-
           <section id="contact" className="border-t border-gray-200 py-10">
             <h2 className="border-b border-gray-200 pb-2 text-base font-semibold text-gray-900">Contact</h2>
-            <p className="mt-4 text-sm leading-6 text-gray-700">
-              Send a message and it&apos;ll land directly in my inbox.
-            </p>
-            <div className="mt-4 max-w-md">
-              <ContactMessageForm variant="plain" />
+            <div className="mt-4 flex flex-col gap-8 sm:flex-row">
+              <div className="sm:w-1/2">
+                <ContactMessageForm variant="plain" />
+              </div>
+              <div className="sm:w-1/2">
+                <p className="text-sm leading-6 text-gray-700">
+                  Send a message and it&apos;ll land directly in my inbox. You can also find a
+                  photo and travel archive, presented as an interactive globe.
+                </p>
+                <Link href="/globe" className="mt-2 inline-block text-sm text-blue-700 hover:underline">
+                  View photo gallery →
+                </Link>
+              </div>
             </div>
           </section>
         </main>

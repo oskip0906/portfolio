@@ -6,13 +6,12 @@ import { motion, AnimatePresence } from "framer-motion"
 import { useBackground } from "../contexts/background-context"
 import { cn } from "@/lib/utils"
 
-type Tab = "walls" | "ceiling" | "floor" | "lighting"
+type Tab = "walls" | "ceiling" | "floor"
 
 const TABS: { id: Tab; label: string }[] = [
   { id: "walls",   label: "Walls"   },
   { id: "ceiling", label: "Ceiling" },
   { id: "floor",   label: "Floor"   },
-  { id: "lighting",label: "Lighting"},
 ]
 
 export default function ColorPicker({
@@ -21,7 +20,6 @@ export default function ColorPicker({
   variant?: "nav" | "hud"
 }) {
   const {
-    baseColor,    setBaseColor,    resetColor,
     wallColor,    setWallColor,    resetWallColor,
     ceilingColor, setCeilingColor, resetCeilingColor,
     floorColor,   setFloorColor,   resetFloorColor,
@@ -36,7 +34,6 @@ export default function ColorPicker({
     walls:   { color: wallColor,    onChange: setWallColor,    onReset: resetWallColor    },
     ceiling: { color: ceilingColor, onChange: setCeilingColor, onReset: resetCeilingColor },
     floor:   { color: floorColor,   onChange: setFloorColor,   onReset: resetFloorColor   },
-    lighting:{ color: baseColor,    onChange: setBaseColor,    onReset: resetColor         },
   }
 
   const current = tabConfig[activeTab]
