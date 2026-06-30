@@ -746,7 +746,7 @@ function CupShell({
         {/* Label above cup — always visible, naming the section */}
         <Billboard position={[0, 2.55, 0]}>
           <mesh position={[0, 0, -0.01]}>
-            <planeGeometry args={[1.7, 0.4]} />
+            <planeGeometry args={[1.1, 0.26]} />
             <meshBasicMaterial
               color="#000000"
               transparent
@@ -756,11 +756,11 @@ function CupShell({
           </mesh>
           <Text
             position={[0, 0, 0]}
-            fontSize={active ? 0.26 : 0.22}
+            fontSize={active ? 0.17 : 0.14}
             color={labelColor}
             anchorX="center"
             anchorY="middle"
-            outlineWidth={0.016}
+            outlineWidth={0.012}
             outlineColor="rgba(0,0,0,0.6)"
           >
             {object.label}

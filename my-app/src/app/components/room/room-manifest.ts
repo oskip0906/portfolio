@@ -140,8 +140,8 @@ export function buildRoomPayload({
       shortcut: "3",
       color: "#88C878",
       pearlColor: "#2A6822",
-      position: [3.03, 0.45, 1.75],
-      target: [3.03, 1.65, 1.75],
+      position: [3.03, 0, 1.75],
+      target: [3.03, 1.2, 1.75],
       cameraPosition: [6.5, 2.4, 3.75],
     },
     {
@@ -157,8 +157,8 @@ export function buildRoomPayload({
       shortcut: "4",
       color: "#D8C870",
       pearlColor: "#9A8828",
-      position: [3.03, 0.45, -1.75],
-      target: [3.03, 1.65, -1.75],
+      position: [3.03, 0, -1.75],
+      target: [3.03, 1.2, -1.75],
       cameraPosition: [6.5, 2.4, -3.75],
     },
     {

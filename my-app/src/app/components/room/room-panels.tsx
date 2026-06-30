@@ -2,7 +2,7 @@
 
 import React, { useState } from "react"
 import Link from "next/link"
-import { ExternalLink, MoveUpRight, BookOpen, ChevronLeft, ChevronRight } from "lucide-react"
+import { ExternalLink, MoveUpRight, BookOpen } from "lucide-react"
 import { Typewriter } from "react-simple-typewriter"
 import type { RoomHomePayload, RoomObjectId } from "./room-manifest"
 import Contact from "../ui/contact"
