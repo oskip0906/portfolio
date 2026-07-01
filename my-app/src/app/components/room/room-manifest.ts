@@ -3,7 +3,6 @@ import type {
   Experience,
   Intro,
   Interest,
-  Memory,
   Project,
   Research,
 } from "@/lib/database"
@@ -14,7 +13,6 @@ export type RoomObjectId =
   | "projects"
   | "research"
   | "interests"
-  | "timeline"
   | "photos"
   | "contact"
 
@@ -24,7 +22,6 @@ export type RoomObjectKind =
   | "table"
   | "desk"
   | "shelf"
-  | "timeline"
   | "portal"
   | "intercom"
 
@@ -55,7 +52,6 @@ export interface RoomHomePayload {
   projects: Project[]
   research: Research[]
   interests: Interest[]
-  timeline: Memory[]
   objects: RoomObjectManifest[]
   notes: {
     roomTitle: string
@@ -84,7 +80,6 @@ export function buildRoomPayload({
   projects,
   research,
   interests,
-  timeline,
 }: {
   intro: Intro
   contacts: Contact[]
@@ -92,10 +87,11 @@ export function buildRoomPayload({
   projects: Project[]
   research: Research[]
   interests: Interest[]
-  timeline: Memory[]
 }): RoomHomePayload {
   const email = contactEmail(contacts)
 
+  // Cups are clustered in a tight hexagon around the centered introduction cup
+  // so the orbit camera can see the whole gallery without much zooming out.
   const objects: RoomObjectManifest[] = [
     {
       id: "introduction",
@@ -110,9 +106,9 @@ export function buildRoomPayload({
       shortcut: "1",
       color: "#C8A878",
       pearlColor: "#5C3010",
-      position: [0, 0, 3.0],
-      target: [0, 1.2, 3.0],
-      cameraPosition: [0, 2.0, 7.0],
+      position: [0, 0, 0],
+      target: [0, 1.2, 0],
+      cameraPosition: [0, 2.2, 4.6],
     },
     {
       id: "experiences",
@@ -127,9 +123,9 @@ export function buildRoomPayload({
       shortcut: "2",
       color: "#B090CC",
       pearlColor: "#7040A8",
-      position: [2.5, 0, 3.0],
-      target: [2.5, 1.2, 3.0],
-      cameraPosition: [2.5, 2.0, 7.0],
+      position: [0, 0, 3.5],
+      target: [0, 1.2, 3.5],
+      cameraPosition: [0, 2.2, 7.5],
     },
     {
       id: "projects",
@@ -144,9 +140,9 @@ export function buildRoomPayload({
       shortcut: "3",
       color: "#88C878",
       pearlColor: "#2A6822",
-      position: [-4.2, 0.45, 0.2],
-      target: [-4.2, 1.6, 0.2],
-      cameraPosition: [-4.2, 2.4, 4.0],
+      position: [3.03, 0, 1.75],
+      target: [3.03, 1.2, 1.75],
+      cameraPosition: [6.5, 2.4, 3.75],
     },
     {
       id: "research",
@@ -161,9 +157,9 @@ export function buildRoomPayload({
       shortcut: "4",
       color: "#D8C870",
       pearlColor: "#9A8828",
-      position: [4.2, 0.45, 0.2],
-      target: [4.2, 1.6, 0.2],
-      cameraPosition: [4.2, 2.4, 4.0],
+      position: [3.03, 0, -1.75],
+      target: [3.03, 1.2, -1.75],
+      cameraPosition: [6.5, 2.4, -3.75],
     },
     {
       id: "interests",
@@ -178,26 +174,9 @@ export function buildRoomPayload({
       shortcut: "5",
       color: "#F09898",
       pearlColor: "#B02838",
-      position: [-2.2, 0, -2.5],
-      target: [-2.2, 1.2, -2.5],
-      cameraPosition: [-2.2, 2.0, 1.5],
-    },
-    {
-      id: "timeline",
-      kind: "timeline",
-      label: "Timeline",
-      subtitle: "Brown sugar boba",
-      preview: clipText(timeline[0]?.description ?? "Career and life moments in sequence."),
-      chips: [`${timeline.length} milestones`, "Milestone ribbon"],
-      highlights: highlightNames(timeline.map((m) => `${m.date} · ${m.title}`), 4),
-      route: "/timeline",
-      routeLabel: "Open full section",
-      shortcut: "6",
-      color: "#C87848",
-      pearlColor: "#4A2010",
-      position: [2.2, 0, -2.5],
-      target: [2.2, 1.2, -2.5],
-      cameraPosition: [2.2, 2.0, 1.5],
+      position: [0, 0, -3.5],
+      target: [0, 1.2, -3.5],
+      cameraPosition: [0, 2.2, -7.5],
     },
     {
       id: "photos",
@@ -209,12 +188,12 @@ export function buildRoomPayload({
       highlights: ["World map gallery", "Photo moments", "Graceful lazy-load"],
       route: "/globe",
       routeLabel: "Open photo portal",
-      shortcut: "7",
+      shortcut: "6",
       color: "#F0A840",
       pearlColor: "#C07020",
-      position: [0, 0, -2.5],
-      target: [0, 1.2, -2.5],
-      cameraPosition: [0, 2.0, 1.5],
+      position: [-3.03, 0, -1.75],
+      target: [-3.03, 1.2, -1.75],
+      cameraPosition: [-6.5, 2.2, -3.75],
     },
     {
       id: "contact",
@@ -224,12 +203,12 @@ export function buildRoomPayload({
       preview: "Send a message through the site — delivered to my inbox with SMTP when configured.",
       chips: ["In-modal form", "SMTP when configured"],
       highlights: ["Website form", "Optional return email", "SMTP when configured"],
-      shortcut: "8",
+      shortcut: "7",
       color: "#F0C0CC",
       pearlColor: "#D07088",
-      position: [-2.5, 0, 3.0],
-      target: [-2.5, 1.2, 3.0],
-      cameraPosition: [-2.5, 2.0, 7.0],
+      position: [-3.03, 0, 1.75],
+      target: [-3.03, 1.2, 1.75],
+      cameraPosition: [-6.5, 2.2, 3.75],
     },
   ]
 
@@ -240,7 +219,6 @@ export function buildRoomPayload({
     projects,
     research,
     interests,
-    timeline,
     objects,
     notes: {
       roomTitle: "Boba Gallery",

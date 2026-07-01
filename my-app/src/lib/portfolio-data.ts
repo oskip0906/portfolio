@@ -51,7 +51,3 @@ export function sortByContentDateDesc<T extends { date: string }>(items: T[]): T
     return endB.getTime() - endA.getTime()
   })
 }
-
-export function sortTimelineByDateAsc<T extends { date: string }>(items: T[]): T[] {
-  return [...items].sort((a, b) => String(a.date).localeCompare(String(b.date)))
-}

@@ -2,7 +2,7 @@
 
 import React, { useState } from "react"
 import Link from "next/link"
-import { ExternalLink, MoveUpRight, BookOpen, ChevronLeft, ChevronRight } from "lucide-react"
+import { ExternalLink, MoveUpRight, BookOpen } from "lucide-react"
 import { Typewriter } from "react-simple-typewriter"
 import type { RoomHomePayload, RoomObjectId } from "./room-manifest"
 import Contact from "../ui/contact"
@@ -22,7 +22,6 @@ export function SectionPanel({ id, payload, accentColor }: PanelProps & { id: Ro
     case "projects":     return <ProjectsPanel payload={payload} accentColor={accentColor} />
     case "research":     return <ResearchPanel payload={payload} accentColor={accentColor} />
     case "interests":    return <InterestsPanel payload={payload} accentColor={accentColor} />
-    case "timeline":     return <TimelinePanel payload={payload} accentColor={accentColor} />
     case "contact":      return <ContactPanel accentColor={accentColor} />
     case "photos":       return <PhotosPanel accentColor={accentColor} />
     default:             return null
@@ -46,24 +45,24 @@ function IntroPanel({ payload, accentColor }: PanelProps) {
 
   return (
     <div className="max-w-2xl mx-auto py-6 flex flex-col items-center gap-7 text-center">
-      {/* Profile image */}
-      <div
-        className="w-32 h-32 rounded-full overflow-hidden border border-white/12 flex-shrink-0"
-        style={{ boxShadow: `0 0 56px ${accentColor}45` }}
-      >
-        <img
-          src={intro.image || "/placeholder.svg"}
-          alt={intro.name}
-          className="w-full h-full object-cover"
-          loading="lazy"
-          onError={(e) => { (e.target as HTMLImageElement).src = "/placeholder.svg" }}
-        />
-      </div>
-
-      {/* Name + title */}
-      <div>
-        <h3 className="text-3xl font-bold text-white tracking-tight">{intro.name}</h3>
-        <p className="mt-2 text-sm text-white tracking-wide">{intro.title}</p>
+      {/* Header — image beside the name to keep the header compact */}
+      <div className="flex items-center gap-5 text-left">
+        <div
+          className="w-24 h-24 rounded-full overflow-hidden border border-white/12 flex-shrink-0"
+          style={{ boxShadow: `0 0 24px ${accentColor}28` }}
+        >
+          <img
+            src={intro.image || "/placeholder.svg"}
+            alt={intro.name}
+            className="w-full h-full object-cover"
+            loading="lazy"
+            onError={(e) => { (e.target as HTMLImageElement).src = "/placeholder.svg" }}
+          />
+        </div>
+        <div>
+          <h3 className="text-3xl font-bold text-white tracking-tight">{intro.name}</h3>
+          <p className="mt-2 text-sm text-white tracking-wide">{intro.title}</p>
+        </div>
       </div>
 
       {/* Bio */}
@@ -231,6 +230,11 @@ function ProjectsPanel({ payload, accentColor }: PanelProps) {
         ))}
       </div>
       <ProjectDetail project={project} accentColor={accentColor} />
+      {count > 1 && (
+        <p className="pt-1 text-center text-[11px] uppercase tracking-[0.18em] text-white/35">
+          Use arrow keys to navigate
+        </p>
+      )}
     </div>
   )
 }
@@ -340,6 +344,11 @@ function ResearchPanel({ payload, accentColor }: PanelProps) {
         ))}
       </div>
       <ResearchDetail paper={paper} accentColor={accentColor} />
+      {count > 1 && (
+        <p className="pt-1 text-center text-[11px] uppercase tracking-[0.18em] text-white/35">
+          Use arrow keys to navigate
+        </p>
+      )}
     </div>
   )
 }
@@ -422,55 +431,6 @@ function InterestsPanel({ payload, accentColor }: PanelProps) {
           <p className="text-sm text-white/80 leading-[1.6]">{interest.description}</p>
         </div>
       ))}
-    </div>
-  )
-}
-
-// ─── Timeline ─────────────────────────────────────────────────────────────────
-
-const TIMELINE_PALETTES = [
-  { dot: "#60A5FA", bg: "rgba(96,165,250,0.07)", border: "rgba(96,165,250,0.22)" },
-  { dot: "#A78BFA", bg: "rgba(167,139,250,0.07)", border: "rgba(167,139,250,0.22)" },
-  { dot: "#F472B6", bg: "rgba(244,114,182,0.07)", border: "rgba(244,114,182,0.22)" },
-]
-
-function TimelinePanel({ payload }: PanelProps) {
-  return (
-    <div className="py-4 relative">
-      {/* Vertical spine */}
-      <div className="absolute top-4 bottom-4 bg-white/6" style={{ left: "19px", width: "1px" }} />
-
-      <div className="flex flex-col gap-5">
-        {payload.timeline.map((item, i) => {
-          const p = TIMELINE_PALETTES[i % TIMELINE_PALETTES.length]
-          return (
-            <div key={i} className="flex gap-4 items-start">
-              {/* Node */}
-              <div
-                className="flex-shrink-0 w-[38px] h-[38px] rounded-full flex items-center justify-center border z-10"
-                style={{ background: p.bg, borderColor: p.border }}
-              >
-                <div className="w-2.5 h-2.5 rounded-full" style={{ background: p.dot }} />
-              </div>
-
-              {/* Card */}
-              <div
-                className="flex-1 rounded-2xl border p-4 -mt-0.5"
-                style={{ background: p.bg, borderColor: p.border }}
-              >
-                <p
-                  className="text-[10px] uppercase tracking-[0.24em] mb-1.5 font-medium"
-                  style={{ color: p.dot }}
-                >
-                  {item.date}
-                </p>
-                <p className="text-sm font-semibold text-white mb-1">{item.title}</p>
-                <p className="text-sm text-white leading-[1.6]">{item.description}</p>
-              </div>
-            </div>
-          )
-        })}
-      </div>
     </div>
   )
 }

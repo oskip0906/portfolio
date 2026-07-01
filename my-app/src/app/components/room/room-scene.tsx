@@ -1,8 +1,8 @@
 "use client"
 
-import { useMemo, useRef } from "react"
+import { memo, useMemo, useRef } from "react"
 import { useFrame } from "@react-three/fiber"
-import { Text } from "@react-three/drei"
+import { Billboard, Text } from "@react-three/drei"
 import * as THREE from "three"
 import { useBackground } from "@/app/contexts/background-context"
 import type { Group } from "three"
@@ -77,7 +77,7 @@ export default function RoomScene({
 
 /* ─── Tea Shop Room ──────────────────────────────────────────── */
 
-function TeaShopRoom() {
+const TeaShopRoom = memo(function TeaShopRoom() {
   const { roomTheme, wallColor, ceilingColor, floorColor } = useBackground()
   const FLOOR = roomTheme.roomFloorColor
   const FLOOR_DARK = roomTheme.roomFloorDarkColor
@@ -249,24 +249,6 @@ function TeaShopRoom() {
         </group>
       ))}
 
-      {/* Decorative jars on back shelf */}
-      {([-2.8, -1.4, 0, 1.4, 2.8] as number[]).map((x, i) => {
-        const jarColors = ["#E8C8A0", "#C0A080", "#D8B888", "#A88868", "#E0D0B8"]
-        return (
-          <group key={`jar-${x}`}>
-            <mesh position={[x, 2.45, -9.3]}>
-              <cylinderGeometry args={[0.14, 0.12, 0.4, 10]} />
-              <meshStandardMaterial color={jarColors[i]} roughness={0.4} metalness={0.08} />
-            </mesh>
-            {/* Jar lid */}
-            <mesh position={[x, 2.68, -9.3]}>
-              <cylinderGeometry args={[0.11, 0.15, 0.06, 10]} />
-              <meshStandardMaterial color="#806040" roughness={0.5} metalness={0.15} />
-            </mesh>
-          </group>
-        )
-      })}
-
       {/* ═══════════════════════════════════════════════
           SIDE TABLES — enhanced with crossbar detail
          ═══════════════════════════════════════════════ */}
@@ -381,31 +363,6 @@ function TeaShopRoom() {
           DECORATIVE ELEMENTS
          ═══════════════════════════════════════════════ */}
 
-      {/* Small potted plants on counter */}
-      {([-4.2, 4.2] as number[]).map((x) => (
-        <group key={`plant-${x}`} position={[x, 1.04, -5.2]}>
-          {/* Pot */}
-          <mesh position={[0, 0.08, 0]}>
-            <cylinderGeometry args={[0.1, 0.08, 0.16, 8]} />
-            <meshStandardMaterial color="#C4956A" roughness={0.85} />
-          </mesh>
-          {/* Soil */}
-          <mesh position={[0, 0.17, 0]}>
-            <cylinderGeometry args={[0.09, 0.09, 0.02, 8]} />
-            <meshStandardMaterial color="#3A2A18" roughness={0.95} />
-          </mesh>
-          {/* Plant leaves (small spheres) */}
-          <mesh position={[0, 0.3, 0]}>
-            <sphereGeometry args={[0.1, 8, 8]} />
-            <meshStandardMaterial color="#4A8A3A" roughness={0.8} />
-          </mesh>
-          <mesh position={[0.05, 0.36, 0.03]}>
-            <sphereGeometry args={[0.07, 8, 8]} />
-            <meshStandardMaterial color="#5A9A48" roughness={0.8} />
-          </mesh>
-        </group>
-      ))}
-
       {/* Floor mat in front of counter */}
       <mesh position={[0, -0.17, -3.8]} rotation={[0, 0, 0]}>
         <boxGeometry args={[3.2, 0.02, 1.6]} />
@@ -417,19 +374,9 @@ function TeaShopRoom() {
         <meshStandardMaterial color="#6A4828" roughness={0.9} />
       </mesh>
 
-      {/* Small menu board leaning on counter */}
-      <mesh position={[-2.8, 1.28, -4.5]} rotation={[0.18, 0.12, 0]}>
-        <boxGeometry args={[0.55, 0.7, 0.04]} />
-        <meshStandardMaterial color="#1E1E1E" roughness={0.9} />
-      </mesh>
-      <mesh position={[-2.8, 1.28, -4.48]} rotation={[0.18, 0.12, 0]}>
-        <boxGeometry args={[0.48, 0.62, 0.02]} />
-        <meshStandardMaterial color={CHALKBOARD_INNER} roughness={0.95} />
-      </mesh>
-
     </group>
   )
-}
+})
 
 /* ─── Wall with Wainscoting ──────────────────────────────────── */
 
@@ -553,7 +500,7 @@ function PendantLight({
 
 /* ─── Bubble Tea Cup ──────────────────────────────────────────── */
 
-function BobaCup({
+const BobaCup = memo(function BobaCup({
   liquidColor,
   pearlColor,
   active,
@@ -702,7 +649,7 @@ function BobaCup({
       </mesh>
     </group>
   )
-}
+})
 
 /* ─── Cup Shell (hover / focus wrapper) ─────────────────────── */
 
@@ -743,29 +690,29 @@ function CupShell({
       >
         {children}
 
-        {/* Label above cup */}
-        <Text
-          position={[0, 2.6, 0]}
-          fontSize={0.22}
-          color={labelColor}
-          anchorX="center"
-          anchorY="middle"
-          outlineWidth={0.014}
-          outlineColor="rgba(0,0,0,0.5)"
-        >
-          {object.label}
-        </Text>
-        <Text
-          position={[0, 2.34, 0]}
-          fontSize={0.1}
-          color="rgba(255,255,255,0.42)"
-          anchorX="center"
-          anchorY="middle"
-          outlineWidth={0.008}
-          outlineColor="rgba(0,0,0,0.3)"
-        >
-          {object.subtitle}
-        </Text>
+        {/* Label above cup — always visible, naming the section */}
+        <Billboard position={[0, 2.55, 0]}>
+          <mesh position={[0, 0, -0.01]}>
+            <planeGeometry args={[1.1, 0.26]} />
+            <meshBasicMaterial
+              color="#000000"
+              transparent
+              opacity={active ? 0.42 : 0.26}
+              depthWrite={false}
+            />
+          </mesh>
+          <Text
+            position={[0, 0, 0]}
+            fontSize={active ? 0.17 : 0.14}
+            color={labelColor}
+            anchorX="center"
+            anchorY="middle"
+            outlineWidth={0.012}
+            outlineColor="rgba(0,0,0,0.6)"
+          >
+            {object.label}
+          </Text>
+        </Billboard>
       </group>
 
       {/* Floor ring indicator — double ring for depth */}

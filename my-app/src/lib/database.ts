@@ -57,9 +57,3 @@ export interface Intro {
   image: string
   resume?: string | null
 }
-
-export interface Memory {
-  title: string
-  date: string
-  description: string
-}
