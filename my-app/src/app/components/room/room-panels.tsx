@@ -45,24 +45,24 @@ function IntroPanel({ payload, accentColor }: PanelProps) {
 
   return (
     <div className="max-w-2xl mx-auto py-6 flex flex-col items-center gap-7 text-center">
-      {/* Profile image */}
-      <div
-        className="w-32 h-32 rounded-full overflow-hidden border border-white/12 flex-shrink-0"
-        style={{ boxShadow: `0 0 24px ${accentColor}28` }}
-      >
-        <img
-          src={intro.image || "/placeholder.svg"}
-          alt={intro.name}
-          className="w-full h-full object-cover"
-          loading="lazy"
-          onError={(e) => { (e.target as HTMLImageElement).src = "/placeholder.svg" }}
-        />
-      </div>
-
-      {/* Name + title */}
-      <div>
-        <h3 className="text-3xl font-bold text-white tracking-tight">{intro.name}</h3>
-        <p className="mt-2 text-sm text-white tracking-wide">{intro.title}</p>
+      {/* Header — image beside the name to keep the header compact */}
+      <div className="flex items-center gap-5 text-left">
+        <div
+          className="w-24 h-24 rounded-full overflow-hidden border border-white/12 flex-shrink-0"
+          style={{ boxShadow: `0 0 24px ${accentColor}28` }}
+        >
+          <img
+            src={intro.image || "/placeholder.svg"}
+            alt={intro.name}
+            className="w-full h-full object-cover"
+            loading="lazy"
+            onError={(e) => { (e.target as HTMLImageElement).src = "/placeholder.svg" }}
+          />
+        </div>
+        <div>
+          <h3 className="text-3xl font-bold text-white tracking-tight">{intro.name}</h3>
+          <p className="mt-2 text-sm text-white tracking-wide">{intro.title}</p>
+        </div>
       </div>
 
       {/* Bio */}

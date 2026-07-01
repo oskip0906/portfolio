@@ -84,7 +84,7 @@ export default function RoomOverlay({
             className="absolute inset-0 flex items-center justify-center p-4 pointer-events-none sm:p-6"
           >
             <div
-              className="pointer-events-auto flex h-[90vh] w-[75vw] flex-col overflow-hidden rounded-3xl border border-white/15 bg-black/25 shadow-[0_30px_80px_rgba(0,0,0,0.55)] backdrop-blur-2xl"
+              className="pointer-events-auto flex h-[75vh] w-[75vw] flex-col overflow-hidden rounded-3xl bg-transparent"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Accent stripe */}
@@ -93,9 +93,6 @@ export default function RoomOverlay({
               {/* Header */}
               <div className="flex flex-shrink-0 items-center justify-between gap-4 px-7 pt-5 pb-4">
                 <div className="min-w-0">
-                  <p className="text-[10px] uppercase tracking-[0.32em] text-white/50">
-                    {activeObject.subtitle}
-                  </p>
                   <h2 className="truncate text-2xl font-bold leading-tight tracking-tight text-white">
                     {activeObject.label}
                   </h2>
