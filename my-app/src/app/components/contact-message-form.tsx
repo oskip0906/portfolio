@@ -4,7 +4,7 @@ import { useState, useCallback, type FormEvent } from "react"
 
 type Props = {
   className?: string
-  /** "modal": tighter copy/spacing for the room overlay. "plain": light, minimal styling for the static resume page. */
+  /** "modal": tighter copy/spacing for the room overlay. "plain": light, minimal styling for the static webpage. */
   variant?: "default" | "modal" | "plain"
   accentColor?: string
 }

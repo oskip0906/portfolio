@@ -41,7 +41,7 @@ function WavyDivider() {
   )
 }
 
-export default async function ResumePage() {
+export default async function WebpagePage() {
   const payload = await getRoomPayload()
   const { intro, contacts, experiences, projects, research } = payload
   const linkableContacts = contacts.filter((c) => c.type.toLowerCase() !== "discord")

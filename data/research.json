@@ -1,7 +1,6 @@
 [
   {
     "id": 1,
-    "created_at": "2026-03-16 03:41:19.671694+00",
     "date": "Nov 2025 - Feb 2026",
     "link": "https://openreview.net/forum?id=OQ7cB8ChvF",
     "name": "H-WM System",
@@ -13,7 +12,6 @@
   },
   {
     "id": 3,
-    "created_at": "2026-01-15 15:49:26.830663+00",
     "date": "Jan 2025 - Apr 2025",
     "link": "https://aclanthology.org/2025.acl-demo.36",
     "name": "FORG3D Toolkit",
@@ -25,7 +23,6 @@
   },
   {
     "id": 5,
-    "created_at": "2026-01-15 15:49:26.95559+00",
     "date": "Jun 2024 - Dec 2024",
     "link": "https://www.jmir.org/2025/1/e70746",
     "name": "H5N1 Social Media Analysis",

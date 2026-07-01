@@ -1,7 +1,24 @@
 [
   {
     "id": 1,
-    "created_at": "2026-01-15 17:47:27.573199+00",
+    "date": "Sep 2026 (incoming)",
+    "link": "https://www.tesla.com/",
+    "title": "Data Engineer Intern",
+    "company": "Tesla",
+    "description": "Incoming data engineer intern on the Cell Team in Palo Alto, CA.",
+    "image": "/logos/tesla.jpg"
+  },
+  {
+    "id": 2,
+    "date": "May 2026 - Present",
+    "link": "https://www.expedia.ca/",
+    "title": "Software Developer Intern",
+    "company": "Expedia Group",
+    "description": "Developing and maintaining IOS/Android apps for Expedia brands. Migrated legacy code to modern containerized architecture and optimized performance.",
+    "image": "/logos/expedia.png"
+  },
+  {
+    "id": 3,
     "date": "Sep 2025 - Jan 2026",
     "link": "https://www.noahlab.com.hk/#/home",
     "title": "AI Engineering Intern",
@@ -10,8 +27,7 @@
     "image": "/logos/huawei.jpg"
   },
   {
-    "id": 2,
-    "created_at": "2026-01-15 17:47:27.653036+00",
+    "id": 4,
     "date": "May 2025 - Sep 2025",
     "link": "https://www.rbc.com/about-rbc.html",
     "title": "Software Developer Intern",
@@ -20,8 +36,7 @@
     "image": "/logos/rbc.jpg"
   },
   {
-    "id": 3,
-    "created_at": "2026-01-15 17:47:27.729935+00",
+    "id": 5,
     "date": "Jan 2025 - May 2025",
     "link": "https://compling-wat.com/",
     "title": "Research Intern",
@@ -30,33 +45,12 @@
     "image": "/logos/vector.jpg"
   },
   {
-    "id": 4,
-    "created_at": "2026-01-15 17:47:27.805656+00",
+    "id": 6,
     "date": "Jun 2024 - Dec 2024",
     "link": "https://aimmlab.org/",
     "title": "Machine Learning Researcher",
     "company": "AIMM Lab (UofT)",
     "description": "Researched social media discussions on diseases using data collection tools and machine learning models for sentiment analysis and topic modeling at the Artificial Intelligence and Mathematical Modeling Lab. First-authored a research paper published in JMIR.",
     "image": "/logos/aimmlab.png"
-  },
-  {
-    "id": 5,
-    "created_at": "2026-01-15 17:47:27.874946+00",
-    "date": "Apr 2024 - Sep 2024 ",
-    "link": "https://www.dataannotation.tech/about",
-    "title": "Freelance AI Trainer",
-    "company": "Data Annotation",
-    "description": "Worked on paid tasks including prompt engineering and model evaluation to train and improve AI models.",
-    "image": "/logos/dataannotation.jpg"
-  },
-  {
-    "id": 6,
-    "created_at": "2026-01-15 17:47:27.954333+00",
-    "date": "Aug 2023 - Oct 2023",
-    "link": "https://www.hazukido.com/en",
-    "title": "Baker & Barista",
-    "company": "Hazukido",
-    "description": "Worked at the Don Mills Hazukido Store; responsible for baking pastries, preparing drinks, handling cash, and providing customer service.",
-    "image": "/logos/hazukido.jpg"
   }
 ]

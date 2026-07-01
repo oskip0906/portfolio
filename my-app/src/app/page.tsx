@@ -27,13 +27,13 @@ export default async function ChooserPage() {
         </Link>
 
         <Link
-          href="/resume"
+          href="/webpage"
           className="group flex flex-col items-center gap-4 rounded-[1.8rem] border border-white/12 bg-white/[0.06] p-10 text-center transition-all hover:-translate-y-1 hover:bg-white/[0.1]"
         >
           <span className="text-5xl">📄</span>
-          <h2 className="text-xl font-semibold text-white">Static Resume</h2>
+          <h2 className="text-xl font-semibold text-white">Static Webpage</h2>
           <span className="inline-flex items-center gap-2 text-sm font-medium text-white/85 group-hover:text-white">
-            View the resume page <ArrowRight size={15} />
+            View the webpage <ArrowRight size={15} />
           </span>
         </Link>
       </div>

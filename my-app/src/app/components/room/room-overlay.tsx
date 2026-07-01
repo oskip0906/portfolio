@@ -1,8 +1,9 @@
 "use client"
 
 import { useState } from "react"
+import Link from "next/link"
 import { AnimatePresence, motion } from "framer-motion"
-import { Menu, X } from "lucide-react"
+import { ArrowLeft, Menu, X } from "lucide-react"
 import ColorPicker from "../color-picker"
 import SpotifyPlayer from "../spotify-player"
 import { SectionPanel } from "./room-panels"
@@ -159,6 +160,15 @@ export default function RoomOverlay({
                   setNavOpen(false)
                 }}
               />
+              <div className="my-1 border-t border-white/10" />
+              <Link
+                href="/"
+                onClick={() => setNavOpen(false)}
+                className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left transition-colors hover:bg-white/10"
+              >
+                <ArrowLeft size={14} className="flex-shrink-0 text-white/50" />
+                <span className="flex-1 text-sm text-white/85">Go back</span>
+              </Link>
             </motion.div>
           )}
         </AnimatePresence>
