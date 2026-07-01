@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import { Menu, X } from "lucide-react"
 import ColorPicker from "../color-picker"
@@ -53,6 +53,16 @@ export default function RoomOverlay({
   const allObjects = payload.objects
   const activeObject = allObjects.find((o) => o.id === focusedId) ?? null
 
+  // Esc closes the open popup.
+  useEffect(() => {
+    if (!focusedId) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onReset()
+    }
+    window.addEventListener("keydown", onKey)
+    return () => window.removeEventListener("keydown", onKey)
+  }, [focusedId, onReset])
+
   return (
     <div className="pointer-events-none fixed inset-0 z-20">
 
@@ -84,7 +94,7 @@ export default function RoomOverlay({
             className="absolute inset-0 flex items-center justify-center p-4 pointer-events-none sm:p-6"
           >
             <div
-              className="pointer-events-auto flex h-[75vh] w-[75vw] flex-col overflow-hidden rounded-3xl bg-transparent"
+              className="pointer-events-auto flex h-[75vh] w-[75vw] flex-col overflow-hidden rounded-3xl border border-white/10 bg-neutral-950/90 shadow-[0_30px_80px_rgba(0,0,0,0.55)] backdrop-blur-2xl"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Accent stripe */}

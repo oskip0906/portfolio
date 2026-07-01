@@ -230,6 +230,11 @@ function ProjectsPanel({ payload, accentColor }: PanelProps) {
         ))}
       </div>
       <ProjectDetail project={project} accentColor={accentColor} />
+      {count > 1 && (
+        <p className="pt-1 text-center text-[11px] uppercase tracking-[0.18em] text-white/35">
+          Use arrow keys to navigate
+        </p>
+      )}
     </div>
   )
 }
@@ -339,6 +344,11 @@ function ResearchPanel({ payload, accentColor }: PanelProps) {
         ))}
       </div>
       <ResearchDetail paper={paper} accentColor={accentColor} />
+      {count > 1 && (
+        <p className="pt-1 text-center text-[11px] uppercase tracking-[0.18em] text-white/35">
+          Use arrow keys to navigate
+        </p>
+      )}
     </div>
   )
 }

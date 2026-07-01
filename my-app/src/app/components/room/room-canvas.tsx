@@ -211,8 +211,22 @@ function CameraController({
   const desiredPos = useRef(new THREE.Vector3())
   const desiredLook = useRef(new THREE.Vector3())
   const readyFiredRef = useRef(false)
+  const prevFocusedRef = useRef<RoomObjectId | null>(null)
 
   useFrame((_, delta) => {
+    // When a focused view closes, adopt the camera's current position as the
+    // new orbit state so it stays put instead of swinging back to the centre.
+    if (prevFocusedRef.current && !focusedId) {
+      const p = camera.position
+      const dy = p.y - ORBIT_CENTER_Y
+      const horiz = Math.hypot(p.x, p.z)
+      const radius = THREE.MathUtils.clamp(Math.hypot(horiz, dy), RADIUS_MIN, RADIUS_MAX)
+      orbitRef.current.radius = radius
+      orbitRef.current.theta = Math.atan2(p.x, p.z)
+      orbitRef.current.phi = THREE.MathUtils.clamp(Math.atan2(dy, horiz), -0.15, clampedMaxPhi(radius))
+    }
+    prevFocusedRef.current = focusedId
+
     if (focusedId) {
       const obj = focusLookup[focusedId]
       desiredPos.current.fromArray(obj.cameraPosition)

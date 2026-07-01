@@ -28,6 +28,19 @@ const NAV_ITEMS = [
   { id: "contact", label: "Contact" },
 ]
 
+// A decorative squiggly divider between sections.
+function WavyDivider() {
+  let d = "M0 8 Q 5 3 10 8"
+  for (let x = 20; x <= 1200; x += 10) d += ` T ${x} 8`
+  return (
+    <div className="my-8 text-gray-300" aria-hidden="true">
+      <svg viewBox="0 0 1200 16" preserveAspectRatio="none" fill="none" className="h-3 w-full">
+        <path d={d} stroke="currentColor" strokeWidth={2} strokeLinecap="round" />
+      </svg>
+    </div>
+  )
+}
+
 export default async function ResumePage() {
   const payload = await getRoomPayload()
   const { intro, contacts, experiences, projects, research } = payload
@@ -127,7 +140,9 @@ export default async function ResumePage() {
               </div>
             </section>
 
-            <section id="projects" className="border-t border-gray-200 py-10">
+            <WavyDivider />
+
+            <section id="projects" className="py-4">
               <h2 className="border-b border-gray-200 pb-2 text-base font-semibold text-gray-900">Projects</h2>
               <div className="mt-4 grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
                 {projects.map((project, i) => (
@@ -166,7 +181,9 @@ export default async function ResumePage() {
               </div>
             </section>
 
-            <section id="research" className="border-t border-gray-200 py-10">
+            <WavyDivider />
+
+            <section id="research" className="py-4">
               <h2 className="border-b border-gray-200 pb-2 text-base font-semibold text-gray-900">Research</h2>
               <div className="mt-4 flex flex-col gap-6">
                 {research.map((paper, i) => (
@@ -200,15 +217,17 @@ export default async function ResumePage() {
                 ))}
               </div>
             </section>
+
+            <WavyDivider />
+
+            <section id="contact" className="py-4">
+              <h2 className="border-b border-gray-200 pb-2 text-base font-semibold text-gray-900">Contact</h2>
+              <div className="mt-4">
+                <ContactMessageForm variant="plain" />
+              </div>
+            </section>
           </main>
         </div>
-
-        <section id="contact" className="mt-4 w-full border-t border-gray-200 py-10 md:ml-auto md:w-1/2">
-          <h2 className="border-b border-gray-200 pb-2 text-base font-semibold text-gray-900">Contact</h2>
-          <div className="mt-4">
-            <ContactMessageForm variant="plain" />
-          </div>
-        </section>
       </div>
     </div>
   )
