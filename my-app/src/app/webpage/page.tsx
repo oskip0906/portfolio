@@ -104,7 +104,9 @@ export default async function WebpagePage() {
 
           {/* ── Main content ── */}
           <main className="flex-1 md:max-w-3xl">
-            <section id="experience" className="pb-10">
+            <WavyDivider />
+
+            <section id="experience" className="py-4">
               <h2 className="border-b border-gray-200 pb-2 text-base font-semibold text-gray-900">Experience</h2>
               <div className="mt-4 grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
                 {experiences.map((exp, i) => (
