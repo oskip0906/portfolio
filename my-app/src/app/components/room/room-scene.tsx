@@ -2,7 +2,7 @@
 
 import { useMemo, useRef } from "react"
 import { useFrame } from "@react-three/fiber"
-import { Billboard, Text } from "@react-three/drei"
+import { Text } from "@react-three/drei"
 import * as THREE from "three"
 import { useBackground } from "@/app/contexts/background-context"
 import type { Group } from "three"
@@ -725,7 +725,6 @@ function CupShell({
 }) {
   const groupRef = useRef<Group>(null)
   const scaleVec = useRef(new THREE.Vector3(1, 1, 1))
-  const labelColor = active ? object.color : "rgba(255,255,255,0.85)"
 
   useFrame(() => {
     if (!groupRef.current) return
@@ -742,30 +741,6 @@ function CupShell({
         onPointerOut={(e) => { e.stopPropagation(); onHoverChange(null) }}
       >
         {children}
-
-        {/* Label above cup — always visible, naming the section */}
-        <Billboard position={[0, 2.55, 0]}>
-          <mesh position={[0, 0, -0.01]}>
-            <planeGeometry args={[1.1, 0.26]} />
-            <meshBasicMaterial
-              color="#000000"
-              transparent
-              opacity={active ? 0.42 : 0.26}
-              depthWrite={false}
-            />
-          </mesh>
-          <Text
-            position={[0, 0, 0]}
-            fontSize={active ? 0.17 : 0.14}
-            color={labelColor}
-            anchorX="center"
-            anchorY="middle"
-            outlineWidth={0.012}
-            outlineColor="rgba(0,0,0,0.6)"
-          >
-            {object.label}
-          </Text>
-        </Billboard>
       </group>
 
       {/* Floor ring indicator — double ring for depth */}

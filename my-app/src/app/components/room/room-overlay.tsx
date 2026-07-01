@@ -50,7 +50,6 @@ export default function RoomOverlay({
   onReset: () => void
 }) {
   const [navOpen, setNavOpen] = useState(false)
-  const [modalNavOpen, setModalNavOpen] = useState(false)
   const allObjects = payload.objects
   const activeObject = allObjects.find((o) => o.id === focusedId) ?? null
 
@@ -67,70 +66,39 @@ export default function RoomOverlay({
             exit={{ opacity: 0 }}
             transition={{ duration: 0.22 }}
             className="absolute inset-0 pointer-events-auto"
-            style={{ background: "rgba(0,0,0,0.58)", backdropFilter: "blur(3px)" }}
+            style={{ background: "rgba(0,0,0,0.5)", backdropFilter: "blur(2px)" }}
             onClick={onReset}
           />
         )}
       </AnimatePresence>
 
-      {/* ── Full-screen section content — no frame, just the content over the dimmed room ── */}
+      {/* ── Section popup — 75vw × 90vh frosted-glass panel: barely-there frame, opaque content ── */}
       <AnimatePresence>
         {focusedId && activeObject && (
           <motion.div
             key="modal"
-            initial={{ opacity: 0, scale: 0.98 }}
+            initial={{ opacity: 0, scale: 0.97 }}
             animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.98 }}
+            exit={{ opacity: 0, scale: 0.97 }}
             transition={{ type: "spring", damping: 32, stiffness: 340, mass: 0.8 }}
-            className="absolute inset-0 pointer-events-none"
+            className="absolute inset-0 flex items-center justify-center p-4 pointer-events-none sm:p-6"
           >
             <div
-              className="pointer-events-auto flex h-full w-full flex-col overflow-hidden"
+              className="pointer-events-auto flex h-[90vh] w-[75vw] flex-col overflow-hidden rounded-3xl border border-white/15 bg-black/25 shadow-[0_30px_80px_rgba(0,0,0,0.55)] backdrop-blur-2xl"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Accent stripe */}
               <div className="flex-shrink-0 h-[3px] w-full" style={{ background: activeObject.color }} />
 
-              {/* Header — always visible, doubles as the section switcher now that prev/next is gone */}
-              <div className="flex items-center justify-between gap-4 px-6 pt-5 pb-3 flex-shrink-0">
-                <div className="flex min-w-0 items-center gap-3">
-                  <div className="relative flex-shrink-0">
-                    <button
-                      onClick={() => setModalNavOpen((v) => !v)}
-                      aria-label="Browse sections"
-                      aria-expanded={modalNavOpen}
-                      className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/[0.06] text-white transition-colors hover:bg-white/14"
-                    >
-                      <Menu size={15} />
-                    </button>
-                    <AnimatePresence>
-                      {modalNavOpen && (
-                        <motion.div
-                          initial={{ opacity: 0, y: -8, scale: 0.96 }}
-                          animate={{ opacity: 1, y: 0, scale: 1 }}
-                          exit={{ opacity: 0, y: -8, scale: 0.96 }}
-                          transition={{ duration: 0.18 }}
-                          className="absolute left-0 top-full mt-2 w-60 overflow-hidden rounded-2xl border border-white/10 bg-black/90 p-1.5 shadow-[0_20px_50px_rgba(0,0,0,0.4)] backdrop-blur-xl z-10"
-                        >
-                          <SectionsList
-                            objects={allObjects}
-                            onSelect={(id) => {
-                              onFocusChange(id)
-                              setModalNavOpen(false)
-                            }}
-                          />
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                  <div className="min-w-0">
-                    <p className="text-[10px] uppercase tracking-[0.32em] text-white/50">
-                      {activeObject.subtitle}
-                    </p>
-                    <h2 className="text-xl font-bold text-white leading-tight tracking-tight truncate">
-                      {activeObject.label}
-                    </h2>
-                  </div>
+              {/* Header */}
+              <div className="flex flex-shrink-0 items-center justify-between gap-4 px-7 pt-5 pb-4">
+                <div className="min-w-0">
+                  <p className="text-[10px] uppercase tracking-[0.32em] text-white/50">
+                    {activeObject.subtitle}
+                  </p>
+                  <h2 className="truncate text-2xl font-bold leading-tight tracking-tight text-white">
+                    {activeObject.label}
+                  </h2>
                 </div>
                 <button
                   onClick={onReset}
@@ -142,7 +110,7 @@ export default function RoomOverlay({
               </div>
 
               {/* Section content — fills remaining space */}
-              <div className="flex-1 overflow-y-auto px-6 pb-6">
+              <div className="flex-1 overflow-y-auto px-7 pb-7">
                 <SectionPanel
                   id={activeObject.id}
                   payload={payload}
@@ -160,42 +128,40 @@ export default function RoomOverlay({
         <SpotifyPlayer variant="hud" />
       </div>
 
-      {/* ── Section navigation dock (room view only — section content has its own switcher) ── */}
-      {!focusedId && (
-        <div className="pointer-events-auto absolute left-4 top-4 sm:left-6 sm:top-6">
-          <button
-            onClick={() => setNavOpen((v) => !v)}
-            aria-label="Browse sections"
-            aria-expanded={navOpen}
-            className="flex h-11 items-center gap-2 rounded-full border border-white/10 bg-black/80 px-3.5 text-white shadow-[0_14px_34px_rgba(0,0,0,0.28)] backdrop-blur-xl transition-transform hover:scale-105"
-          >
-            <Menu size={16} />
-            <span className="text-xs font-medium uppercase tracking-[0.18em] text-white/70">
-              Sections
-            </span>
-          </button>
+      {/* ── Section navigation dock — ALWAYS visible, whether a popup is open or not ── */}
+      <div className="pointer-events-auto absolute left-4 top-4 z-10 sm:left-6 sm:top-6">
+        <button
+          onClick={() => setNavOpen((v) => !v)}
+          aria-label="Browse sections"
+          aria-expanded={navOpen}
+          className="flex h-11 items-center gap-2 rounded-full border border-white/10 bg-black/80 px-3.5 text-white shadow-[0_14px_34px_rgba(0,0,0,0.28)] backdrop-blur-xl transition-transform hover:scale-105"
+        >
+          <Menu size={16} />
+          <span className="text-xs font-medium uppercase tracking-[0.18em] text-white/70">
+            Sections
+          </span>
+        </button>
 
-          <AnimatePresence>
-            {navOpen && (
-              <motion.div
-                initial={{ opacity: 0, y: -8, scale: 0.96 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -8, scale: 0.96 }}
-                transition={{ duration: 0.18 }}
-                className="mt-2 w-60 overflow-hidden rounded-2xl border border-white/10 bg-black/90 p-1.5 shadow-[0_20px_50px_rgba(0,0,0,0.4)] backdrop-blur-xl"
-              >
-                <SectionsList
-                  objects={allObjects}
-                  onSelect={(id) => {
-                    onFocusChange(id)
-                    setNavOpen(false)
-                  }}
-                />
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      )}
+        <AnimatePresence>
+          {navOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -8, scale: 0.96 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -8, scale: 0.96 }}
+              transition={{ duration: 0.18 }}
+              className="mt-2 w-60 overflow-hidden rounded-2xl border border-white/10 bg-black/90 p-1.5 shadow-[0_20px_50px_rgba(0,0,0,0.4)] backdrop-blur-xl"
+            >
+              <SectionsList
+                objects={allObjects}
+                onSelect={(id) => {
+                  onFocusChange(id)
+                  setNavOpen(false)
+                }}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </div>
   )
 }

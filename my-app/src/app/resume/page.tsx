@@ -95,24 +95,33 @@ export default async function ResumePage() {
               <h2 className="border-b border-gray-200 pb-2 text-base font-semibold text-gray-900">Experience</h2>
               <div className="mt-4 grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
                 {experiences.map((exp, i) => (
-                  <div key={i}>
-                    <div className="flex flex-wrap items-baseline justify-between gap-2">
-                      <p className="text-sm font-medium text-gray-900">
-                        {exp.title} · {exp.company}
-                      </p>
-                      <p className="text-xs text-gray-500">{exp.date as string}</p>
+                  <div key={i} className="flex gap-3">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={exp.image || "/placeholder.svg"}
+                      alt={exp.company}
+                      className="mt-0.5 h-9 w-9 flex-shrink-0 rounded-md border border-gray-200 object-cover"
+                      loading="lazy"
+                    />
+                    <div className="min-w-0 flex-1">
+                      <div className="flex flex-wrap items-baseline justify-between gap-2">
+                        <p className="text-sm font-medium text-gray-900">
+                          {exp.title} · {exp.company}
+                        </p>
+                        <p className="text-xs text-gray-500">{exp.date as string}</p>
+                      </div>
+                      <p className="mt-1.5 text-sm leading-6 text-gray-700">{exp.description}</p>
+                      {exp.link && (
+                        <a
+                          href={exp.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="mt-1 inline-block text-sm text-blue-700 hover:underline"
+                        >
+                          Website
+                        </a>
+                      )}
                     </div>
-                    <p className="mt-1.5 text-sm leading-6 text-gray-700">{exp.description}</p>
-                    {exp.link && (
-                      <a
-                        href={exp.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="mt-1 inline-block text-sm text-blue-700 hover:underline"
-                      >
-                        Website
-                      </a>
-                    )}
                   </div>
                 ))}
               </div>
@@ -194,7 +203,7 @@ export default async function ResumePage() {
           </main>
         </div>
 
-        <section id="contact" className="border-t border-gray-200 py-10">
+        <section id="contact" className="mt-4 w-full border-t border-gray-200 py-10 md:ml-auto md:w-1/2">
           <h2 className="border-b border-gray-200 pb-2 text-base font-semibold text-gray-900">Contact</h2>
           <div className="mt-4">
             <ContactMessageForm variant="plain" />
