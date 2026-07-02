@@ -13,6 +13,16 @@ interface PanelProps {
   accentColor: string
 }
 
+// The section accents are light pastels — darken them for filled buttons so
+// the white text stays readable.
+function darkenHex(hex: string, amount = 0.3) {
+  const n = parseInt(hex.slice(1), 16)
+  const r = Math.round(((n >> 16) & 255) * (1 - amount))
+  const g = Math.round(((n >> 8) & 255) * (1 - amount))
+  const b = Math.round((n & 255) * (1 - amount))
+  return `rgb(${r}, ${g}, ${b})`
+}
+
 // ─── Dispatcher ──────────────────────────────────────────────────────────────
 
 export function SectionPanel({ id, payload, accentColor }: PanelProps & { id: RoomObjectId }) {
@@ -221,7 +231,7 @@ function ProjectsPanel({ payload, accentColor }: PanelProps) {
             onClick={() => setSelected(i)}
             className="flex-shrink-0 px-3 py-1.5 rounded-full text-xs transition-colors whitespace-nowrap"
             style={selected === i
-              ? { background: accentColor, color: "#fff" }
+              ? { background: darkenHex(accentColor), color: "#fff" }
               : { background: "rgba(255,255,255,0.06)", color: "rgba(255,255,255,0.45)" }
             }
           >
@@ -300,7 +310,7 @@ function ProjectDetail({
             target="_blank"
             rel="noopener noreferrer"
             className="ml-auto inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-medium text-white transition-all hover:brightness-110"
-            style={{ background: accentColor }}
+            style={{ background: darkenHex(accentColor) }}
           >
             Open project <MoveUpRight size={11} />
           </a>
@@ -335,7 +345,7 @@ function ResearchPanel({ payload, accentColor }: PanelProps) {
             onClick={() => setSelected(i)}
             className="flex-shrink-0 px-3 py-1.5 rounded-full text-xs transition-colors whitespace-nowrap"
             style={selected === i
-              ? { background: accentColor, color: "#fff" }
+              ? { background: darkenHex(accentColor), color: "#fff" }
               : { background: "rgba(255,255,255,0.06)", color: "rgba(255,255,255,0.45)" }
             }
           >
@@ -404,7 +414,7 @@ function ResearchDetail({
             target="_blank"
             rel="noopener noreferrer"
             className="ml-auto inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-medium text-white transition-all hover:brightness-110"
-            style={{ background: accentColor }}
+            style={{ background: darkenHex(accentColor) }}
           >
             Read paper <BookOpen size={11} />
           </a>

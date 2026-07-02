@@ -112,7 +112,49 @@ const TeaShopRoom = memo(function TeaShopRoom() {
     return tex
   }, [floorColor, gl])
 
+  // Procedural plaster-panel texture for the ceiling, tinted by the theme's
+  // ceiling colour — subtle speckle grain plus faint panel seams.
+  const ceilingTexture = useMemo(() => {
+    const size = 256
+    const canvas = document.createElement("canvas")
+    canvas.width = size
+    canvas.height = size
+    const ctx = canvas.getContext("2d")
+    if (!ctx) return null
+
+    const fract = (v: number) => v - Math.floor(v)
+    ctx.fillStyle = `#${new THREE.Color(ceilingColor).getHexString()}`
+    ctx.fillRect(0, 0, size, size)
+
+    // Deterministic speckle grain
+    for (let i = 0; i < 500; i++) {
+      const x = fract(Math.sin(i * 12.9898) * 43758.5453) * size
+      const y = fract(Math.sin(i * 78.233) * 12543.123) * size
+      const light = fract(Math.sin(i * 3.7) * 937.31) > 0.5
+      ctx.fillStyle = light ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)"
+      ctx.fillRect(x, y, 2, 2)
+    }
+
+    // Panel seams along the tile edges — tiling turns these into a grid
+    ctx.strokeStyle = "rgba(0,0,0,0.09)"
+    ctx.lineWidth = 2
+    ctx.beginPath()
+    ctx.moveTo(0, 1)
+    ctx.lineTo(size, 1)
+    ctx.moveTo(1, 0)
+    ctx.lineTo(1, size)
+    ctx.stroke()
+
+    const tex = new THREE.CanvasTexture(canvas)
+    tex.wrapS = tex.wrapT = THREE.RepeatWrapping
+    tex.repeat.set(6, 6)
+    tex.anisotropy = Math.min(8, gl.capabilities.getMaxAnisotropy())
+    tex.colorSpace = THREE.SRGBColorSpace
+    return tex
+  }, [ceilingColor, gl])
+
   useEffect(() => () => { floorTexture?.dispose() }, [floorTexture])
+  useEffect(() => () => { ceilingTexture?.dispose() }, [ceilingTexture])
 
   // Refined wood palette
   const COUNTER_DARK = "#2A1608"
@@ -120,7 +162,6 @@ const TeaShopRoom = memo(function TeaShopRoom() {
   const COUNTER_TOP = "#5A3418"
   const TABLE_WOOD = "#8A5C28"
   const TABLE_TOP = "#A07040"
-  const BEAM_COLOR = "#6A4420"
   const WALL_UPPER = wallColor
   const CEILING_COLOR = ceilingColor
   const PLANK_A = floorColor
@@ -145,26 +186,16 @@ const TeaShopRoom = memo(function TeaShopRoom() {
       </mesh>
 
       {/* ═══════════════════════════════════════════════
-          CEILING — warm plaster with exposed beams
+          CEILING — textured plaster panels, no beams
          ═══════════════════════════════════════════════ */}
       <mesh position={[0, 6.2, 0]}>
         <boxGeometry args={[22, 0.15, 20]} />
-        <meshStandardMaterial color={CEILING_COLOR} roughness={0.92} />
+        <meshStandardMaterial
+          map={ceilingTexture ?? undefined}
+          color={ceilingTexture ? "#FFFFFF" : CEILING_COLOR}
+          roughness={0.92}
+        />
       </mesh>
-      {/* Ceiling beams running front-to-back */}
-      {([-4.5, 0, 4.5] as number[]).map((x) => (
-        <mesh key={`beam-${x}`} position={[x, 6.08, 0]}>
-          <boxGeometry args={[0.35, 0.24, 19.6]} />
-          <meshStandardMaterial color={BEAM_COLOR} roughness={0.85} metalness={0.04} />
-        </mesh>
-      ))}
-      {/* Cross beams */}
-      {([-5, 0, 5] as number[]).map((z) => (
-        <mesh key={`xbeam-${z}`} position={[0, 6.02, z]}>
-          <boxGeometry args={[19.6, 0.16, 0.28]} />
-          <meshStandardMaterial color={BEAM_COLOR} roughness={0.85} metalness={0.04} />
-        </mesh>
-      ))}
 
       {/* ═══════════════════════════════════════════════
           WALLS — bare plaster, nothing mounted on them
@@ -187,20 +218,12 @@ const TeaShopRoom = memo(function TeaShopRoom() {
       </mesh>
 
       {/* ═══════════════════════════════════════════════
-          FAKE WINDOWS — 4 per wall, warm glowing panes
+          FAKE WINDOWS — one 4-tile window per wall
          ═══════════════════════════════════════════════ */}
-      {([-8.1, -2.7, 2.7, 8.1] as number[]).map((x) => (
-        <FakeWindow key={`win-n-${x}`} position={[x, 3.6, -9.62]} rotationY={0} />
-      ))}
-      {([-8.1, -2.7, 2.7, 8.1] as number[]).map((x) => (
-        <FakeWindow key={`win-s-${x}`} position={[x, 3.6, 9.62]} rotationY={Math.PI} />
-      ))}
-      {([-7.5, -2.5, 2.5, 7.5] as number[]).map((z) => (
-        <FakeWindow key={`win-w-${z}`} position={[-10.32, 3.6, z]} rotationY={Math.PI / 2} />
-      ))}
-      {([-7.5, -2.5, 2.5, 7.5] as number[]).map((z) => (
-        <FakeWindow key={`win-e-${z}`} position={[10.32, 3.6, z]} rotationY={-Math.PI / 2} />
-      ))}
+      <FakeWindow position={[0, 3.6, -9.62]} rotationY={0} />
+      <FakeWindow position={[0, 3.6, 9.62]} rotationY={Math.PI} />
+      <FakeWindow position={[-10.32, 3.6, 0]} rotationY={Math.PI / 2} />
+      <FakeWindow position={[10.32, 3.6, 0]} rotationY={-Math.PI / 2} />
 
       {/* ═══════════════════════════════════════════════
           BACK COUNTER — enhanced with shelving
@@ -328,21 +351,21 @@ function FakeWindow({
     <group position={position} rotation={[0, rotationY, 0]}>
       {/* Frame */}
       <mesh>
-        <boxGeometry args={[1.9, 2.1, 0.08]} />
+        <boxGeometry args={[2.7, 2.3, 0.08]} />
         <meshStandardMaterial color={FRAME} roughness={0.7} metalness={0.05} />
       </mesh>
       {/* Glowing pane — unlit material reads as daylight coming through */}
       <mesh position={[0, 0, 0.045]}>
-        <planeGeometry args={[1.6, 1.8]} />
+        <planeGeometry args={[2.4, 2.0]} />
         <meshBasicMaterial color="#FFE9C6" />
       </mesh>
-      {/* Mullions */}
+      {/* Cross mullions — split the pane into 4 tiles */}
       <mesh position={[0, 0, 0.055]}>
-        <boxGeometry args={[0.07, 1.8, 0.02]} />
+        <boxGeometry args={[0.09, 2.0, 0.02]} />
         <meshStandardMaterial color={FRAME} roughness={0.7} />
       </mesh>
       <mesh position={[0, 0, 0.055]}>
-        <boxGeometry args={[1.6, 0.07, 0.02]} />
+        <boxGeometry args={[2.4, 0.09, 0.02]} />
         <meshStandardMaterial color={FRAME} roughness={0.7} />
       </mesh>
     </group>
