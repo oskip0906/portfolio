@@ -252,21 +252,6 @@ const TeaShopRoom = memo(function TeaShopRoom() {
         CURRENTLY OPEN
       </Text>
 
-      {/* ═══════════════════════════════════════════════
-          DECORATIVE ELEMENTS
-         ═══════════════════════════════════════════════ */}
-
-      {/* Floor mat in front of counter */}
-      <mesh position={[0, -0.17, -3.8]} rotation={[0, 0, 0]}>
-        <boxGeometry args={[3.2, 0.02, 1.6]} />
-        <meshStandardMaterial color="#8A6848" roughness={0.95} />
-      </mesh>
-      {/* Mat border */}
-      <mesh position={[0, -0.165, -3.8]}>
-        <boxGeometry args={[3.4, 0.005, 1.8]} />
-        <meshStandardMaterial color="#6A4828" roughness={0.9} />
-      </mesh>
-
     </group>
   )
 })
