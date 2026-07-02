@@ -166,7 +166,7 @@ export default function RoomCanvas({
       }}
     >
       <Canvas
-        dpr={1}
+        dpr={[1, 2]}
         gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
         camera={{ position: [2.8, 4.2, 7.6], fov: 58, near: 0.1, far: 200 }}
         onPointerMissed={() => onHoverChange(null)}

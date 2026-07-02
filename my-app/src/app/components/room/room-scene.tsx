@@ -23,28 +23,17 @@ export default function RoomScene({
   onFocusChange,
   onHoverChange,
 }: RoomSceneProps) {
-  const { roomTheme } = useBackground()
-
   const handleObjectClick = (object: RoomObjectManifest) => {
     onFocusChange(object.id)
   }
 
   return (
     <>
-      {/* ── Warm tea-shop lighting ── */}
-      <ambientLight intensity={0.7} color="#FFF4E0" />
-      <hemisphereLight intensity={0.5} color="#FFE8C0" groundColor="#5A3820" />
-
-      {/* Main overhead warm lights */}
-      <pointLight position={[0, 5.4, -1]} intensity={18} color="#FFD090" distance={24} />
-      <pointLight position={[0, 5.4, 3]} intensity={14} color="#FFE0A0" distance={20} />
-
-      {/* Accent fill lights for depth */}
-      <pointLight position={[-5, 3.5, 4]} intensity={6} color="#FFE8C8" distance={14} />
-      <pointLight position={[5, 3.5, 4]} intensity={6} color="#FFE8C8" distance={14} />
-
-      {/* Soft back-wall wash */}
-      <pointLight position={[0, 4.0, -4.5]} intensity={8} color="#FFDCA0" distance={16} />
+      {/* ── Warm tea-shop lighting — few lights = cheap fragment shading ── */}
+      <ambientLight intensity={0.9} color="#FFF4E0" />
+      <hemisphereLight intensity={0.65} color="#FFE8C0" groundColor="#5A3820" />
+      <pointLight position={[0, 5.4, 1]} intensity={22} color="#FFD898" distance={26} />
+      <pointLight position={[0, 4.2, -4.5]} intensity={9} color="#FFDCA0" distance={18} />
 
       <TeaShopRoom />
 
@@ -61,7 +50,6 @@ export default function RoomScene({
             hovered={isHovered}
             onFocus={() => handleObjectClick(object)}
             onHoverChange={onHoverChange}
-            roomTheme={roomTheme}
           >
             <BobaCup
               liquidColor={object.color}
@@ -78,11 +66,7 @@ export default function RoomScene({
 /* ─── Tea Shop Room ──────────────────────────────────────────── */
 
 const TeaShopRoom = memo(function TeaShopRoom() {
-  const { roomTheme, wallColor, ceilingColor, floorColor } = useBackground()
-  const FLOOR = roomTheme.roomFloorColor
-  const FLOOR_DARK = roomTheme.roomFloorDarkColor
-  const PILLAR = roomTheme.roomPillarColor
-  const PILLAR_ACCENT = roomTheme.roomPillarAccentColor
+  const { wallColor, ceilingColor, floorColor } = useBackground()
 
   // Refined wood palette
   const COUNTER_DARK = "#2A1608"
@@ -90,16 +74,10 @@ const TeaShopRoom = memo(function TeaShopRoom() {
   const COUNTER_TOP = "#5A3418"
   const TABLE_WOOD = "#8A5C28"
   const TABLE_TOP = "#A07040"
-  const BASEBOARD = "#2C1A0A"
-  const CROWN = "#C8A878"
   const BEAM_COLOR = "#6A4420"
-  const WAINSCOT_PANEL = "#E8D8C4"
-  const WAINSCOT_RAIL = "#C0A888"
   const WALL_UPPER = wallColor
   const CEILING_COLOR = ceilingColor
   const PLANK_A = floorColor
-  // derive a slightly darker plank variant by blending toward dark
-  const PLANK_B = floorColor
   const PENDANT_SHADE = "#1A1A1A"
   const PENDANT_BRASS = "#B8944C"
   const CHALKBOARD_FRAME = "#5A3C1E"
@@ -109,26 +87,12 @@ const TeaShopRoom = memo(function TeaShopRoom() {
   return (
     <group>
       {/* ═══════════════════════════════════════════════
-          FLOOR — alternating wood plank strips
+          FLOOR — single slab (the plank strips all shared one
+          colour, so 19 meshes rendered identically to this one)
          ═══════════════════════════════════════════════ */}
-      {Array.from({ length: 18 }, (_, i) => {
-        const z = -8.5 + i * 1.0
-        const isEven = i % 2 === 0
-        return (
-          <mesh key={`plank-${i}`} position={[0, -0.19, z]}>
-            <boxGeometry args={[20, 0.02, 0.94]} />
-            <meshStandardMaterial
-              color={isEven ? PLANK_A : PLANK_B}
-              roughness={0.82}
-              metalness={0.02}
-            />
-          </mesh>
-        )
-      })}
-      {/* Floor base underneath planks */}
-      <mesh position={[0, -0.22, 0]}>
-        <boxGeometry args={[22, 0.06, 20]} />
-        <meshStandardMaterial color={FLOOR_DARK} roughness={0.95} />
+      <mesh position={[0, -0.2, 0]}>
+        <boxGeometry args={[22, 0.08, 20]} />
+        <meshStandardMaterial color={PLANK_A} roughness={0.85} metalness={0.02} />
       </mesh>
 
       {/* ═══════════════════════════════════════════════
@@ -154,48 +118,24 @@ const TeaShopRoom = memo(function TeaShopRoom() {
       ))}
 
       {/* ═══════════════════════════════════════════════
-          WALLS — upper plaster + lower wainscoting
+          WALLS — bare plaster, nothing mounted on them
          ═══════════════════════════════════════════════ */}
-      <WallWithWainscoting
-        position={[0, 3.0, -9.8]}
-        size={[21.6, 6.0, 0.3]}
-        upperColor={WALL_UPPER}
-        panelColor={WAINSCOT_PANEL}
-        railColor={WAINSCOT_RAIL}
-        baseboardColor={BASEBOARD}
-        crownColor={CROWN}
-        facing="south"
-      />
-      <WallWithWainscoting
-        position={[0, 3.0, 9.8]}
-        size={[21.6, 6.0, 0.3]}
-        upperColor={WALL_UPPER}
-        panelColor={WAINSCOT_PANEL}
-        railColor={WAINSCOT_RAIL}
-        baseboardColor={BASEBOARD}
-        crownColor={CROWN}
-        facing="north"
-      />
-      <WallWithWainscoting
-        position={[-10.5, 3.0, 0]}
-        size={[0.3, 6.0, 19.9]}
-        upperColor={WALL_UPPER}
-        panelColor={WAINSCOT_PANEL}
-        railColor={WAINSCOT_RAIL}
-        baseboardColor={BASEBOARD}
-        crownColor={CROWN}
-        facing="east"
-      />
-      <WallWithWainscoting
-        position={[10.5, 3.0, 0]}
-        size={[0.3, 6.0, 19.9]}
-        upperColor={WALL_UPPER}
-        panelColor={WAINSCOT_PANEL}
-        railColor={WAINSCOT_RAIL}
-        baseboardColor={BASEBOARD}
-        crownColor={CROWN}
-        facing="west"
-      />
+      <mesh position={[0, 3.0, -9.8]}>
+        <boxGeometry args={[21.6, 6.0, 0.3]} />
+        <meshStandardMaterial color={WALL_UPPER} roughness={0.88} />
+      </mesh>
+      <mesh position={[0, 3.0, 9.8]}>
+        <boxGeometry args={[21.6, 6.0, 0.3]} />
+        <meshStandardMaterial color={WALL_UPPER} roughness={0.88} />
+      </mesh>
+      <mesh position={[-10.5, 3.0, 0]}>
+        <boxGeometry args={[0.3, 6.0, 19.9]} />
+        <meshStandardMaterial color={WALL_UPPER} roughness={0.88} />
+      </mesh>
+      <mesh position={[10.5, 3.0, 0]}>
+        <boxGeometry args={[0.3, 6.0, 19.9]} />
+        <meshStandardMaterial color={WALL_UPPER} roughness={0.88} />
+      </mesh>
 
       {/* ═══════════════════════════════════════════════
           PENDANT LIGHTS — 3 hanging fixtures
@@ -228,53 +168,6 @@ const TeaShopRoom = memo(function TeaShopRoom() {
           <boxGeometry args={[0.04, 0.76, 0.02]} />
           <meshStandardMaterial color={COUNTER_DARK} roughness={0.7} />
         </mesh>
-      ))}
-
-      {/* Back shelf (behind counter on wall) */}
-      <mesh position={[0, 2.2, -9.4]}>
-        <boxGeometry args={[8, 0.08, 0.6]} />
-        <meshStandardMaterial color={TABLE_WOOD} roughness={0.7} metalness={0.05} />
-      </mesh>
-      {/* Shelf brackets */}
-      {([-3.6, -1.2, 1.2, 3.6] as number[]).map((x) => (
-        <group key={`bracket-${x}`}>
-          <mesh position={[x, 1.9, -9.2]}>
-            <boxGeometry args={[0.08, 0.5, 0.04]} />
-            <meshStandardMaterial color={PENDANT_BRASS} roughness={0.5} metalness={0.35} />
-          </mesh>
-          <mesh position={[x, 2.15, -9.2]}>
-            <boxGeometry args={[0.08, 0.04, 0.38]} />
-            <meshStandardMaterial color={PENDANT_BRASS} roughness={0.5} metalness={0.35} />
-          </mesh>
-        </group>
-      ))}
-
-      {/* ═══════════════════════════════════════════════
-          SIDE TABLES — enhanced with crossbar detail
-         ═══════════════════════════════════════════════ */}
-      {([-4.2, 4.2] as number[]).map((x) => (
-        <group key={`table-${x}`} position={[x, 0, 0.2]}>
-          {/* Center pedestal */}
-          <mesh position={[0, 0.2, 0]}>
-            <cylinderGeometry args={[0.14, 0.18, 0.4, 12]} />
-            <meshStandardMaterial color={TABLE_WOOD} roughness={0.75} metalness={0.04} />
-          </mesh>
-          {/* Base disc */}
-          <mesh position={[0, 0.01, 0]}>
-            <cylinderGeometry args={[0.38, 0.4, 0.02, 16]} />
-            <meshStandardMaterial color={COUNTER_DARK} roughness={0.7} metalness={0.08} />
-          </mesh>
-          {/* Table top */}
-          <mesh position={[0, 0.42, 0]}>
-            <cylinderGeometry args={[0.76, 0.72, 0.06, 24]} />
-            <meshStandardMaterial color={TABLE_TOP} roughness={0.55} metalness={0.06} />
-          </mesh>
-          {/* Rim ring */}
-          <mesh position={[0, 0.44, 0]} rotation={[Math.PI / 2, 0, 0]}>
-            <torusGeometry args={[0.74, 0.012, 6, 24]} />
-            <meshStandardMaterial color={COUNTER_DARK} roughness={0.6} metalness={0.1} />
-          </mesh>
-        </group>
       ))}
 
       {/* ═══════════════════════════════════════════════
@@ -377,79 +270,6 @@ const TeaShopRoom = memo(function TeaShopRoom() {
     </group>
   )
 })
-
-/* ─── Wall with Wainscoting ──────────────────────────────────── */
-
-function WallWithWainscoting({
-  position,
-  size,
-  upperColor,
-  panelColor,
-  railColor,
-  baseboardColor,
-  crownColor,
-  facing,
-}: {
-  position: [number, number, number]
-  size: [number, number, number]
-  upperColor: string
-  panelColor: string
-  railColor: string
-  baseboardColor: string
-  crownColor: string
-  facing: "north" | "south" | "east" | "west"
-}) {
-  const isXWall = facing === "north" || facing === "south"
-  const wallWidth = isXWall ? size[0] : size[2]
-  const thickness = isXWall ? size[2] : size[0]
-
-  // Offsets for the trim pieces — they sit slightly in front of the wall face
-  const trimOffset = thickness / 2 + 0.02
-  const trimDir = facing === "south" || facing === "west" ? 1 : -1
-
-  const trimPos = (y: number): [number, number, number] => {
-    if (isXWall) return [position[0], y, position[2] + trimDir * trimOffset]
-    return [position[0] + trimDir * trimOffset, y, position[2]]
-  }
-  const trimSize = (w: number, h: number, d: number): [number, number, number] => {
-    if (isXWall) return [w, h, d]
-    return [d, h, w]
-  }
-
-  return (
-    <group>
-      {/* Main wall body — upper section (above wainscoting) */}
-      <mesh position={position}>
-        <boxGeometry args={size} />
-        <meshStandardMaterial color={upperColor} roughness={0.88} />
-      </mesh>
-
-      {/* Wainscoting panel (lower 1.6m of wall, slightly proud) */}
-      <mesh position={trimPos(0.8)}>
-        <boxGeometry args={trimSize(wallWidth, 1.6, 0.04)} />
-        <meshStandardMaterial color={panelColor} roughness={0.8} />
-      </mesh>
-
-      {/* Chair rail (top of wainscoting) */}
-      <mesh position={trimPos(1.62)}>
-        <boxGeometry args={trimSize(wallWidth + 0.04, 0.06, 0.06)} />
-        <meshStandardMaterial color={railColor} roughness={0.65} metalness={0.05} />
-      </mesh>
-
-      {/* Baseboard */}
-      <mesh position={trimPos(0.06)}>
-        <boxGeometry args={trimSize(wallWidth + 0.04, 0.12, 0.06)} />
-        <meshStandardMaterial color={baseboardColor} roughness={0.7} metalness={0.04} />
-      </mesh>
-
-      {/* Crown molding */}
-      <mesh position={trimPos(5.98)}>
-        <boxGeometry args={trimSize(wallWidth + 0.04, 0.08, 0.08)} />
-        <meshStandardMaterial color={crownColor} roughness={0.6} metalness={0.06} />
-      </mesh>
-    </group>
-  )
-}
 
 /* ─── Pendant Light Fixture ──────────────────────────────────── */
 
@@ -659,7 +479,6 @@ function CupShell({
   hovered,
   onFocus,
   onHoverChange,
-  roomTheme,
   children,
 }: {
   object: RoomObjectManifest
@@ -667,7 +486,6 @@ function CupShell({
   hovered: boolean
   onFocus: () => void
   onHoverChange: (id: RoomObjectId | null) => void
-  roomTheme: { uiAccent: string; emissiveAccent: string }
   children: React.ReactNode
 }) {
   const groupRef = useRef<Group>(null)
