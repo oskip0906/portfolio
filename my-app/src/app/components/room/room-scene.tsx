@@ -1,7 +1,7 @@
 "use client"
 
-import { memo, useMemo, useRef } from "react"
-import { useFrame } from "@react-three/fiber"
+import { memo, useEffect, useMemo, useRef } from "react"
+import { useFrame, useThree } from "@react-three/fiber"
 import { Billboard, Text } from "@react-three/drei"
 import * as THREE from "three"
 import { useBackground } from "@/app/contexts/background-context"
@@ -67,6 +67,52 @@ export default function RoomScene({
 
 const TeaShopRoom = memo(function TeaShopRoom() {
   const { wallColor, ceilingColor, floorColor } = useBackground()
+  const { gl } = useThree()
+
+  // Procedural wood-plank texture — generated on a canvas from the theme's
+  // floor colour, so there is nothing to download and theme switches still work.
+  const floorTexture = useMemo(() => {
+    const size = 512
+    const canvas = document.createElement("canvas")
+    canvas.width = size
+    canvas.height = size
+    const ctx = canvas.getContext("2d")
+    if (!ctx) return null
+
+    const base = new THREE.Color(floorColor)
+    const plankH = size / 8
+    for (let i = 0; i < 8; i++) {
+      // Deterministic per-plank shade variation
+      const shade = 0.82 + ((i * 37) % 5) * 0.055
+      ctx.fillStyle = `#${base.clone().multiplyScalar(shade).getHexString()}`
+      ctx.fillRect(0, i * plankH, size, plankH)
+
+      // Subtle grain streaks
+      ctx.strokeStyle = "rgba(0,0,0,0.07)"
+      ctx.lineWidth = 1
+      for (let g = 0; g < 6; g++) {
+        const y = i * plankH + ((g * 53 + i * 17) % plankH)
+        ctx.beginPath()
+        ctx.moveTo(0, y)
+        ctx.bezierCurveTo(size * 0.3, y + 2, size * 0.6, y - 2, size, y + 1)
+        ctx.stroke()
+      }
+
+      // Plank seam + staggered end joint
+      ctx.fillStyle = "rgba(0,0,0,0.22)"
+      ctx.fillRect(0, i * plankH, size, 2)
+      ctx.fillRect((i * 149) % size, i * plankH, 2, plankH)
+    }
+
+    const tex = new THREE.CanvasTexture(canvas)
+    tex.wrapS = tex.wrapT = THREE.RepeatWrapping
+    tex.repeat.set(3, 3)
+    tex.anisotropy = Math.min(8, gl.capabilities.getMaxAnisotropy())
+    tex.colorSpace = THREE.SRGBColorSpace
+    return tex
+  }, [floorColor, gl])
+
+  useEffect(() => () => { floorTexture?.dispose() }, [floorTexture])
 
   // Refined wood palette
   const COUNTER_DARK = "#2A1608"
@@ -78,7 +124,6 @@ const TeaShopRoom = memo(function TeaShopRoom() {
   const WALL_UPPER = wallColor
   const CEILING_COLOR = ceilingColor
   const PLANK_A = floorColor
-  const PENDANT_SHADE = "#1A1A1A"
   const PENDANT_BRASS = "#B8944C"
   const CHALKBOARD_FRAME = "#5A3C1E"
   const CHALKBOARD = "#1A2E18"
@@ -87,12 +132,16 @@ const TeaShopRoom = memo(function TeaShopRoom() {
   return (
     <group>
       {/* ═══════════════════════════════════════════════
-          FLOOR — single slab (the plank strips all shared one
-          colour, so 19 meshes rendered identically to this one)
+          FLOOR — single slab with a procedural plank texture
          ═══════════════════════════════════════════════ */}
       <mesh position={[0, -0.2, 0]}>
         <boxGeometry args={[22, 0.08, 20]} />
-        <meshStandardMaterial color={PLANK_A} roughness={0.85} metalness={0.02} />
+        <meshStandardMaterial
+          map={floorTexture ?? undefined}
+          color={floorTexture ? "#FFFFFF" : PLANK_A}
+          roughness={0.85}
+          metalness={0.02}
+        />
       </mesh>
 
       {/* ═══════════════════════════════════════════════
@@ -138,10 +187,19 @@ const TeaShopRoom = memo(function TeaShopRoom() {
       </mesh>
 
       {/* ═══════════════════════════════════════════════
-          PENDANT LIGHTS — 3 hanging fixtures
+          FAKE WINDOWS — 4 per wall, warm glowing panes
          ═══════════════════════════════════════════════ */}
-      {([-3.2, 0, 3.2] as number[]).map((x) => (
-        <PendantLight key={`pendant-${x}`} position={[x, 5.2, 1.5]} shadeColor={PENDANT_SHADE} brassColor={PENDANT_BRASS} />
+      {([-8.1, -2.7, 2.7, 8.1] as number[]).map((x) => (
+        <FakeWindow key={`win-n-${x}`} position={[x, 3.6, -9.62]} rotationY={0} />
+      ))}
+      {([-8.1, -2.7, 2.7, 8.1] as number[]).map((x) => (
+        <FakeWindow key={`win-s-${x}`} position={[x, 3.6, 9.62]} rotationY={Math.PI} />
+      ))}
+      {([-7.5, -2.5, 2.5, 7.5] as number[]).map((z) => (
+        <FakeWindow key={`win-w-${z}`} position={[-10.32, 3.6, z]} rotationY={Math.PI / 2} />
+      ))}
+      {([-7.5, -2.5, 2.5, 7.5] as number[]).map((z) => (
+        <FakeWindow key={`win-e-${z}`} position={[10.32, 3.6, z]} rotationY={-Math.PI / 2} />
       ))}
 
       {/* ═══════════════════════════════════════════════
@@ -256,48 +314,36 @@ const TeaShopRoom = memo(function TeaShopRoom() {
   )
 })
 
-/* ─── Pendant Light Fixture ──────────────────────────────────── */
+/* ─── Fake Window (decorative, glowing pane) ─────────────────── */
 
-function PendantLight({
+function FakeWindow({
   position,
-  shadeColor,
-  brassColor,
+  rotationY,
 }: {
   position: [number, number, number]
-  shadeColor: string
-  brassColor: string
+  rotationY: number
 }) {
+  const FRAME = "#54381A"
   return (
-    <group position={position}>
-      {/* Wire/cord */}
-      <mesh position={[0, 0.55, 0]}>
-        <cylinderGeometry args={[0.008, 0.008, 1.1, 4]} />
-        <meshStandardMaterial color="#333333" roughness={0.8} />
+    <group position={position} rotation={[0, rotationY, 0]}>
+      {/* Frame */}
+      <mesh>
+        <boxGeometry args={[1.9, 2.1, 0.08]} />
+        <meshStandardMaterial color={FRAME} roughness={0.7} metalness={0.05} />
       </mesh>
-      {/* Canopy (ceiling mount) */}
-      <mesh position={[0, 1.08, 0]}>
-        <cylinderGeometry args={[0.06, 0.06, 0.04, 8]} />
-        <meshStandardMaterial color={brassColor} roughness={0.4} metalness={0.4} />
+      {/* Glowing pane — unlit material reads as daylight coming through */}
+      <mesh position={[0, 0, 0.045]}>
+        <planeGeometry args={[1.6, 1.8]} />
+        <meshBasicMaterial color="#FFE9C6" />
       </mesh>
-      {/* Shade — truncated cone */}
-      <mesh position={[0, 0, 0]}>
-        <cylinderGeometry args={[0.06, 0.28, 0.24, 16]} />
-        <meshStandardMaterial color={shadeColor} roughness={0.9} metalness={0.08} />
+      {/* Mullions */}
+      <mesh position={[0, 0, 0.055]}>
+        <boxGeometry args={[0.07, 1.8, 0.02]} />
+        <meshStandardMaterial color={FRAME} roughness={0.7} />
       </mesh>
-      {/* Brass ring at bottom of shade */}
-      <mesh position={[0, -0.12, 0]} rotation={[Math.PI / 2, 0, 0]}>
-        <torusGeometry args={[0.28, 0.012, 6, 16]} />
-        <meshStandardMaterial color={brassColor} roughness={0.35} metalness={0.45} />
-      </mesh>
-      {/* Warm glow bulb (emissive sphere) */}
-      <mesh position={[0, -0.06, 0]}>
-        <sphereGeometry args={[0.05, 8, 8]} />
-        <meshStandardMaterial
-          color="#FFD890"
-          emissive="#FFD080"
-          emissiveIntensity={1.2}
-          roughness={0.3}
-        />
+      <mesh position={[0, 0, 0.055]}>
+        <boxGeometry args={[1.6, 0.07, 0.02]} />
+        <meshStandardMaterial color={FRAME} roughness={0.7} />
       </mesh>
     </group>
   )

@@ -22,46 +22,34 @@ function PhotoGallery({ location, onClose }: { location: Location; onClose: () =
   const accentColor = `rgb(${brightR}, ${brightG}, ${brightB})`
 
   const [current, setCurrent] = useState(0)
-  const [allImagesLoaded, setAllImagesLoaded] = useState(false)
+  const [currentLoaded, setCurrentLoaded] = useState(false)
+  // Retry count per photo — a failed load is re-requested with a cache-buster
+  const [retryMap, setRetryMap] = useState<Record<string, number>>({})
 
   useEffect(() => {
     setCurrent(0)
-    setAllImagesLoaded(false)
+    setRetryMap({})
   }, [location])
 
   useEffect(() => {
-    let cancelled = false
+    setCurrentLoaded(false)
+  }, [current, location])
 
-    const preloadAll = async () => {
-      if (location.photos.length === 0) {
-        if (!cancelled) setAllImagesLoaded(true)
-        return
-      }
+  const photo = location.photos[current]
+  const retries = photo ? retryMap[photo] ?? 0 : 0
+  const displaySrc = retries > 0 ? `${photo}?retry=${retries}` : photo
+  const loadFailed = retries >= 3
 
-      await Promise.all(
-        location.photos.map(
-          (photo) =>
-            new Promise<void>((resolve) => {
-              const img = new window.Image()
-              img.src = photo
-              if (img.complete) {
-                resolve()
-                return
-              }
-              img.onload = () => resolve()
-              img.onerror = () => resolve()
-            })
-        )
-      )
-
-      if (!cancelled) setAllImagesLoaded(true)
+  // Warm the neighbouring photos in the background so arrows feel instant.
+  // The current photo is never gated on this — it renders straight away.
+  useEffect(() => {
+    if (location.photos.length < 2) return
+    const count = location.photos.length
+    for (const offset of [1, -1]) {
+      const img = new window.Image()
+      img.src = location.photos[(current + offset + count) % count]
     }
-
-    preloadAll()
-    return () => {
-      cancelled = true
-    }
-  }, [location])
+  }, [current, location])
 
   const scrollPrev = useCallback(() => setCurrent((p) => (p - 1 + location.photos.length) % location.photos.length), [location.photos.length])
   const scrollNext = useCallback(() => setCurrent((p) => (p + 1) % location.photos.length), [location.photos.length])
@@ -114,7 +102,7 @@ function PhotoGallery({ location, onClose }: { location: Location; onClose: () =
         <div className="relative p-4">
           <div className="rounded-2xl border border-white/20 bg-black/35 p-2 shadow-[0_10px_30px_rgba(0,0,0,0.35)]">
             <div className="relative w-full h-[26vh] sm:h-[34vh] bg-black/45 rounded-xl overflow-hidden">
-              {!allImagesLoaded && (
+              {!currentLoaded && !loadFailed && (
                 <div className="absolute inset-0 flex items-center justify-center z-10">
                   <div
                     className="w-8 h-8 rounded-full border-2 border-t-transparent animate-spin"
@@ -122,25 +110,40 @@ function PhotoGallery({ location, onClose }: { location: Location; onClose: () =
                   />
                 </div>
               )}
-              {allImagesLoaded && (
-                <AnimatePresence mode="sync" initial={false}>
-                  <motion.div
-                    key={current}
-                    className="absolute inset-0"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.28, ease: "easeInOut" }}
-                  >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
+              {loadFailed && (
+                <div className="absolute inset-0 flex items-center justify-center z-10">
+                  <p className="text-sm text-white/50">Couldn&apos;t load this photo</p>
+                </div>
+              )}
+              <AnimatePresence mode="sync" initial={false}>
+                <motion.div
+                  key={current}
+                  className="absolute inset-0"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: currentLoaded ? 1 : 0 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.28, ease: "easeInOut" }}
+                >
+                  {photo && !loadFailed && (
+                    // eslint-disable-next-line @next/next/no-img-element
                     <img
-                      src={location.photos[current]}
+                      src={displaySrc}
                       alt={`${location.name} - ${current + 1}`}
                       className="absolute inset-0 w-full h-full object-contain"
+                      onLoad={() => setCurrentLoaded(true)}
+                      onError={() => {
+                        const r = retryMap[photo] ?? 0
+                        if (r < 3) {
+                          setTimeout(
+                            () => setRetryMap((m) => ({ ...m, [photo]: (m[photo] ?? 0) + 1 })),
+                            500 * (r + 1)
+                          )
+                        }
+                      }}
                     />
-                  </motion.div>
-                </AnimatePresence>
-              )}
+                  )}
+                </motion.div>
+              </AnimatePresence>
             </div>
           </div>
 
