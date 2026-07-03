@@ -351,21 +351,23 @@ function FakeWindow({
     <group position={position} rotation={[0, rotationY, 0]}>
       {/* Frame */}
       <mesh>
-        <boxGeometry args={[2.7, 2.3, 0.08]} />
+        <boxGeometry args={[3.9, 2.1, 0.08]} />
         <meshStandardMaterial color={FRAME} roughness={0.7} metalness={0.05} />
       </mesh>
       {/* Glowing pane — unlit material reads as daylight coming through */}
       <mesh position={[0, 0, 0.045]}>
-        <planeGeometry args={[2.4, 2.0]} />
+        <planeGeometry args={[3.6, 1.8]} />
         <meshBasicMaterial color="#FFE9C6" />
       </mesh>
-      {/* Cross mullions — split the pane into 4 tiles */}
+      {/* Mullions — 4 tiles across, 2 tiles high */}
+      {([-0.9, 0, 0.9] as number[]).map((x) => (
+        <mesh key={`mullion-${x}`} position={[x, 0, 0.055]}>
+          <boxGeometry args={[0.08, 1.8, 0.02]} />
+          <meshStandardMaterial color={FRAME} roughness={0.7} />
+        </mesh>
+      ))}
       <mesh position={[0, 0, 0.055]}>
-        <boxGeometry args={[0.09, 2.0, 0.02]} />
-        <meshStandardMaterial color={FRAME} roughness={0.7} />
-      </mesh>
-      <mesh position={[0, 0, 0.055]}>
-        <boxGeometry args={[2.4, 0.09, 0.02]} />
+        <boxGeometry args={[3.6, 0.08, 0.02]} />
         <meshStandardMaterial color={FRAME} roughness={0.7} />
       </mesh>
     </group>
