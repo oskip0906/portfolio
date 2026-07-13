@@ -76,110 +76,114 @@ function PhotoGallery({ location, onClose }: { location: Location; onClose: () =
 
   return (
     <div
-      className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6"
+      style={{ background: "rgba(0,0,0,0.5)", backdropFilter: "blur(2px)" }}
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-sm sm:max-w-lg md:max-w-2xl backdrop-blur-xl bg-white/8 border border-white/20 rounded-2xl shadow-2xl overflow-hidden"
-        style={{ boxShadow: `0 0 30px ${glowColor}` }}
+        className="flex h-[75vh] w-[94vw] flex-col overflow-hidden rounded-3xl border border-white/10 bg-neutral-950/90 shadow-[0_30px_80px_rgba(0,0,0,0.55)] backdrop-blur-2xl sm:w-[85vw] md:w-[75vw] lg:w-[65vw]"
         onClick={(e) => e.stopPropagation()}
       >
+        {/* Accent stripe */}
+        <div className="h-[3px] w-full flex-shrink-0" style={{ background: accentColor }} />
+
         {/* Header */}
-        <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
-          <h3 className="text-lg font-semibold text-white">{location.name}</h3>
-          <div className="flex items-center gap-3">
+        <div className="flex flex-shrink-0 items-center justify-between gap-4 px-7 pt-5 pb-4">
+          <h2 className="truncate text-2xl font-bold leading-tight tracking-tight text-white">
+            {location.name}
+          </h2>
+          <div className="flex flex-shrink-0 items-center gap-3">
             <span className="text-sm text-white/50">{current + 1} / {location.photos.length}</span>
             <button
               onClick={onClose}
-              className="p-1.5 rounded-lg hover:bg-white/20 text-white transition-colors"
+              aria-label="Close"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/[0.06] text-white transition-colors hover:bg-white/14"
             >
-              <X size={18} />
+              <X size={15} />
             </button>
           </div>
         </div>
 
         {/* Gallery */}
-        <div className="relative p-4">
-          <div className="rounded-2xl border border-white/20 bg-black/35 p-2 shadow-[0_10px_30px_rgba(0,0,0,0.35)]">
-            <div className="relative w-full h-[26vh] sm:h-[34vh] bg-black/45 rounded-xl overflow-hidden">
-              {!currentLoaded && !loadFailed && (
-                <div className="absolute inset-0 flex items-center justify-center z-10">
-                  <div
-                    className="w-8 h-8 rounded-full border-2 border-t-transparent animate-spin"
-                    style={{ borderColor: `${accentColor} transparent transparent transparent` }}
+        <div className="relative flex-1 px-7 pb-7">
+          <div className="relative h-full w-full overflow-hidden rounded-2xl border border-white/10 bg-black/45">
+            {!currentLoaded && !loadFailed && (
+              <div className="absolute inset-0 flex items-center justify-center z-10">
+                <div
+                  className="w-8 h-8 rounded-full border-2 border-t-transparent animate-spin"
+                  style={{ borderColor: `${accentColor} transparent transparent transparent` }}
+                />
+              </div>
+            )}
+            {loadFailed && (
+              <div className="absolute inset-0 flex items-center justify-center z-10">
+                <p className="text-sm text-white/50">Couldn&apos;t load this photo</p>
+              </div>
+            )}
+            <AnimatePresence mode="sync" initial={false}>
+              <motion.div
+                key={current}
+                className="absolute inset-0"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: currentLoaded ? 1 : 0 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.28, ease: "easeInOut" }}
+              >
+                {photo && !loadFailed && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={displaySrc}
+                    alt={`${location.name} - ${current + 1}`}
+                    className="absolute inset-0 w-full h-full object-contain"
+                    onLoad={() => setCurrentLoaded(true)}
+                    onError={() => {
+                      const r = retryMap[photo] ?? 0
+                      if (r < 3) {
+                        setTimeout(
+                          () => setRetryMap((m) => ({ ...m, [photo]: (m[photo] ?? 0) + 1 })),
+                          500 * (r + 1)
+                        )
+                      }
+                    }}
                   />
-                </div>
-              )}
-              {loadFailed && (
-                <div className="absolute inset-0 flex items-center justify-center z-10">
-                  <p className="text-sm text-white/50">Couldn&apos;t load this photo</p>
-                </div>
-              )}
-              <AnimatePresence mode="sync" initial={false}>
-                <motion.div
-                  key={current}
-                  className="absolute inset-0"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: currentLoaded ? 1 : 0 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.28, ease: "easeInOut" }}
+                )}
+              </motion.div>
+            </AnimatePresence>
+
+            {location.photos.length > 1 && (
+              <>
+                <button
+                  onClick={scrollPrev}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full flex items-center justify-center bg-black/50 backdrop-blur-sm border border-white/20 ring-1 ring-white/30 text-white hover:bg-black/70 transition-colors z-10"
+                  style={{ color: accentColor, boxShadow: `0 0 12px ${glowColor}` }}
                 >
-                  {photo && !loadFailed && (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={displaySrc}
-                      alt={`${location.name} - ${current + 1}`}
-                      className="absolute inset-0 w-full h-full object-contain"
-                      onLoad={() => setCurrentLoaded(true)}
-                      onError={() => {
-                        const r = retryMap[photo] ?? 0
-                        if (r < 3) {
-                          setTimeout(
-                            () => setRetryMap((m) => ({ ...m, [photo]: (m[photo] ?? 0) + 1 })),
-                            500 * (r + 1)
-                          )
-                        }
-                      }}
-                    />
-                  )}
-                </motion.div>
-              </AnimatePresence>
-            </div>
-          </div>
+                  <ChevronLeft size={18} />
+                </button>
+                <button
+                  onClick={scrollNext}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full flex items-center justify-center bg-black/50 backdrop-blur-sm border border-white/20 ring-1 ring-white/30 text-white hover:bg-black/70 transition-colors z-10"
+                  style={{ color: accentColor, boxShadow: `0 0 12px ${glowColor}` }}
+                >
+                  <ChevronRight size={18} />
+                </button>
+              </>
+            )}
 
-          {location.photos.length > 1 && (
-            <>
-              <button
-                onClick={scrollPrev}
-                className="absolute left-6 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full flex items-center justify-center bg-black/50 backdrop-blur-sm border border-white/20 ring-1 ring-white/30 text-white hover:bg-black/70 transition-colors z-10"
-                style={{ color: accentColor, boxShadow: `0 0 12px ${glowColor}` }}
-              >
-                <ChevronLeft size={18} />
-              </button>
-              <button
-                onClick={scrollNext}
-                className="absolute right-6 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full flex items-center justify-center bg-black/50 backdrop-blur-sm border border-white/20 ring-1 ring-white/30 text-white hover:bg-black/70 transition-colors z-10"
-                style={{ color: accentColor, boxShadow: `0 0 12px ${glowColor}` }}
-              >
-                <ChevronRight size={18} />
-              </button>
-            </>
-          )}
+            {/* Dot indicators */}
+            {location.photos.length > 1 && (
+              <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 justify-center gap-1.5 z-10">
+                {location.photos.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setCurrent(i)}
+                    className={`w-1.5 h-1.5 rounded-full transition-all duration-150 ${i === current ? "scale-150" : "bg-white/30"}`}
+                    style={i === current ? { backgroundColor: accentColor } : {}}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
         </div>
-
-        {/* Dot indicators */}
-        {location.photos.length > 1 && (
-          <div className="flex justify-center gap-1.5 pb-4">
-            {location.photos.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setCurrent(i)}
-                className={`w-1.5 h-1.5 rounded-full transition-all duration-150 ${i === current ? "scale-150" : "bg-white/30"}`}
-                style={i === current ? { backgroundColor: accentColor } : {}}
-              />
-            ))}
-          </div>
-        )}
       </div>
     </div>
   )
@@ -196,6 +200,7 @@ export default function ExpandedMap({ isOpen, onClose }: ExpandedMapProps) {
   const [isMapboxLoading, setIsMapboxLoading] = useState(false)
   const [mapboxLoaded, setMapboxLoaded] = useState(false)
   const [mapboxgl, setMapboxgl] = useState<any>(null)
+  const [pinsReady, setPinsReady] = useState(false)
   const mapContainer = useRef<HTMLDivElement | null>(null)
   const map = useRef<any>(null)
   const markers = useRef<any[]>([])
@@ -227,8 +232,11 @@ export default function ExpandedMap({ isOpen, onClose }: ExpandedMapProps) {
         if (!response.ok) throw new Error('Failed to fetch locations')
         const data = await response.json()
         setLocations(data)
+        // No pins to place — nothing to wait for.
+        if (data.length === 0) setPinsReady(true)
       } catch (error) {
         console.error('Failed to load locations:', error)
+        setPinsReady(true)
       }
     }
     fetchData()
@@ -270,6 +278,7 @@ export default function ExpandedMap({ isOpen, onClose }: ExpandedMapProps) {
         .addTo(map.current!)
       markers.current.push(marker)
     })
+    setPinsReady(true)
   }, [locations, mapboxgl, createMarkerElement])
 
   useEffect(() => {
@@ -283,6 +292,7 @@ export default function ExpandedMap({ isOpen, onClose }: ExpandedMapProps) {
       if (mapContainer.current) {
         mapContainer.current.innerHTML = `<div class="flex items-center justify-center h-full bg-gray-900 text-white"><div class="text-center"><p class="text-lg mb-2">Map unavailable</p><p class="text-sm text-gray-400">Mapbox token not configured</p></div></div>`
       }
+      setPinsReady(true)
       return
     }
     mapboxgl.accessToken = mapboxToken
@@ -298,6 +308,7 @@ export default function ExpandedMap({ isOpen, onClose }: ExpandedMapProps) {
       })
     } catch (error) {
       console.error('Failed to initialize map:', error)
+      setPinsReady(true)
       return
     }
     const isMobile = window.innerWidth < 640
@@ -376,6 +387,23 @@ export default function ExpandedMap({ isOpen, onClose }: ExpandedMapProps) {
               </div>
             )}
           </div>
+
+          {/* Big "pins loading" hint — fades out once markers are placed */}
+          <AnimatePresence>
+            {!pinsReady && !isMapboxLoading && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.4 }}
+                className="pointer-events-none absolute inset-x-0 top-24 z-20 flex justify-center px-6"
+              >
+                <p className="text-center text-2xl font-semibold text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.6)] sm:text-3xl">
+                  Give it a few seconds — the pins are loading
+                </p>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </motion.div>
 
