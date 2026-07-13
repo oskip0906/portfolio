@@ -18,6 +18,13 @@ export default function AppShell({ children }: { children: ReactNode }) {
     return () => document.body.classList.remove("static-page")
   }, [isStaticPage])
 
+  // Keep the document background white on the static page so overscroll/rubber-band
+  // bounce reveals white instead of the dark 3D-scene backdrop color.
+  useEffect(() => {
+    document.body.classList.toggle("static-page", isStaticPage)
+    return () => document.body.classList.remove("static-page")
+  }, [isStaticPage])
+
   return (
     <>
       {!isStaticPage && <div className="fixed inset-0 -z-20" style={{ background: "#808080" }} />}
