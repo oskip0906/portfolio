@@ -76,19 +76,19 @@ function PhotoGallery({ location, onClose }: { location: Location; onClose: () =
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6"
+      className="fixed inset-0 z-50 flex items-center justify-center sm:p-6"
       style={{ background: "rgba(0,0,0,0.5)", backdropFilter: "blur(2px)" }}
       onClick={onClose}
     >
       <div
-        className="flex h-[75vh] w-[94vw] flex-col overflow-hidden rounded-3xl border border-white/10 bg-neutral-950/90 shadow-[0_30px_80px_rgba(0,0,0,0.55)] backdrop-blur-2xl sm:w-[85vw] md:w-[75vw] lg:w-[65vw]"
+        className="flex h-[75vh] w-[92vw] flex-col overflow-hidden rounded-3xl border border-white/10 bg-neutral-950/90 shadow-[0_30px_80px_rgba(0,0,0,0.55)] backdrop-blur-2xl sm:w-[85vw] md:w-[75vw] lg:w-[65vw]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Accent stripe */}
         <div className="h-[3px] w-full flex-shrink-0" style={{ background: accentColor }} />
 
         {/* Header */}
-        <div className="flex flex-shrink-0 items-center justify-between gap-4 px-7 pt-5 pb-4">
+        <div className="flex flex-shrink-0 items-center justify-between gap-4 px-4 pt-5 pb-4 sm:px-7">
           <h2 className="truncate text-2xl font-bold leading-tight tracking-tight text-white">
             {location.name}
           </h2>
@@ -105,7 +105,7 @@ function PhotoGallery({ location, onClose }: { location: Location; onClose: () =
         </div>
 
         {/* Gallery */}
-        <div className="relative flex-1 px-7 pb-7">
+        <div className="relative flex-1 px-4 pb-4 sm:px-7 sm:pb-7">
           <div className="relative h-full w-full overflow-hidden rounded-2xl border border-white/10 bg-black/45">
             {!currentLoaded && !loadFailed && (
               <div className="absolute inset-0 flex items-center justify-center z-10">
@@ -154,17 +154,19 @@ function PhotoGallery({ location, onClose }: { location: Location; onClose: () =
               <>
                 <button
                   onClick={scrollPrev}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full flex items-center justify-center bg-black/50 backdrop-blur-sm border border-white/20 ring-1 ring-white/30 text-white hover:bg-black/70 transition-colors z-10"
+                  className="absolute left-1.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full flex items-center justify-center bg-black/50 backdrop-blur-sm border border-white/20 ring-1 ring-white/30 text-white hover:bg-black/70 transition-colors z-10 sm:left-3 sm:w-9 sm:h-9"
                   style={{ color: accentColor, boxShadow: `0 0 12px ${glowColor}` }}
                 >
-                  <ChevronLeft size={18} />
+                  <ChevronLeft size={16} className="sm:hidden" />
+                  <ChevronLeft size={18} className="hidden sm:block" />
                 </button>
                 <button
                   onClick={scrollNext}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full flex items-center justify-center bg-black/50 backdrop-blur-sm border border-white/20 ring-1 ring-white/30 text-white hover:bg-black/70 transition-colors z-10"
+                  className="absolute right-1.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full flex items-center justify-center bg-black/50 backdrop-blur-sm border border-white/20 ring-1 ring-white/30 text-white hover:bg-black/70 transition-colors z-10 sm:right-3 sm:w-9 sm:h-9"
                   style={{ color: accentColor, boxShadow: `0 0 12px ${glowColor}` }}
                 >
-                  <ChevronRight size={18} />
+                  <ChevronRight size={16} className="sm:hidden" />
+                  <ChevronRight size={18} className="hidden sm:block" />
                 </button>
               </>
             )}

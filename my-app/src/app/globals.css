@@ -35,6 +35,10 @@ body.scroll-locked {
   overflow-y: hidden;
 }
 
+body.static-page {
+  background: #fff;
+}
+
 .pagination-button {
   font-size: 2px;
   color: #fff;
