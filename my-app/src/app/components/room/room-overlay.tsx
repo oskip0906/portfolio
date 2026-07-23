@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import { AnimatePresence, motion } from "framer-motion"
 import { ArrowLeft, Menu, X } from "lucide-react"
@@ -54,6 +54,11 @@ export default function RoomOverlay({
   const allObjects = payload.objects
   const activeObject = allObjects.find((o) => o.id === focusedId) ?? null
 
+  // Never let the sections dropdown sit open behind a freshly-opened popup.
+  useEffect(() => {
+    if (focusedId) setNavOpen(false)
+  }, [focusedId])
+
   return (
     <div className="pointer-events-none fixed inset-0 z-20">
 
@@ -73,7 +78,9 @@ export default function RoomOverlay({
         )}
       </AnimatePresence>
 
-      {/* ── Section popup — 75vw × 90vh frosted-glass panel: barely-there frame, opaque content ── */}
+      {/* ── Section popup — frosted-glass panel, height-clamped so it can
+           never grow tall enough to reach the sections dock / HUD icons,
+           on any screen height ── */}
       <AnimatePresence>
         {focusedId && activeObject && (
           <motion.div
@@ -85,7 +92,12 @@ export default function RoomOverlay({
             className="absolute inset-0 flex items-center justify-center pointer-events-none sm:p-6"
           >
             <div
-              className="pointer-events-auto flex h-[75vh] w-[92vw] flex-col overflow-hidden rounded-3xl border border-white/10 bg-neutral-950/90 shadow-[0_30px_80px_rgba(0,0,0,0.55)] backdrop-blur-2xl sm:w-[85vw] md:w-[75vw] lg:w-[65vw]"
+              // 11rem = 2 x 5.5rem: the dock/HUD row (top offset + button height
+              // + breathing room) never exceeds ~5.5rem at any breakpoint, and
+              // centering always splits the leftover space evenly top/bottom —
+              // so capping the height this way guarantees >= 5.5rem of clearance
+              // above (and below) the popup no matter how short the viewport is.
+              className="pointer-events-auto flex h-[min(75vh,calc(100vh-11rem))] w-[92vw] flex-col overflow-hidden rounded-3xl border border-white/10 bg-neutral-950/90 shadow-[0_30px_80px_rgba(0,0,0,0.55)] backdrop-blur-2xl sm:w-[85vw] md:w-[75vw] lg:w-[65vw]"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Accent stripe */}
@@ -151,7 +163,7 @@ export default function RoomOverlay({
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -8, scale: 0.96 }}
               transition={{ duration: 0.18 }}
-              className="mt-2 w-60 overflow-hidden rounded-2xl border border-white/10 bg-black/90 p-1.5 shadow-[0_20px_50px_rgba(0,0,0,0.4)] backdrop-blur-xl"
+              className="mt-2 w-60 max-h-[calc(100vh-6rem)] overflow-y-auto rounded-2xl border border-white/10 bg-black/90 p-1.5 shadow-[0_20px_50px_rgba(0,0,0,0.4)] backdrop-blur-xl"
             >
               <SectionsList
                 objects={allObjects}
