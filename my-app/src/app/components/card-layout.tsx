@@ -28,20 +28,12 @@ export function SidebarNav({
         <button
           key={i}
           onClick={() => onSelect(i)}
-          className={`group flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all duration-150 ${
-            i === current
-              ? "bg-white/10 border border-white/20"
-              : "hover:bg-white/5 border border-transparent"
-          }`}
+          className={`group flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all duration-150 ${i === current ? "bg-white/10 border border-white/20" : "hover:bg-white/5 border border-transparent"}`}
         >
-          <span className={`text-xs font-mono font-bold tabular-nums w-6 flex-shrink-0 ${
-            i === current ? activeNumClass : "text-white/30 group-hover:text-white/50"
-          }`}>
+          <span className={`text-xs font-mono font-bold tabular-nums w-6 flex-shrink-0 ${i === current ? activeNumClass : "text-white/30 group-hover:text-white/50"}`}>
             {String(i + 1).padStart(2, "0")}
           </span>
-          <span className={`text-sm font-medium truncate ${
-            i === current ? "text-white" : "text-white/50 group-hover:text-white/80"
-          }`}>
+          <span className={`text-sm font-medium truncate ${i === current ? "text-white" : "text-white/50 group-hover:text-white/80"}`}>
             {item.name}
           </span>
           {i === current && <ArrowRight size={12} className={`ml-auto flex-shrink-0 ${activeArrowClass}`} />}
@@ -100,7 +92,7 @@ export function CardShell({
   )
 }
 
-// ── Progress bar ────────────────────────────────────────────────────────────
+// ─── Progress bar ────────────────────────────────────────────────────────────
 
 interface ProgressBarProps {
   current: number
@@ -124,7 +116,7 @@ export function ProgressBar({ current, total, gradientClass = "from-cyan-400 to-
   )
 }
 
-// ── Mobile card base (wrapper + accent bar + number header) ─────────────────
+// ─── Mobile card base (wrapper + accent bar + number header) ─────────────────
 
 interface MobileCardBaseProps {
   index: number
