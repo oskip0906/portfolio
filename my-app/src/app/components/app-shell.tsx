@@ -20,7 +20,13 @@ export default function AppShell({ children }: { children: ReactNode }) {
 
   return (
     <>
-      {!isStaticPage && <div className="fixed inset-0 -z-20" style={{ background: "#808080" }} />}
+      {/* Use a subtle gradient for the main background, but keep static page white */}
+      {!isStaticPage && (
+        <div
+          className="fixed inset-0 -z-20"
+          style={{ background: "linear-gradient(to bottom right, #2d6a2d, #3a8a3a, #1a3a1a)" }}
+        />
+      )}
       <main className={cn("relative z-10 min-h-screen", !isStaticPage && "overflow-hidden")}>
         {children}
       </main>
