@@ -36,3 +36,27 @@ export function getAccentColors(hex: string): { accent: string; accentLight: str
     accentLight: `hsl(${h}, ${s}%, 82%)`,
   }
 }
+
+// ── Room helpers ──────────────────────────────────────────────────────────────
+
+/**
+ * Scale for a world-space billboard label so its on-screen size stays roughly
+ * constant: apparent size ~ 1/distance, so counter it by scaling with distance.
+ * Clamped so a focused cup's label can't fill the screen and a far one can't
+ * shrink to a smudge.
+ */
+export function labelScale(distance: number, ref = 6, min = 0.55, max = 2.4): number {
+  const d = Number.isFinite(distance) ? distance : 0
+  return Math.min(max, Math.max(min, d / ref))
+}
+
+/**
+ * Mapbox markers are DOM overlays — they need no style or source load, so the
+ * only preconditions are a live map and something to place. Deliberately does
+ * NOT consult map.loaded(): that is recomputed per frame and goes false again
+ * while tiles stream, which used to send a late locations response down the
+ * `map.on("load")` path after that one-shot event had already fired.
+ */
+export function shouldPlaceMarkers(mapReady: boolean, locationCount: number): boolean {
+  return mapReady && locationCount > 0
+}

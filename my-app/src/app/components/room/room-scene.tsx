@@ -5,6 +5,7 @@ import { useFrame, useThree } from "@react-three/fiber"
 import { Billboard, Text } from "@react-three/drei"
 import * as THREE from "three"
 import { useBackground } from "@/app/contexts/background-context"
+import { labelScale } from "@/lib/utils"
 import type { Group } from "three"
 import type { RoomHomePayload, RoomObjectId, RoomObjectManifest } from "./room-manifest"
 
@@ -545,13 +546,22 @@ function CupShell({
   children: React.ReactNode
 }) {
   const groupRef = useRef<Group>(null)
+  const labelRef = useRef<Group>(null)
   const scaleVec = useRef(new THREE.Vector3(1, 1, 1))
+  const labelWorldPos = useRef(new THREE.Vector3())
   const labelColor = active ? object.color : "rgba(255,255,255,0.85)"
 
-  useFrame(() => {
+  useFrame((state) => {
     if (!groupRef.current) return
     scaleVec.current.setScalar(active ? 1.08 : hovered ? 1.04 : 1)
     groupRef.current.scale.lerp(scaleVec.current, 0.12)
+
+    // Counter perspective shrink so every label reads at a similar size —
+    // otherwise far cups become smudges and the focused one fills the screen.
+    if (labelRef.current) {
+      const d = state.camera.position.distanceTo(labelRef.current.getWorldPosition(labelWorldPos.current))
+      labelRef.current.scale.setScalar(labelScale(d))
+    }
   })
 
   return (
@@ -565,24 +575,19 @@ function CupShell({
         {children}
 
         {/* Label above cup — always visible, naming the section */}
-        <Billboard position={[0, 2.55, 0]}>
-          <mesh position={[0, 0, -0.01]}>
-            <planeGeometry args={[1.1, 0.26]} />
-            <meshBasicMaterial
-              color="#000000"
-              transparent
-              opacity={active ? 0.42 : 0.26}
-              depthWrite={false}
-            />
-          </mesh>
+        <Billboard ref={labelRef} position={[0, 2.55, 0]}>
+          {/* No backing plate: it was a fixed 1.1 x 0.26 regardless of text, so
+              long labels overflowed it and short ones sat in dead space. The
+              outline carries contrast against the light walls instead. */}
           <Text
             position={[0, 0, 0]}
             fontSize={active ? 0.17 : 0.14}
             color={labelColor}
             anchorX="center"
             anchorY="middle"
-            outlineWidth={0.012}
-            outlineColor="rgba(0,0,0,0.6)"
+            outlineWidth={0.018}
+            outlineColor="#000000"
+            outlineOpacity={0.75}
           >
             {object.label}
           </Text>
