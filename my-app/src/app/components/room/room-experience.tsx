@@ -101,7 +101,6 @@ export default function RoomExperience({ payload }: { payload: RoomHomePayload }
         <RoomOverlay
           payload={payload}
           focusedId={focusedId}
-          hoveredId={hoveredId}
           onFocusChange={setFocusedId}
           onReset={() => setFocusedId(null)}
         />

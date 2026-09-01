@@ -3,6 +3,7 @@ import { useRef, useState, useEffect, useCallback } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { X, ChevronLeft, ChevronRight } from "lucide-react"
 import { type Location } from "@/lib/database"
+import { shouldPlaceMarkers } from "@/lib/utils"
 import { useBackground } from "../contexts/background-context"
 
 function hexToRgb(hex: string): { r: number; g: number; b: number } {
@@ -77,11 +78,11 @@ function PhotoGallery({ location, onClose }: { location: Location; onClose: () =
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center sm:p-6"
-      style={{ background: "rgba(0,0,0,0.5)", backdropFilter: "blur(2px)" }}
+      style={{ background: "rgba(0,0,0,0.55)", backdropFilter: "blur(10px)" }}
       onClick={onClose}
     >
       <div
-        className="flex h-[75vh] w-[92vw] flex-col overflow-hidden rounded-3xl border border-white/10 bg-neutral-950/90 shadow-[0_30px_80px_rgba(0,0,0,0.55)] backdrop-blur-2xl sm:w-[85vw] md:w-[75vw] lg:w-[65vw]"
+        className="flex h-[75vh] w-[92vw] flex-col overflow-hidden rounded-3xl border border-white/[0.14] bg-neutral-950/80 shadow-[0_30px_80px_rgba(0,0,0,0.55),inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur-2xl sm:w-[85vw] md:w-[75vw] lg:w-[65vw]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Accent stripe */}
@@ -203,6 +204,10 @@ export default function ExpandedMap({ isOpen, onClose }: ExpandedMapProps) {
   const [mapboxLoaded, setMapboxLoaded] = useState(false)
   const [mapboxgl, setMapboxgl] = useState<any>(null)
   const [pinsReady, setPinsReady] = useState(false)
+  // map lives in a ref, but marker placement has to re-run once it exists —
+  // a ref mutation doesn't re-render, so mirror "map is live" into state.
+  const [mapReady, setMapReady] = useState(false)
+  const [mapError, setMapError] = useState<string | null>(null)
   const mapContainer = useRef<HTMLDivElement | null>(null)
   const map = useRef<any>(null)
   const markers = useRef<any[]>([])
@@ -291,9 +296,7 @@ export default function ExpandedMap({ isOpen, onClose }: ExpandedMapProps) {
     if (!isOpen || !mapContainer.current || map.current || !mapboxgl) return
     const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN
     if (!mapboxToken) {
-      if (mapContainer.current) {
-        mapContainer.current.innerHTML = `<div class="flex items-center justify-center h-full bg-gray-900 text-white"><div class="text-center"><p class="text-lg mb-2">Map unavailable</p><p class="text-sm text-gray-400">Mapbox token not configured</p></div></div>`
-      }
+      setMapError("Mapbox token not configured")
       setPinsReady(true)
       return
     }
@@ -310,9 +313,11 @@ export default function ExpandedMap({ isOpen, onClose }: ExpandedMapProps) {
       })
     } catch (error) {
       console.error('Failed to initialize map:', error)
+      setMapError("Map failed to load")
       setPinsReady(true)
       return
     }
+    setMapReady(true)
     const isMobile = window.innerWidth < 640
     const navControl = new mapboxgl.NavigationControl()
     map.current.addControl(navControl, 'top-right')
@@ -327,6 +332,7 @@ export default function ExpandedMap({ isOpen, onClose }: ExpandedMapProps) {
     resizeObserver.observe(mapContainer.current)
     return () => {
       resizeObserver.disconnect()
+      setMapReady(false)
       if (map.current) {
         markers.current.forEach((marker) => marker.remove())
         markers.current = []
@@ -337,12 +343,9 @@ export default function ExpandedMap({ isOpen, onClose }: ExpandedMapProps) {
   }, [isOpen, mapboxgl])
 
   useEffect(() => {
-    if (!map.current || locations.length === 0) return
-    const mapInstance = map.current
-    if (mapInstance.loaded()) addMarkers()
-    else mapInstance.on("load", addMarkers)
-    return () => { if (mapInstance) mapInstance.off("load", addMarkers) }
-  }, [locations, mapboxgl, addMarkers])
+    if (!shouldPlaceMarkers(mapReady, locations.length)) return
+    addMarkers()
+  }, [mapReady, locations, addMarkers])
 
   useEffect(() => {
     if (isOpen) {
@@ -379,6 +382,14 @@ export default function ExpandedMap({ isOpen, onClose }: ExpandedMapProps) {
           </button>
 
           <div ref={mapContainer} className="w-full h-full">
+            {mapError && (
+              <div className="flex items-center justify-center h-full bg-gray-900 text-white">
+                <div className="text-center">
+                  <p className="text-lg mb-2">Map unavailable</p>
+                  <p className="text-sm text-gray-400">{mapError}</p>
+                </div>
+              </div>
+            )}
             {isMapboxLoading && (
               <div className="flex items-center justify-center h-full bg-gray-900 text-white">
                 <div className="text-center">

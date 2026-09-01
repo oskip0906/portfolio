@@ -1,20 +1,20 @@
 [
   {
     "id": 1,
-    "date": "Sep 2026 (incoming)",
+    "date": "Sep 2026 - Present",
     "link": "https://www.tesla.com/",
     "title": "Data Engineer Intern",
     "company": "Tesla",
-    "description": "Incoming data engineer intern on the Cell Team in Palo Alto, CA.",
+    "description": "Working as a data engineer intern on the Cell Team in Palo Alto, CA.",
     "image": "/logos/tesla.jpg"
   },
   {
     "id": 2,
-    "date": "May 2026 - Present",
+    "date": "May 2026 - Aug 2026",
     "link": "https://www.expedia.ca/",
     "title": "Software Developer Intern",
     "company": "Expedia Group",
-    "description": "Developing and maintaining IOS/Android apps for Expedia brands. Migrated legacy code to modern containerized architecture and optimized performance.",
+    "description": "Developed and maintained iOS/Android apps for Expedia brands. Migrated legacy code to modern containerized architecture and optimized performance.",
     "image": "/logos/expedia.png"
   },
   {

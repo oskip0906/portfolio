@@ -46,7 +46,6 @@ export default function RoomOverlay({
 }: {
   payload: RoomHomePayload
   focusedId: RoomObjectId | null
-  hoveredId: RoomObjectId | null
   onFocusChange: (id: RoomObjectId | null) => void
   onReset: () => void
 }) {
@@ -72,7 +71,7 @@ export default function RoomOverlay({
             exit={{ opacity: 0 }}
             transition={{ duration: 0.22 }}
             className="absolute inset-0 pointer-events-auto"
-            style={{ background: "rgba(0,0,0,0.5)", backdropFilter: "blur(2px)" }}
+            style={{ background: "rgba(0,0,0,0.55)", backdropFilter: "blur(10px)" }}
             onClick={onReset}
           />
         )}
@@ -97,14 +96,14 @@ export default function RoomOverlay({
               // centering always splits the leftover space evenly top/bottom —
               // so capping the height this way guarantees >= 5.5rem of clearance
               // above (and below) the popup no matter how short the viewport is.
-              className="pointer-events-auto flex h-[min(75vh,calc(100vh-11rem))] w-[92vw] flex-col overflow-hidden rounded-3xl border border-white/10 bg-neutral-950/90 shadow-[0_30px_80px_rgba(0,0,0,0.55)] backdrop-blur-2xl sm:w-[85vw] md:w-[75vw] lg:w-[65vw]"
+              className="pointer-events-auto flex h-[min(75vh,calc(100vh-11rem))] w-[92vw] flex-col overflow-hidden rounded-3xl border border-white/[0.14] bg-neutral-950/80 shadow-[0_30px_80px_rgba(0,0,0,0.55),inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur-2xl sm:w-[85vw] md:w-[75vw] lg:w-[65vw]"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Accent stripe */}
               <div className="flex-shrink-0 h-[3px] w-full" style={{ background: activeObject.color }} />
 
               {/* Header */}
-              <div className="flex flex-shrink-0 items-center justify-between gap-4 px-7 pt-5 pb-4">
+              <div className="flex flex-shrink-0 items-center justify-between gap-4 px-4 pt-5 pb-4 sm:px-7">
                 <div className="min-w-0">
                   <h2 className="truncate text-2xl font-bold leading-tight tracking-tight text-white">
                     {activeObject.label}
@@ -120,7 +119,7 @@ export default function RoomOverlay({
               </div>
 
               {/* Section content — fills remaining space */}
-              <div className="flex-1 overflow-y-auto px-7 pb-7">
+              <div className="flex-1 overflow-y-auto px-4 pb-5 sm:px-7 sm:pb-7">
                 <SectionPanel
                   id={activeObject.id}
                   payload={payload}
