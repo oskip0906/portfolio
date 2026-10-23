@@ -1,7 +1,18 @@
 "use client"
 import { motion } from "framer-motion"
+import { FaGithub, FaLinkedinIn, FaInstagram, FaSteam, FaGlobe, FaEnvelope } from "react-icons/fa"
+import { type IconType } from "react-icons"
 import { type Contact } from "@/lib/database"
-import { getContactIcon } from "../contact-icon"
+
+function getContactIcon(type: string): IconType {
+  const normalized = type.toLowerCase()
+  if (normalized === "email" || normalized.includes("mail")) return FaEnvelope
+  if (normalized.includes("github")) return FaGithub
+  if (normalized.includes("linkedin")) return FaLinkedinIn
+  if (normalized.includes("instagram")) return FaInstagram
+  if (normalized.includes("steam")) return FaSteam
+  return FaGlobe
+}
 
 type ContactProps = {
   contacts: Contact[]

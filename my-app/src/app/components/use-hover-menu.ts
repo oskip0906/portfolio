@@ -1,4 +1,3 @@
-"use client"
 import { useEffect, useRef, useState, type PointerEvent } from "react"
 
 // Hover opens the menu for mouse users only: on touch screens the emulated hover

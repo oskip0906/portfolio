@@ -1,10 +1,9 @@
 import Link from "next/link"
 import { Instrument_Serif } from "next/font/google"
 import { ArrowLeft, ArrowUp, ArrowUpRight, FileText, Mail } from "lucide-react"
-import { FaDiscord } from "react-icons/fa"
+import { FaDiscord, FaEnvelope, FaGithub, FaGlobe, FaInstagram, FaLinkedinIn, FaSteam } from "react-icons/fa"
 import { getRoomPayload } from "@/lib/get-room-payload"
 import ContactMessageForm from "../components/contact-message-form"
-import { getContactIcon } from "../components/contact-icon"
 import SectionNav from "./section-nav"
 
 const serif = Instrument_Serif({ weight: "400", subsets: ["latin"], variable: "--font-serif", display: "swap" })
@@ -16,6 +15,18 @@ function contactHref(type: string, value: string) {
     return `mailto:${value.replace(/^mailto:/i, "")}`
   }
   return value
+}
+
+// Kept separate from ui/contact.tsx on purpose: a module imported by both this server page and a
+// client component made Next 15.1 drop the teahouse from the client manifest (prerender error on Vercel).
+function contactIcon(type: string) {
+  const normalized = type.toLowerCase()
+  if (normalized === "email" || normalized.includes("mail")) return FaEnvelope
+  if (normalized.includes("github")) return FaGithub
+  if (normalized.includes("linkedin")) return FaLinkedinIn
+  if (normalized.includes("instagram")) return FaInstagram
+  if (normalized.includes("steam")) return FaSteam
+  return FaGlobe
 }
 
 function contactLabel(type: string) {
@@ -113,7 +124,7 @@ export default async function WebpagePage() {
 
           <div className="flex flex-wrap items-center gap-2">
             {linkableContacts.map((contact) => {
-              const Icon = getContactIcon(contact.type)
+              const Icon = contactIcon(contact.type)
               const isMail = contact.type.toLowerCase().includes("mail")
               return (
                 <a
