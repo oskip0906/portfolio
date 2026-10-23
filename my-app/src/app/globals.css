@@ -36,7 +36,7 @@ body.scroll-locked {
 }
 
 body.static-page {
-  background: #fff;
+  background: #fbfaf7;
 }
 
 /* Dark popups were rendering the browser's default light scrollbar. */
@@ -134,6 +134,12 @@ body.static-page {
 
 .animate-rainbow-glow {
   animation: rainbow-glow 5s linear infinite;
+}
+
+/* Now-playing bars on the Spotify player */
+@keyframes equalizer {
+  0%, 100% { transform: scaleY(0.3); }
+  50% { transform: scaleY(1); }
 }
 
 /* Music player slider styles */

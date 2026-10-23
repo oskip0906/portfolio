@@ -135,7 +135,7 @@ export default function RoomCanvas({
   return (
     <div
       ref={containerRef}
-      className="h-screen w-full select-none touch-none cursor-grab"
+      className="h-dvh w-full select-none touch-none cursor-grab"
       onPointerDown={(e) => {
         if (focusedId) return
         dragRef.current.active = true
@@ -202,8 +202,18 @@ function CameraController({
   orbitRef: React.MutableRefObject<{ theta: number; phi: number; radius: number }>
   onReady?: () => void
 }) {
-  const { camera } = useThree()
+  const { camera, size } = useThree()
   const lookTargetRef = useRef(ORBIT_LOOKAT.clone())
+
+  // A fixed vertical FOV crops the outer cups off tall portrait screens: widen it there so
+  // the horizontal view stays ~50°, capped at 90° before the perspective distorts.
+  useEffect(() => {
+    const perspective = camera as THREE.PerspectiveCamera
+    const aspect = size.width / size.height
+    const fov = THREE.MathUtils.radToDeg(2 * Math.atan(Math.tan(THREE.MathUtils.degToRad(25)) / aspect))
+    perspective.fov = THREE.MathUtils.clamp(fov, 58, 90)
+    perspective.updateProjectionMatrix()
+  }, [camera, size.width, size.height])
   const focusLookup = useMemo(
     () => Object.fromEntries(payload.objects.map((o) => [o.id, o])),
     [payload.objects]

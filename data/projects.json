@@ -191,5 +191,22 @@
       "Gemini",
       "LangGraph"
     ]
+  },
+  {
+    "id": 67,
+    "date": "Jul 2026 - Present",
+    "link": "https://github.com/oskip0906/oscars-assistant-discord-bot",
+    "name": "Panda Bot",
+    "emote": "🐼",
+    "description": "My own AI assistant for Discord, built from scratch. It chats, remembers context, researches the web, takes notes, sets reminders, plays music in voice calls, and can even suggest and merge fixes to its own code once I approve them.",
+    "type": "Personal Project",
+    "tech": [
+      "JavaScript",
+      "Node.js",
+      "Discord.js",
+      "OpenRouter",
+      "PostgreSQL",
+      "Docker"
+    ]
   }
 ]

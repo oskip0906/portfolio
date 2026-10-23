@@ -68,7 +68,7 @@ export default function ContactMessageForm({
               value={senderName}
               onChange={(e) => setSenderName(e.target.value)}
               placeholder="Name (optional)"
-              className="h-10 flex-1 rounded-md border border-gray-300 bg-white px-3 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-400"
+              className="h-11 flex-1 rounded-xl border border-stone-200 bg-stone-50/60 px-4 text-sm text-stone-900 placeholder:text-stone-400 transition-colors focus:border-[#3d6b4f] focus:bg-white focus:outline-none focus:ring-4 focus:ring-[#3d6b4f]/10"
             />
             <input
               type="email"
@@ -76,7 +76,7 @@ export default function ContactMessageForm({
               value={senderEmail}
               onChange={(e) => setSenderEmail(e.target.value)}
               placeholder="Email (optional)"
-              className="h-10 flex-1 rounded-md border border-gray-300 bg-white px-3 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-400"
+              className="h-11 flex-1 rounded-xl border border-stone-200 bg-stone-50/60 px-4 text-sm text-stone-900 placeholder:text-stone-400 transition-colors focus:border-[#3d6b4f] focus:bg-white focus:outline-none focus:ring-4 focus:ring-[#3d6b4f]/10"
             />
           </div>
           <textarea
@@ -86,17 +86,17 @@ export default function ContactMessageForm({
             onChange={(e) => setMessage(e.target.value)}
             placeholder="Your message…"
             rows={4}
-            className="min-h-[100px] resize-y rounded-md border border-gray-300 bg-white px-3 py-2 align-top text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-400"
+            className="min-h-[120px] resize-y rounded-xl border border-stone-200 bg-stone-50/60 px-4 py-3 align-top text-sm text-stone-900 placeholder:text-stone-400 transition-colors focus:border-[#3d6b4f] focus:bg-white focus:outline-none focus:ring-4 focus:ring-[#3d6b4f]/10"
           />
           <button
             type="submit"
             disabled={isSending || !message.trim()}
-            className="h-10 self-start rounded-md bg-gray-900 px-5 text-sm font-medium text-white transition-colors hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-50"
+            className="h-11 self-start rounded-full bg-[#3d6b4f] px-6 text-sm font-medium text-white transition-colors hover:bg-[#2f5540] disabled:cursor-not-allowed disabled:opacity-50"
           >
             {isSending ? "Sending…" : "Send"}
           </button>
         </form>
-        {sendStatus && <p className="mt-3 text-sm text-gray-600">{sendStatus}</p>}
+        {sendStatus && <p className="mt-3 text-sm text-stone-600">{sendStatus}</p>}
       </div>
     )
   }

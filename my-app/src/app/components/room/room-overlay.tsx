@@ -1,11 +1,12 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import Link from "next/link"
 import { AnimatePresence, motion } from "framer-motion"
 import { ArrowLeft, Menu, X } from "lucide-react"
 import ColorPicker from "../color-picker"
 import SpotifyPlayer from "../spotify-player"
+import { useHoverMenu } from "../use-hover-menu"
 import { SectionPanel } from "./room-panels"
 import type { RoomHomePayload, RoomObjectId, RoomObjectManifest } from "./room-manifest"
 
@@ -49,14 +50,14 @@ export default function RoomOverlay({
   onFocusChange: (id: RoomObjectId | null) => void
   onReset: () => void
 }) {
-  const [navOpen, setNavOpen] = useState(false)
+  const { open: navOpen, setOpen: setNavOpen, hoverProps: navHoverProps } = useHoverMenu()
   const allObjects = payload.objects
   const activeObject = allObjects.find((o) => o.id === focusedId) ?? null
 
   // Never let the sections dropdown sit open behind a freshly-opened popup.
   useEffect(() => {
     if (focusedId) setNavOpen(false)
-  }, [focusedId])
+  }, [focusedId, setNavOpen])
 
   return (
     <div className="pointer-events-none fixed inset-0 z-20">
@@ -96,7 +97,7 @@ export default function RoomOverlay({
               // centering always splits the leftover space evenly top/bottom —
               // so capping the height this way guarantees >= 5.5rem of clearance
               // above (and below) the popup no matter how short the viewport is.
-              className="pointer-events-auto flex h-[min(75vh,calc(100vh-11rem))] w-[92vw] flex-col overflow-hidden rounded-3xl border border-white/[0.14] bg-neutral-950/80 shadow-[0_30px_80px_rgba(0,0,0,0.55),inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur-2xl sm:w-[85vw] md:w-[75vw] lg:w-[65vw]"
+              className="pointer-events-auto flex h-[min(75dvh,calc(100dvh-11rem))] w-[92vw] flex-col overflow-hidden rounded-3xl border border-white/[0.14] bg-neutral-950/80 shadow-[0_30px_80px_rgba(0,0,0,0.55),inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur-2xl sm:w-[85vw] md:w-[75vw] lg:w-[65vw]"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Accent stripe */}
@@ -131,58 +132,61 @@ export default function RoomOverlay({
         )}
       </AnimatePresence>
 
-      {/* ── HUD controls — always visible ── */}
-      <div className="pointer-events-auto absolute right-4 top-4 flex items-center gap-3 sm:right-6 sm:top-6">
-        <ColorPicker variant="hud" />
-        <SpotifyPlayer variant="hud" />
-      </div>
+      {/* ── Top bar: one flex row, so the sections dock and the HUD can never
+           overlap — the player's text truncates first on narrow screens ── */}
+      <div className="absolute inset-x-4 top-4 flex items-start justify-between gap-3 sm:inset-x-6 sm:top-6">
+        {/* ── Section navigation dock — ALWAYS visible, opens on hover ── */}
+        <div className="pointer-events-auto relative z-10 flex-shrink-0" {...navHoverProps}>
+          <button
+            onClick={() => setNavOpen((v) => !v)}
+            aria-label="Browse sections"
+            aria-expanded={navOpen}
+            className="flex h-12 min-w-12 items-center justify-center gap-2 rounded-full border border-white/10 bg-black/80 px-3.5 text-white shadow-[0_14px_34px_rgba(0,0,0,0.28)] backdrop-blur-xl transition-transform hover:scale-105 sm:px-4"
+          >
+            <Menu size={18} />
+            <span className="hidden text-xs font-medium uppercase tracking-[0.18em] text-white/70 sm:inline">
+              Sections
+            </span>
+          </button>
 
-      {/* ── Section navigation dock — ALWAYS visible, opens on hover ── */}
-      <div
-        className="pointer-events-auto absolute left-4 top-4 z-10 sm:left-6 sm:top-6"
-        onMouseEnter={() => setNavOpen(true)}
-        onMouseLeave={() => setNavOpen(false)}
-      >
-        <button
-          onClick={() => setNavOpen((v) => !v)}
-          aria-label="Browse sections"
-          aria-expanded={navOpen}
-          className="flex h-11 items-center gap-2 rounded-full border border-white/10 bg-black/80 px-3.5 text-white shadow-[0_14px_34px_rgba(0,0,0,0.28)] backdrop-blur-xl transition-transform hover:scale-105"
-        >
-          <Menu size={16} />
-          <span className="text-xs font-medium uppercase tracking-[0.18em] text-white/70">
-            Sections
-          </span>
-        </button>
-
-        <AnimatePresence>
-          {navOpen && (
-            <motion.div
-              initial={{ opacity: 0, y: -8, scale: 0.96 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -8, scale: 0.96 }}
-              transition={{ duration: 0.18 }}
-              className="mt-2 w-60 max-h-[calc(100vh-6rem)] overflow-y-auto rounded-2xl border border-white/10 bg-black/90 p-1.5 shadow-[0_20px_50px_rgba(0,0,0,0.4)] backdrop-blur-xl"
-            >
-              <SectionsList
-                objects={allObjects}
-                onSelect={(id) => {
-                  onFocusChange(id)
-                  setNavOpen(false)
-                }}
-              />
-              <div className="my-1 border-t border-white/10" />
-              <Link
-                href="/"
-                onClick={() => setNavOpen(false)}
-                className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left transition-colors hover:bg-white/10"
+          <AnimatePresence>
+            {navOpen && (
+              <motion.div
+                initial={{ opacity: 0, y: -8, scale: 0.96 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -8, scale: 0.96 }}
+                transition={{ duration: 0.18 }}
+                // pt-2 (not mt-2) keeps the gap under the button hoverable, so the menu doesn't close on the way down
+                className="absolute left-0 top-full w-60 pt-2"
               >
-                <ArrowLeft size={14} className="flex-shrink-0 text-white/50" />
-                <span className="flex-1 text-sm text-white/85">Go back</span>
-              </Link>
-            </motion.div>
-          )}
-        </AnimatePresence>
+                <div className="max-h-[calc(100dvh-6rem)] overflow-y-auto rounded-2xl border border-white/10 bg-black/90 p-1.5 shadow-[0_20px_50px_rgba(0,0,0,0.4)] backdrop-blur-xl">
+                  <SectionsList
+                    objects={allObjects}
+                    onSelect={(id) => {
+                      onFocusChange(id)
+                      setNavOpen(false)
+                    }}
+                  />
+                  <div className="my-1 border-t border-white/10" />
+                  <Link
+                    href="/"
+                    onClick={() => setNavOpen(false)}
+                    className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left transition-colors hover:bg-white/10"
+                  >
+                    <ArrowLeft size={14} className="flex-shrink-0 text-white/50" />
+                    <span className="flex-1 text-sm text-white/85">Go back</span>
+                  </Link>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* ── HUD controls — always visible ── */}
+        <div className="pointer-events-auto flex min-w-0 items-center gap-3">
+          <SpotifyPlayer />
+          <ColorPicker />
+        </div>
       </div>
     </div>
   )

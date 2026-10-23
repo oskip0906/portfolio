@@ -56,7 +56,7 @@ function IntroPanel({ payload, accentColor }: PanelProps) {
   return (
     <div className="max-w-2xl mx-auto py-6 flex flex-col items-center gap-7 text-center">
       {/* Header — image beside the name to keep the header compact */}
-      <div className="flex items-center gap-5 text-left">
+      <div className="flex flex-col items-center gap-4 sm:flex-row sm:gap-5 sm:text-left">
         <div
           className="w-24 h-24 rounded-full overflow-hidden border border-white/12 flex-shrink-0"
           style={{ boxShadow: `0 0 24px ${accentColor}28` }}
@@ -229,7 +229,7 @@ function ProjectsPanel({ payload, accentColor }: PanelProps) {
           <button
             key={i}
             onClick={() => setSelected(i)}
-            className="flex-shrink-0 px-3 py-1.5 rounded-full text-xs transition-colors whitespace-nowrap"
+            className="max-w-full truncate px-3 py-1.5 rounded-full text-xs transition-colors"
             style={selected === i
               ? { background: darkenHex(accentColor), color: "#fff" }
               : { background: "rgba(255,255,255,0.06)", color: "rgba(255,255,255,0.45)" }
@@ -343,7 +343,7 @@ function ResearchPanel({ payload, accentColor }: PanelProps) {
           <button
             key={i}
             onClick={() => setSelected(i)}
-            className="flex-shrink-0 px-3 py-1.5 rounded-full text-xs transition-colors whitespace-nowrap"
+            className="max-w-full truncate px-3 py-1.5 rounded-full text-xs transition-colors"
             style={selected === i
               ? { background: darkenHex(accentColor), color: "#fff" }
               : { background: "rgba(255,255,255,0.06)", color: "rgba(255,255,255,0.45)" }

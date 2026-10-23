@@ -5,7 +5,7 @@
     "link": "https://www.tesla.com/",
     "title": "Data Engineer Intern",
     "company": "Tesla",
-    "description": "Working as a data engineer intern on the Cell Team in Palo Alto, CA.",
+    "description": "Working on the Cell Team in Palo Alto, building machine learning models that automatically spot defects in battery cells from 3D CT scans, and running them on the team's daily data pipeline.",
     "image": "/logos/tesla.jpg"
   },
   {
@@ -14,7 +14,7 @@
     "link": "https://www.expedia.ca/",
     "title": "Software Developer Intern",
     "company": "Expedia Group",
-    "description": "Developed and maintained iOS/Android apps for Expedia brands. Migrated legacy code to modern containerized architecture and optimized performance.",
+    "description": "Worked on the Expedia iOS and Android apps, moving older screens to a faster, modern architecture. Also built AI agent tools that set up and test app features automatically, making testing much quicker.",
     "image": "/logos/expedia.png"
   },
   {
@@ -23,7 +23,7 @@
     "link": "https://www.noahlab.com.hk/#/home",
     "title": "AI Engineering Intern",
     "company": "Huawei Canada",
-    "description": "@ Noah's Ark Lab - Built VLA models for robotic task execution, combining LLM-based planning with fine-tuned low-level control policies to for household tasks through advanced simulation environments.",
+    "description": "@ Noah's Ark Lab - Helped build a robotics system where AI models plan out the steps of long household tasks and guide a robot through them. Our team placed top 4 in the 2025 BEHAVIOR Challenge, and we published a paper at an ICLR 2026 workshop.",
     "image": "/logos/huawei.jpg"
   },
   {
@@ -32,7 +32,7 @@
     "link": "https://www.rbc.com/about-rbc.html",
     "title": "Software Developer Intern",
     "company": "RBC",
-    "description": "Developed scalable applications for the Contact Center Technology team, focusing on enhancing a data dashboard and the Interactive Voice Assistant platform. Optimized backend performance, implemented real-time data streaming, and resolved security vulnerabilities.",
+    "description": "Worked on the Contact Center Technology team: helped build a real-time pipeline for call data, made an internal dashboard much faster, rebuilt its interface, and fixed security issues across several apps.",
     "image": "/logos/rbc.jpg"
   },
   {
@@ -41,7 +41,7 @@
     "link": "https://compling-wat.com/",
     "title": "Research Intern",
     "company": "Vector Institute",
-    "description": "Engineered a flexible 3D rendering toolkit to generate datasets for training and evaluating vision-language models on spatial reasoning, first-authored a research paper published in ACL 2025, and released the toolkit publicly.",
+    "description": "Built a Blender tool that creates synthetic 3D images for training vision-language AI models, then used that data to improve a model's spatial reasoning. First-authored a paper on the tool, published at ACL 2025.",
     "image": "/logos/vector.jpg"
   },
   {
@@ -50,7 +50,7 @@
     "link": "https://aimmlab.org/",
     "title": "Machine Learning Researcher",
     "company": "AIMM Lab (UofT)",
-    "description": "Researched social media discussions on diseases using data collection tools and machine learning models for sentiment analysis and topic modeling at the Artificial Intelligence and Mathematical Modeling Lab. First-authored a research paper published in JMIR.",
+    "description": "Studied how people on Reddit talked about the H5N1 bird flu, using machine learning to sort comments by emotion and find the main topics. First-authored a paper on the findings, published in JMIR.",
     "image": "/logos/aimmlab.png"
   }
 ]

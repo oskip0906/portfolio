@@ -11,8 +11,8 @@ export default function AppShell({ children }: { children: ReactNode }) {
   // stay sticky — overflow-hidden on an ancestor breaks position: sticky.
   const isStaticPage = pathname === "/webpage"
 
-  // Keep the document background white on the static page so overscroll/rubber-band
-  // bounce reveals white instead of the dark 3D-scene backdrop color.
+  // Keep the document background paper-light on the static page so overscroll/rubber-band
+  // bounce reveals the page color instead of the dark 3D-scene backdrop color.
   useEffect(() => {
     document.body.classList.toggle("static-page", isStaticPage)
     return () => document.body.classList.remove("static-page")
@@ -20,7 +20,7 @@ export default function AppShell({ children }: { children: ReactNode }) {
 
   return (
     <>
-      {/* Use a subtle gradient for the main background, but keep static page white */}
+      {/* Use a subtle gradient for the main background, but keep the static page light */}
       {!isStaticPage && (
         <div
           className="fixed inset-0 -z-20"

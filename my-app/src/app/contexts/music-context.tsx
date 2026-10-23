@@ -177,6 +177,7 @@ export function MusicProvider({ children }: { children: ReactNode }) {
         ref={audioRef}
         src={currentSong ?? undefined}
         preload="metadata"
+        loop
         className="hidden"
       />
       {children}
