@@ -78,6 +78,8 @@ export function MusicProvider({ children }: { children: ReactNode }) {
           if (error.name !== 'AbortError' && error.name !== 'NotAllowedError') {
             console.error('Error playing audio:', error)
           }
+          // Blocked or unplayable: show the play button instead of "playing" in silence
+          if (error.name !== 'AbortError') setIsPlaying(false)
         })
         setIsPlaying(true)
       }
@@ -122,6 +124,8 @@ export function MusicProvider({ children }: { children: ReactNode }) {
               if (error.name !== 'AbortError' && error.name !== 'NotAllowedError') {
                 console.error('Error playing audio:', error)
               }
+              // Blocked or unplayable: show the play button instead of "playing" in silence
+              if (error.name !== 'AbortError') setIsPlaying(false)
             })
             setIsPlaying(true)
           }
@@ -172,10 +176,10 @@ export function MusicProvider({ children }: { children: ReactNode }) {
 
   return (
     <MusicContext.Provider value={value}>
-      {/* CRITICAL: Audio element lives here in the root, never unmounts */}
+      {/* CRITICAL: Audio element lives here in the root, never unmounts.
+          No `src` prop: changeSong sets it, and React re-applying it later restarts the load and kills playback. */}
       <audio
         ref={audioRef}
-        src={currentSong ?? undefined}
         preload="metadata"
         className="hidden"
       />

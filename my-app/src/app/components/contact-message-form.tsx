@@ -68,7 +68,7 @@ export default function ContactMessageForm({
               value={senderName}
               onChange={(e) => setSenderName(e.target.value)}
               placeholder="Name (optional)"
-              className="h-11 flex-1 rounded-xl border border-stone-200 bg-stone-50/60 px-4 text-sm text-stone-900 placeholder:text-stone-400 transition-colors focus:border-[#3d6b4f] focus:bg-white focus:outline-none focus:ring-4 focus:ring-[#3d6b4f]/10"
+              className="h-11 rounded-xl sm:flex-1 border border-stone-200 bg-stone-50/60 px-4 text-sm text-stone-900 placeholder:text-stone-400 transition-colors focus:border-[#3d6b4f] focus:bg-white focus:outline-none focus:ring-4 focus:ring-[#3d6b4f]/10"
             />
             <input
               type="email"
@@ -76,7 +76,7 @@ export default function ContactMessageForm({
               value={senderEmail}
               onChange={(e) => setSenderEmail(e.target.value)}
               placeholder="Email (optional)"
-              className="h-11 flex-1 rounded-xl border border-stone-200 bg-stone-50/60 px-4 text-sm text-stone-900 placeholder:text-stone-400 transition-colors focus:border-[#3d6b4f] focus:bg-white focus:outline-none focus:ring-4 focus:ring-[#3d6b4f]/10"
+              className="h-11 rounded-xl sm:flex-1 border border-stone-200 bg-stone-50/60 px-4 text-sm text-stone-900 placeholder:text-stone-400 transition-colors focus:border-[#3d6b4f] focus:bg-white focus:outline-none focus:ring-4 focus:ring-[#3d6b4f]/10"
             />
           </div>
           <textarea

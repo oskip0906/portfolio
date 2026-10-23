@@ -9,7 +9,7 @@ export default function AppShell({ children }: { children: ReactNode }) {
   const pathname = usePathname()
   // The static webpage needs normal document scrolling so its sidebar can
   // stay sticky — overflow-hidden on an ancestor breaks position: sticky.
-  const isStaticPage = pathname === "/webpage"
+  const isStaticPage = pathname === "/"
 
   // Keep the document background paper-light on the static page so overscroll/rubber-band
   // bounce reveals the page color instead of the dark 3D-scene backdrop color.

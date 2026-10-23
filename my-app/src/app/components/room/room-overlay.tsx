@@ -7,6 +7,7 @@ import { ArrowLeft, Menu, X } from "lucide-react"
 import ColorPicker from "../color-picker"
 import SpotifyPlayer from "../spotify-player"
 import { useHoverMenu } from "../use-hover-menu"
+import { POPUP_FRAME, POPUP_PANEL } from "../popup-layout"
 import { SectionPanel } from "./room-panels"
 import type { RoomHomePayload, RoomObjectId, RoomObjectManifest } from "./room-manifest"
 
@@ -89,17 +90,10 @@ export default function RoomOverlay({
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.97 }}
             transition={{ type: "spring", damping: 32, stiffness: 340, mass: 0.8 }}
-            className="absolute inset-0 flex items-start justify-center pointer-events-none pb-4 pt-[max(12.5dvh,5.5rem)] sm:items-center sm:p-6"
+            className={`absolute inset-0 pointer-events-none ${POPUP_FRAME}`}
           >
             <div
-              // 11rem = 2 x 5.5rem: the dock/HUD row (top offset + button height
-              // + breathing room) never exceeds ~5.5rem at any breakpoint, and
-              // centering always splits the leftover space evenly top/bottom —
-              // so capping the height this way guarantees >= 5.5rem of clearance
-              // above (and below) the popup no matter how short the viewport is.
-              // Phones keep that same top gap (max(12.5dvh, 5.5rem) is where the
-              // centered popup started) but stretch down to a small bottom margin.
-              className="pointer-events-auto flex h-full w-[92vw] sm:h-[min(75dvh,calc(100dvh-11rem))] flex-col overflow-hidden rounded-3xl border border-white/[0.14] bg-neutral-950/80 shadow-[0_30px_80px_rgba(0,0,0,0.55),inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur-2xl sm:w-[85vw] md:w-[75vw] lg:w-[65vw]"
+              className={`pointer-events-auto flex flex-col overflow-hidden rounded-3xl border border-white/[0.14] bg-neutral-950/80 shadow-[0_30px_80px_rgba(0,0,0,0.55),inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur-2xl ${POPUP_PANEL}`}
               onClick={(e) => e.stopPropagation()}
             >
               {/* Accent stripe */}
