@@ -1,9 +1,19 @@
 import { NextResponse } from "next/server"
-import { mostPlayedThisWeek, type SpotifyTrack } from "@/lib/spotify"
+import { parseEmbedPreviewUrl } from "@/lib/spotify"
 
-// The top track barely changes; cache it for an hour so visits don't hit Spotify's rate limits.
+// Top songs shift slowly; cache for an hour so visits don't hit Spotify's rate limits.
 const CACHE_HEADER = "public, max-age=3600, s-maxage=3600, stale-while-revalidate=86400"
 
+type SpotifyTrack = {
+  id: string
+  name: string
+  artists: { name: string }[]
+  album: { images: { url: string }[] }
+  external_urls: { spotify: string }
+  preview_url?: string | null
+}
+
+// Your own top songs need your login, so the stored refresh token is swapped for a short-lived access token.
 async function getAccessToken() {
   const { SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REFRESH_TOKEN } = process.env
   if (!SPOTIFY_CLIENT_ID || !SPOTIFY_CLIENT_SECRET || !SPOTIFY_REFRESH_TOKEN) {
@@ -23,49 +33,44 @@ async function getAccessToken() {
   return (await response.json()).access_token as string
 }
 
-async function spotifyGet(path: string, token: string) {
-  const response = await fetch(`https://api.spotify.com/v1${path}`, {
-    headers: { Authorization: `Bearer ${token}` },
-    cache: "no-store",
-  })
-  if (!response.ok) throw new Error(`Spotify ${path} request failed: ${response.status}`)
-  return response.json()
-}
-
-// Spotify stopped returning preview_url for newer apps, but the public embed page still carries it.
-// shortcut: scrapes the embed page's JSON, revisit if Spotify changes that markup.
 async function findPreviewUrl(trackId: string): Promise<string | null> {
-  const response = await fetch(`https://open.spotify.com/embed/track/${trackId}`, { cache: "no-store" })
-  if (!response.ok) return null
-  return /"audioPreview":\{"url":"([^"]+)"/.exec(await response.text())?.[1] ?? null
+  try {
+    const response = await fetch(`https://open.spotify.com/embed/track/${trackId}`, { cache: "no-store" })
+    return response.ok ? parseEmbedPreviewUrl(await response.text()) : null
+  } catch {
+    return null
+  }
 }
 
 export async function GET() {
   try {
     const token = await getAccessToken()
-    // Spotify only keeps the last 50 plays; if none are from this week, use the ~4-week top track.
-    const recent = await spotifyGet("/me/player/recently-played?limit=50", token)
-    let track: SpotifyTrack | null = mostPlayedThisWeek(recent.items ?? [])
-    let period = "this week"
-    if (!track) {
-      track = (await spotifyGet("/me/top/tracks?limit=1&time_range=short_term", token)).items?.[0] ?? null
-      period = "this month"
-    }
-    if (!track) throw new Error("Spotify returned no tracks")
+    // short_term = Spotify's own ranking of the last ~4 weeks
+    const response = await fetch("https://api.spotify.com/v1/me/top/tracks?time_range=short_term&limit=10", {
+      headers: { Authorization: `Bearer ${token}` },
+      cache: "no-store",
+    })
+    if (!response.ok) throw new Error(`Spotify top tracks request failed: ${response.status}`)
+    const top: SpotifyTrack[] = (await response.json()).items ?? []
 
-    return NextResponse.json(
-      {
+    const tracks = await Promise.all(
+      top.map(async (track, i) => ({
+        id: track.id,
+        rank: i + 1,
         title: track.name,
-        artist: track.artists.map((artist: { name: string }) => artist.name).join(", "),
+        artist: track.artists.map((artist) => artist.name).join(", "),
         albumArt: (track.album.images[1] ?? track.album.images[0])?.url ?? null,
         url: track.external_urls.spotify,
-        period,
         previewUrl: track.preview_url ?? (await findPreviewUrl(track.id)),
-      },
-      { headers: { "Cache-Control": CACHE_HEADER } },
+      })),
     )
+    // A song with no preview can't play here, so it's left out (its rank number stays honest).
+    const playable = tracks.filter((track) => track.previewUrl)
+    if (playable.length === 0) throw new Error("No playable top songs")
+
+    return NextResponse.json({ tracks: playable }, { headers: { "Cache-Control": CACHE_HEADER } })
   } catch (error) {
     console.error("Spotify API error:", error)
-    return NextResponse.json({ error: "Failed to load top track" }, { status: 503 })
+    return NextResponse.json({ error: "Failed to load top songs" }, { status: 503 })
   }
 }

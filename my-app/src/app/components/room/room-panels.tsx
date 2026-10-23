@@ -349,7 +349,7 @@ function ResearchPanel({ payload, accentColor }: PanelProps) {
               : { background: "rgba(255,255,255,0.06)", color: "rgba(255,255,255,0.45)" }
             }
           >
-            {r.emote} {r.name}
+            {r.emote} {r.name.split(" ")[0].replace(/[:,]$/, "")}...
           </button>
         ))}
       </div>

@@ -13,7 +13,7 @@ interface MusicContextType {
   togglePlayPause: () => void
   seek: (time: number) => void
   setVolume: (volume: number) => void
-  changeSong: (songPath: string) => void
+  changeSong: (songPath: string, play?: boolean) => void
 
   // Audio ref (for direct access if needed)
   audioRef: React.RefObject<HTMLAudioElement | null>
@@ -98,9 +98,9 @@ export function MusicProvider({ children }: { children: ReactNode }) {
     }
   }, [])
 
-  const changeSong = useCallback((songPath: string) => {
+  const changeSong = useCallback((songPath: string, play = false) => {
     if (audioRef.current) {
-      const wasPlaying = isPlaying
+      const shouldPlay = play || isPlaying
       
       // Pause and reset current playback to prevent abort errors
       audioRef.current.pause()
@@ -116,7 +116,7 @@ export function MusicProvider({ children }: { children: ReactNode }) {
       setTimeout(() => {
         if (audioRef.current && audioRef.current.src === songPath) {
           audioRef.current.load()
-          if (wasPlaying) {
+          if (shouldPlay) {
             audioRef.current.play().catch((error) => {
               // Ignore abort errors when playing
               if (error.name !== 'AbortError' && error.name !== 'NotAllowedError') {
@@ -177,7 +177,6 @@ export function MusicProvider({ children }: { children: ReactNode }) {
         ref={audioRef}
         src={currentSong ?? undefined}
         preload="metadata"
-        loop
         className="hidden"
       />
       {children}
