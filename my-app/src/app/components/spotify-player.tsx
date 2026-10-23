@@ -27,37 +27,23 @@ const SpotifyPlayer = memo(() => {
       .catch(() => null)
       .then((data: TopTrack | null) => {
         if (cancelled) return
-        const playable = data?.previewUrl ? data : null
-        setTrack(playable)
-        // No playable Spotify preview → keep the site's bundled song.
-        if (currentSong === null) changeSong(playable?.previewUrl ?? "/api/audio")
+        if (!data?.previewUrl) return // no playable Spotify track → no player
+        setTrack(data)
+        if (currentSong === null) changeSong(data.previewUrl)
       })
     return () => { cancelled = true }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const label = isPlaying ? "Pause music" : "Play music"
-  const shell = "flex h-12 items-center rounded-full border border-white/10 bg-black/80 backdrop-blur-xl"
-  const shadow = { boxShadow: `0 18px 40px ${roomTheme.shadowColor}, inset 0 1px 0 rgba(255,255,255,0.12)` }
+  if (!track) return null
 
-  if (!track) {
-    const Icon = isPlaying ? Pause : Play
-    return (
-      <button
-        onClick={togglePlayPause}
-        disabled={currentSong === null}
-        className={cn(shell, "w-12 flex-shrink-0 justify-center text-white transition-transform hover:scale-105")}
-        style={shadow}
-        title={label}
-        aria-label={label}
-      >
-        <Icon size={18} fill="currentColor" style={{ color: roomTheme.uiAccent }} />
-      </button>
-    )
-  }
+  const label = isPlaying ? "Pause music" : "Play music"
 
   return (
-    <div className={cn(shell, "min-w-0 gap-2.5 py-1 pl-1 pr-4")} style={shadow}>
+    <div
+      className="flex h-12 min-w-0 items-center gap-2.5 rounded-full border border-white/10 bg-black/80 py-1 pl-1 pr-4 backdrop-blur-xl"
+      style={{ boxShadow: `0 18px 40px ${roomTheme.shadowColor}, inset 0 1px 0 rgba(255,255,255,0.12)` }}
+    >
       <button
         onClick={togglePlayPause}
         className="group relative h-10 w-10 flex-shrink-0 overflow-hidden rounded-full ring-1 ring-white/15"
