@@ -166,6 +166,9 @@ export default function RoomCanvas({
       }}
     >
       <Canvas
+        // Under an open popup the room is hidden behind a blurred backdrop: render on demand (until the
+        // camera settles) instead of every frame, so the popup itself stays smooth.
+        frameloop={focusedId ? "demand" : "always"}
         dpr={[1, 2]}
         gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
         camera={{ position: [2.8, 4.2, 7.6], fov: 58, near: 0.1, far: 200 }}
@@ -202,7 +205,7 @@ function CameraController({
   orbitRef: React.MutableRefObject<{ theta: number; phi: number; radius: number }>
   onReady?: () => void
 }) {
-  const { camera, size } = useThree()
+  const { camera, size, invalidate } = useThree()
   const lookTargetRef = useRef(ORBIT_LOOKAT.clone())
 
   // A fixed vertical FOV crops the outer cups off tall portrait screens: widen it there so
@@ -248,6 +251,11 @@ function CameraController({
     lookTargetRef.current.lerp(desiredLook.current, easing)
     camera.up.set(0, 1, 0)
     camera.lookAt(lookTargetRef.current)
+
+    // On-demand mode (popup open): keep drawing only while the camera is still flying to the section.
+    if (focusedId && (camera.position.distanceToSquared(desiredPos.current) > 1e-4 || lookTargetRef.current.distanceToSquared(desiredLook.current) > 1e-4)) {
+      invalidate()
+    }
 
     if (!readyFiredRef.current) {
       readyFiredRef.current = true

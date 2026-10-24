@@ -206,11 +206,31 @@ function ExperienceCard({
   )
 }
 
+// ─── Crossfade stack (Projects / Research) ────────────────────────────────────
+
+// Every item sits in the same grid cell, so the panel keeps the tallest item's height and switching
+// (arrow keys or tabs) is a crossfade instead of the content below jumping on every press.
+function CrossfadeStack({ selected, children }: { selected: number; children: React.ReactNode[] }) {
+  return (
+    <div className="grid">
+      {children.map((child, i) => (
+        <div
+          key={i}
+          className={`[grid-area:1/1] transition-opacity duration-300 ${i === selected ? "opacity-100" : "pointer-events-none opacity-0"}`}
+          aria-hidden={i !== selected}
+          inert={i !== selected}
+        >
+          {child}
+        </div>
+      ))}
+    </div>
+  )
+}
+
 // ─── Projects ─────────────────────────────────────────────────────────────────
 
 function ProjectsPanel({ payload, accentColor }: PanelProps) {
   const [selected, setSelected] = useState(0)
-  const project = payload.projects[selected]
   const count = payload.projects.length
 
   React.useEffect(() => {
@@ -239,7 +259,9 @@ function ProjectsPanel({ payload, accentColor }: PanelProps) {
           </button>
         ))}
       </div>
-      <ProjectDetail project={project} accentColor={accentColor} />
+      <CrossfadeStack selected={selected}>
+        {payload.projects.map((p) => <ProjectDetail key={p.name} project={p} accentColor={accentColor} />)}
+      </CrossfadeStack>
       {count > 1 && (
         <p className="pt-1 text-center text-[11px] uppercase tracking-[0.18em] text-white/35">
           Use arrow keys to navigate
@@ -256,7 +278,7 @@ function ProjectDetail({
   accentColor: string
 }) {
   return (
-    <div className="rounded-2xl border border-white/8 bg-white/[0.025] p-5 flex flex-col gap-4">
+    <div className="h-full rounded-2xl border border-white/8 bg-white/[0.025] p-5 flex flex-col gap-4">
       <div>
         <div className="text-4xl mb-2">{project.emote}</div>
         <h3 className="text-xl font-bold text-white">{project.name}</h3>
@@ -324,7 +346,6 @@ function ProjectDetail({
 
 function ResearchPanel({ payload, accentColor }: PanelProps) {
   const [selected, setSelected] = useState(0)
-  const paper = payload.research[selected]
   const count = payload.research.length
 
   React.useEffect(() => {
@@ -353,7 +374,9 @@ function ResearchPanel({ payload, accentColor }: PanelProps) {
           </button>
         ))}
       </div>
-      <ResearchDetail paper={paper} accentColor={accentColor} />
+      <CrossfadeStack selected={selected}>
+        {payload.research.map((r) => <ResearchDetail key={r.name} paper={r} accentColor={accentColor} />)}
+      </CrossfadeStack>
       {count > 1 && (
         <p className="pt-1 text-center text-[11px] uppercase tracking-[0.18em] text-white/35">
           Use arrow keys to navigate
@@ -370,7 +393,7 @@ function ResearchDetail({
   accentColor: string
 }) {
   return (
-    <div className="rounded-2xl border border-white/8 bg-white/[0.025] p-5 flex flex-col gap-4">
+    <div className="h-full rounded-2xl border border-white/8 bg-white/[0.025] p-5 flex flex-col gap-4">
       <div>
         <div className="text-4xl mb-2">{paper.emote}</div>
         <h3 className="text-xl font-bold text-white">{paper.name}</h3>

@@ -93,7 +93,9 @@ export default function RoomOverlay({
             className={`absolute inset-0 pointer-events-none ${POPUP_FRAME}`}
           >
             <div
-              className={`pointer-events-auto flex flex-col overflow-hidden rounded-3xl border border-white/[0.14] bg-neutral-950/80 shadow-[0_30px_80px_rgba(0,0,0,0.55),inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur-2xl ${POPUP_PANEL}`}
+              // No backdrop blur of its own: the backdrop already blurs the room, and a second blur pass
+              // made every repaint (like arrow-key switching) stutter.
+              className={`pointer-events-auto flex flex-col overflow-hidden rounded-3xl border border-white/[0.14] bg-neutral-950/80 shadow-[0_30px_80px_rgba(0,0,0,0.55),inset_0_1px_0_rgba(255,255,255,0.12)] ${POPUP_PANEL}`}
               onClick={(e) => e.stopPropagation()}
             >
               {/* Accent stripe */}
