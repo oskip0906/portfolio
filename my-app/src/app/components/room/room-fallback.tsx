@@ -1,11 +1,14 @@
 "use client"
 
+import { useRef, useState } from "react"
+import { flushSync } from "react-dom"
 import Link from "next/link"
 import { ExternalLink, Mail, MoveRight } from "lucide-react"
 import ColorPicker from "../color-picker"
 import SpotifyPlayer from "../spotify-player"
 import { useBackground } from "@/app/contexts/background-context"
-import type { RoomHomePayload } from "./room-manifest"
+import { SectionPanel } from "./room-panels"
+import type { RoomHomePayload, RoomObjectId } from "./room-manifest"
 
 export default function RoomFallback({
   payload,
@@ -15,8 +18,18 @@ export default function RoomFallback({
   reason?: string
 }) {
   const { roomTheme } = useBackground()
+  const [openId, setOpenId] = useState<RoomObjectId | null>(null)
+  const panelRef = useRef<HTMLElement>(null)
   const primaryObjects = payload.objects
+  const openObject = primaryObjects.find((o) => o.id === openId)
   const emailContact = payload.contacts.find((c) => c.type.toLowerCase() === "email")
+
+  // The section renders below the cards: render it now, then jump there without globals.css's phone smooth scroll (this is the reduced-motion layout).
+  function openSection(id: RoomObjectId) {
+    flushSync(() => setOpenId(id))
+    panelRef.current?.scrollIntoView({ behavior: "instant", block: "start" })
+    panelRef.current?.focus({ preventScroll: true })
+  }
 
   return (
     <div className="min-h-screen px-4 py-6 sm:px-6 lg:px-10">
@@ -157,11 +170,32 @@ export default function RoomFallback({
                     {object.externalLabel ?? "Open link"}
                     <ExternalLink size={14} />
                   </a>
-                ) : null}
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => openSection(object.id)}
+                    className="inline-flex items-center gap-2 text-sm font-medium text-white transition-colors hover:text-white/80"
+                  >
+                    Open full section
+                    <MoveRight size={14} />
+                  </button>
+                )}
               </div>
             </article>
           ))}
         </section>
+
+        {openObject && (
+          <section
+            ref={panelRef}
+            tabIndex={-1}
+            aria-label={openObject.label}
+            className="scroll-mt-6 rounded-[1.8rem] border border-white/10 bg-neutral-950/80 p-5 outline-none sm:p-7"
+          >
+            <h2 className="text-2xl font-bold text-white">{openObject.label}</h2>
+            <SectionPanel id={openObject.id} payload={payload} accentColor={openObject.color} />
+          </section>
+        )}
       </div>
     </div>
   )
